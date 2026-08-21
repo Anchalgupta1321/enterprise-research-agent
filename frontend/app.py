@@ -3,7 +3,8 @@ import requests
 import time
 import os
 
-API_BASE_URL = "http://127.0.0.1:8000/api"
+# Allows the app to connect to the Render backend when deployed
+API_BASE_URL = os.getenv("API_BASE_URL", "http://127.0.0.1:8000/api")
 
 st.set_page_config(
     page_title="Modus Enterprise Research Agent", 
