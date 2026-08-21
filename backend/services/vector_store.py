@@ -1,15 +1,22 @@
 import os
 import faiss
 import numpy as np
-from sentence_transformers import SentenceTransformer
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from backend.core.config import settings
 import json
 
 class VectorStore:
     def __init__(self, index_path="research_index.faiss", meta_path="research_meta.json"):
         self.index_path = index_path
         self.meta_path = meta_path
-        self.model = SentenceTransformer("all-MiniLM-L6-v2")
-        self.embedding_dim = self.model.get_sentence_embedding_dimension()
+        
+        # We switched to Google Embeddings because HuggingFace/Torch uses too much RAM (2GB+)
+        # and crashes the 512MB free tier on Render. Google Embeddings run entirely in the cloud!
+        self.embeddings = GoogleGenerativeAIEmbeddings(
+            model="models/embedding-001", 
+            google_api_key=settings.GEMINI_API_KEY
+        )
+        self.embedding_dim = 768 # Google embeddings are 768 dimensions
         
         # Load or create FAISS index
         if os.path.exists(self.index_path):
@@ -24,11 +31,12 @@ class VectorStore:
         if not texts:
             return
         
-        embeddings = self.model.encode(texts)
+        # LangChain embeddings interface
+        embeddings_list = self.embeddings.embed_documents(texts)
         # Convert to float32 for FAISS
-        embeddings = np.array(embeddings).astype("float32")
+        embeddings_array = np.array(embeddings_list).astype("float32")
         
-        self.index.add(embeddings)
+        self.index.add(embeddings_array)
         self.metadata.extend(metadatas)
         
         # Save to disk
@@ -40,14 +48,14 @@ class VectorStore:
         if self.index.ntotal == 0:
             return []
             
-        query_embedding = self.model.encode([query])
-        query_embedding = np.array(query_embedding).astype("float32")
+        query_embedding = self.embeddings.embed_query(query)
+        query_embedding_array = np.array([query_embedding]).astype("float32")
         
-        distances, indices = self.index.search(query_embedding, k)
+        distances, indices = self.index.search(query_embedding_array, k)
         
         results = []
         for i, idx in enumerate(indices[0]):
-            if idx != -1 and idx < len(self.metadata): # -1 means not enough results
+            if idx != -1 and idx < len(self.metadata):
                 results.append({
                     "metadata": self.metadata[idx],
                     "distance": float(distances[0][i])
