@@ -6,6 +6,7 @@ import traceback
 from backend.core.database import get_db, SessionLocal
 from backend.models import schemas, domain
 from backend.agents.orchestrator import run_research_pipeline, run_question_generation
+from backend.agents.chat_agent import generate_chat_reply
 
 from fastapi import File, UploadFile
 import os
@@ -87,3 +88,16 @@ def get_research_status(topic_id: int, db: Session = Depends(get_db)):
     if not db_topic:
         raise HTTPException(status_code=404, detail="Topic not found")
     return db_topic
+
+@router.post("/research/{topic_id}/chat", response_model=schemas.ChatResponse)
+def chat_with_report(topic_id: int, request: schemas.ChatRequest, db: Session = Depends(get_db)):
+    db_topic = db.query(domain.ResearchTopic).filter(domain.ResearchTopic.id == topic_id).first()
+    if not db_topic:
+        raise HTTPException(status_code=404, detail="Topic not found")
+    if not db_topic.final_report:
+        raise HTTPException(status_code=400, detail="Research report has not been generated yet.")
+    
+    history_dicts = [{"role": msg.role, "content": msg.content} for msg in request.history]
+    reply = generate_chat_reply(db_topic, request.message, history_dicts)
+    return schemas.ChatResponse(reply=reply)
+

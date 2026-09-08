@@ -126,6 +126,16 @@ DARK_CSS = """
         background-color: rgba(11, 15, 25, 0.95);
         border-right: 1px solid rgba(255, 255, 255, 0.05);
     }
+    [data-testid="stChatMessage"] {
+        background-color: rgba(15, 23, 42, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        padding: 1rem;
+        margin-bottom: 0.75rem;
+    }
+    [data-testid="stChatInput"] {
+        border-radius: 12px;
+    }
 """
 
 LIGHT_CSS = """
@@ -253,6 +263,20 @@ LIGHT_CSS = """
     [data-testid="stSidebar"] {
         background-color: rgba(248, 250, 252, 0.95);
         border-right: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    [data-testid="stChatMessage"] {
+        background-color: rgba(255, 255, 255, 0.9);
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        border-radius: 12px;
+        padding: 1rem;
+        margin-bottom: 0.75rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    }
+    [data-testid="stChatMessage"] * {
+        color: #0f172a !important;
+    }
+    [data-testid="stChatInput"] {
+        border-radius: 12px;
     }
 """
 
@@ -452,6 +476,46 @@ if st.session_state.topic_id:
                                 st.markdown(f"**Original Source:** [{matching_source['title']}]({matching_source['url']})")
                             else:
                                 st.markdown("**Original Source:** Unknown")
+                                
+            # Interactive Chat with Report (RAG)
+            st.markdown("<br><hr style='border-color: rgba(139, 92, 246, 0.2);'><br>", unsafe_allow_html=True)
+            st.markdown("### 💬 Interactive Intelligence: Chat with this Report")
+            st.caption("Ask follow-up questions, request specific executive breakdowns, or probe deeper into the findings and citations.")
+            
+            chat_key = f"chat_history_{st.session_state.topic_id}"
+            if chat_key not in st.session_state:
+                st.session_state[chat_key] = [
+                    {"role": "assistant", "content": f"Hello! I've fully analyzed and synthesized the findings on **{data.get('topic', 'this topic')}**. How can I assist you with this report?"}
+                ]
+            
+            for msg in st.session_state[chat_key]:
+                with st.chat_message(msg["role"]):
+                    st.markdown(msg["content"])
+            
+            if prompt := st.chat_input("Ask a question about this research report..."):
+                st.session_state[chat_key].append({"role": "user", "content": prompt})
+                with st.chat_message("user"):
+                    st.markdown(prompt)
+                
+                with st.chat_message("assistant"):
+                    with st.spinner("Analyzing report context & synthesizing answer..."):
+                        try:
+                            payload = {
+                                "message": prompt,
+                                "history": st.session_state[chat_key][:-1]
+                            }
+                            chat_resp = requests.post(
+                                f"{API_BASE_URL}/research/{st.session_state.topic_id}/chat",
+                                json=payload
+                            )
+                            chat_resp.raise_for_status()
+                            answer = chat_resp.json().get("reply", "No response received.")
+                            st.markdown(answer)
+                            st.session_state[chat_key].append({"role": "assistant", "content": answer})
+                        except Exception as e:
+                            err_msg = f"Failed to get reply: {e}"
+                            st.error(err_msg)
+                            st.session_state[chat_key].append({"role": "assistant", "content": err_msg})
                     
         elif status == "failed":
             st.error("❌ Research Pipeline Failed.")
