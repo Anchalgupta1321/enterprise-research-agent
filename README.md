@@ -11,7 +11,7 @@
 
 **An enterprise-grade autonomous research platform featuring cyclic multi-agent orchestration, dialectical debate synthesis, real-time SSE token streaming, and citation auditability.**
 
-[Live Streamlit App](https://share.streamlit.io/) • [API Documentation (Swagger)](http://127.0.0.1:8000/docs) • [Architecture](#-system-architecture) • [Key Capabilities](#-key-capabilities)
+[🚀 Live Streamlit App](https://enterprise-research-agent-nzp42bp4cvdaeaaoybprqi.streamlit.app/) • [API Documentation (Swagger)](http://127.0.0.1:8000/docs) • [Architecture](#-system-architecture) • [Key Capabilities](#-key-capabilities)
 
 </div>
 
