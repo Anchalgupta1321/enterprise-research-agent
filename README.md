@@ -53,12 +53,34 @@
 - After analyzing the initial prompt, the agent generates sub-questions and pauses execution in an `awaiting_approval` state.
 - Analysts can refine, add, or prune research vectors before the search and extraction pipeline begins.
 
-### 7. 📂 Multi-Modal Hybrid RAG (FAISS + Tavily)
+### 7. 🪞 Self-Reflective Auditor Agent (Reflexion Pattern)
+- An independent **Auditor Agent** audits the synthesized report draft line-by-line against verified `[SRC-X]` ground truth findings.
+- Calculates a mathematical **Grounding Precision Score (0-100%)** and assigns an official compliance audit verdict displayed as a verification stamp in the UI.
+
+### 8. 📊 Dynamic Data & Plotly Chart Visualizer Agent (Chartist Agent)
+- An autonomous **Chartist Agent** analyzes numerical, statistical, and horizon claims across the findings.
+- Dynamically generates interactive **Plotly charts** (Strategic Impact Bar Charts & Commercial Adoption Horizon Curves) rendered inside the report.
+
+### 9. 🏛️ Executive Boardroom Mode (Council of Expert Personas)
+- Convenes a heterogeneous C-suite advisory panel:
+  - 💼 **CFO Agent**: Evaluates 3-year ROI horizons, CAPEX/OPEX intensity, and capital allocation risks.
+  - 🔬 **CTO Agent**: Assesses architectural feasibility, scalability bottlenecks, and engineering complexity.
+  - ⚖️ **Chief Legal & Compliance Officer (CLO)**: Audits global regulatory compliance (EU AI Act, GDPR, SEC, IP exposure).
+- Synthesizes an authoritative **Board Consensus Verdict** with structured executive dossiers.
+
+### 10. 🌳 Interactive Knowledge Graph & Entity Relationship Visualizer
+- An autonomous **Knowledge Graph Agent** maps semantic entity clusters, technological dependencies, and regulatory influences.
+- Generates a dynamic 2D/3D Plotly interactive network graph with custom glowing entity nodes, directional relation edges, and category filters.
+
+### 11. 🎧 Multi-Modal 60-Second Audio Executive Briefing
+- Ingests the synthesized report and produces a spoken 60-second executive audio briefing playable directly in the browser via `st.audio`.
+
+### 12. 📂 Multi-Modal Hybrid RAG (FAISS + Tavily)
 - Upload proprietary enterprise PDFs to a local FAISS vector store.
 - Agents dynamically blend internal proprietary context with live real-time web search.
 
-### 8. 🌓 Modern Dual-Theme UI
-- Bespoke Streamlit frontend engineered with custom CSS, glassmorphism, responsive metrics dashboards, and a 1-click **Dark / Light Theme Toggle**.
+### 13. 🌓 Modern Dual-Theme UI
+- Bespoke Streamlit frontend engineered with custom CSS, glassmorphism, responsive KPI metric dashboards, 1-click **Dark / Light Theme Toggle**, and **Executive Export Center (.md & .txt)**.
 
 ---
 
@@ -173,7 +195,11 @@ stateDiagram-v2
         join_state --> FinalSynthesis: Judge Compiles Report
     }
     
-    DebatePhase --> ReportCompleted: Saved to DB & Cache
+    DebatePhase --> ReflexionAudit: Draft Generated
+    ReflexionAudit --> ChartistAnalytics: Fact-Check & Grounding Score Verified
+    ChartistAnalytics --> BoardroomCouncil: Interactive Plotly Visuals Compiled
+    BoardroomCouncil --> KnowledgeGraph: C-Suite Dossiers (CFO, CTO, CLO) Synthesized
+    KnowledgeGraph --> ReportCompleted: Semantic Entity Network Mapped & Saved to DB
     ReportCompleted --> InteractiveRAGChat: Real-Time SSE Q&A
     ReportCompleted --> [*]
 ```

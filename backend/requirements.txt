@@ -18,3 +18,4 @@ python-multipart>=0.0.6
 pypdf>=3.17.0
 requests>=2.31.0
 gTTS>=2.5.0
+plotly>=5.18.0

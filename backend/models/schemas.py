@@ -59,6 +59,12 @@ class ResearchTopicSchema(ResearchTopicBase):
     created_at: datetime
     status: str
     final_report: Optional[str] = None
+    audit_score: Optional[float] = None
+    audit_verdict: Optional[str] = None
+    audit_feedback: Optional[str] = None
+    charts_data: Optional[str] = None
+    boardroom_data: Optional[str] = None
+    knowledge_graph_data: Optional[str] = None
     questions: List[QuestionSchema] = []
     sources: List[SourceSchema] = []
     findings: List[FindingSchema] = []

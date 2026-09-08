@@ -9,6 +9,7 @@ requests>=2.31.0
 # Frontend & UI
 streamlit>=1.30.0
 gTTS>=2.5.0
+plotly>=5.18.0
 
 # LLM & Multi-Agent Orchestration
 langchain>=0.1.0

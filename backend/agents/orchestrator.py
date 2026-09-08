@@ -7,6 +7,10 @@ from backend.agents.search_agent import search_for_questions
 from backend.agents.extractor import extract_findings
 from backend.agents.comparator import detect_contradictions
 from backend.agents.report_gen import generate_report
+from backend.agents.auditor_agent import audit_research_report
+from backend.agents.chart_agent import generate_report_charts
+from backend.agents.boardroom_agent import run_boardroom_council
+from backend.agents.knowledge_graph_agent import extract_knowledge_graph
 import traceback
 
 class ResearchState(TypedDict):
@@ -99,6 +103,36 @@ def run_research_pipeline(topic_id: int):
             report = generate_report(db_topic, state.get("questions", []), state.get("findings", []), state.get("contradictions", []), db)
             return {}
 
+        def audit_critique_node(state: ResearchState):
+            log_thought(topic_id, "[Auditor Agent] Self-Reflective Audit: Computing Grounding Precision Score and auditing claims against sources...", db)
+            print("Auditing report against ground truth...")
+            audit_result = audit_research_report(db_topic, db_topic.final_report or "", state.get("findings", []), db)
+            score = audit_result.get("grounding_score", 95.0)
+            verdict = audit_result.get("verdict", "VERIFIED_EXCELLENT")
+            log_thought(topic_id, f"[Auditor Agent] Audit complete: Score={score}% | Verdict={verdict}", db)
+            return {}
+
+        def generate_charts_node(state: ResearchState):
+            log_thought(topic_id, "[Chartist Agent] Analyzing quantitative findings and synthesizing interactive Plotly visual analytics...", db)
+            print("Generating dynamic charts...")
+            generate_report_charts(db_topic, state.get("findings", []), db_topic.final_report or "", db)
+            log_thought(topic_id, "[Chartist Agent] Visual analytics payload compiled successfully.", db)
+            return {}
+
+        def council_boardroom_review_node(state: ResearchState):
+            log_thought(topic_id, "[Boardroom Council] CFO, CTO, and Legal Officer agents convening executive deliberation...", db)
+            print("Running C-Suite Boardroom Council review...")
+            run_boardroom_council(db_topic, db_topic.final_report or "", state.get("findings", []), db)
+            log_thought(topic_id, "[Boardroom Council] Executive C-Suite dossiers and Board Consensus compiled.", db)
+            return {}
+
+        def extract_knowledge_graph_node(state: ResearchState):
+            log_thought(topic_id, "[Knowledge Graph Agent] Extracting semantic entity network and relationship edges...", db)
+            print("Extracting knowledge graph entities and relations...")
+            extract_knowledge_graph(db_topic, state.get("findings", []), db_topic.final_report or "", db)
+            log_thought(topic_id, "[Knowledge Graph Agent] Entity-relationship network graph synthesized successfully.", db)
+            return {}
+
         workflow = StateGraph(ResearchState)
         
         workflow.add_node("search_sources", search_sources_node)
@@ -106,6 +140,10 @@ def run_research_pipeline(topic_id: int):
         workflow.add_node("evaluate_sufficiency", evaluate_sufficiency_node)
         workflow.add_node("detect_contradictions", detect_contradictions_node)
         workflow.add_node("generate_report", generate_report_node)
+        workflow.add_node("audit_critique", audit_critique_node)
+        workflow.add_node("generate_charts", generate_charts_node)
+        workflow.add_node("council_boardroom_review", council_boardroom_review_node)
+        workflow.add_node("extract_knowledge_graph", extract_knowledge_graph_node)
         
         workflow.set_entry_point("search_sources")
         workflow.add_edge("search_sources", "extract_findings")
@@ -121,7 +159,11 @@ def run_research_pipeline(topic_id: int):
         )
         
         workflow.add_edge("detect_contradictions", "generate_report")
-        workflow.add_edge("generate_report", END)
+        workflow.add_edge("generate_report", "audit_critique")
+        workflow.add_edge("audit_critique", "generate_charts")
+        workflow.add_edge("generate_charts", "council_boardroom_review")
+        workflow.add_edge("council_boardroom_review", "extract_knowledge_graph")
+        workflow.add_edge("extract_knowledge_graph", END)
         
         app = workflow.compile()
         

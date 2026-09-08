@@ -11,6 +11,12 @@ class ResearchTopic(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     status = Column(String, default="pending") # pending, processing, completed
     final_report = Column(Text, nullable=True)
+    audit_score = Column(Float, nullable=True)
+    audit_verdict = Column(String, nullable=True)
+    audit_feedback = Column(Text, nullable=True)
+    charts_data = Column(Text, nullable=True)
+    boardroom_data = Column(Text, nullable=True)
+    knowledge_graph_data = Column(Text, nullable=True)
 
     questions = relationship("Question", back_populates="topic_obj")
     sources = relationship("Source", back_populates="topic_obj")
