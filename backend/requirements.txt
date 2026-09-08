@@ -1,5 +1,6 @@
 fastapi>=0.100.0
 uvicorn>=0.23.0
+gunicorn>=21.2.0
 pydantic>=2.0.0
 pydantic-settings>=2.0.0
 sqlalchemy>=2.0.0
@@ -10,3 +11,6 @@ langchain-google-genai>=0.0.9
 langchain-community>=0.0.10
 tavily-python>=0.3.0
 python-dotenv>=1.0.0
+langgraph>=0.0.25
+python-multipart>=0.0.6
+pypdf>=3.17.0

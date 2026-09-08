@@ -5,17 +5,43 @@ import traceback
 
 from backend.core.database import get_db, SessionLocal
 from backend.models import schemas, domain
-from backend.agents.orchestrator import run_research_pipeline
+from backend.agents.orchestrator import run_research_pipeline, run_question_generation
+
+from fastapi import File, UploadFile
+import os
+from langchain_community.document_loaders import PyPDFLoader
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from backend.services.vector_store import vector_store
 
 router = APIRouter()
 
-def background_research_task(topic_id: int):
-    # Create a new session for the background task
-    db = SessionLocal()
-    try:
-        run_research_pipeline(topic_id, db)
-    finally:
-        db.close()
+@router.post("/upload_documents")
+async def upload_documents(files: List[UploadFile] = File(...)):
+    temp_dir = "temp_uploads"
+    os.makedirs(temp_dir, exist_ok=True)
+    
+    docs_processed = 0
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
+    
+    for file in files:
+        file_path = os.path.join(temp_dir, file.filename)
+        with open(file_path, "wb") as f:
+            f.write(await file.read())
+            
+        if file.filename.endswith(".pdf"):
+            loader = PyPDFLoader(file_path)
+            pages = loader.load()
+            chunks = text_splitter.split_documents(pages)
+            
+            texts = [chunk.page_content for chunk in chunks]
+            metadatas = [{"source": file.filename, "type": "local_document", "content": chunk.page_content} for chunk in chunks]
+            
+            vector_store.add_texts(texts, metadatas)
+            docs_processed += 1
+            
+        os.remove(file_path)
+        
+    return {"message": f"Successfully embedded {docs_processed} documents."}
 
 @router.post("/research", response_model=schemas.ResearchTopicSchema)
 async def start_research(request: schemas.ResearchRequest, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
@@ -25,7 +51,32 @@ async def start_research(request: schemas.ResearchRequest, background_tasks: Bac
     db.commit()
     db.refresh(db_topic)
     
-    # Start the orchestrator in the background with just the ID
+    # Start question generation in the background
+    background_tasks.add_task(run_question_generation, db_topic.id)
+    
+    return db_topic
+
+@router.post("/research/{topic_id}/approve", response_model=schemas.ResearchTopicSchema)
+async def approve_questions(topic_id: int, request: schemas.ApproveRequest, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
+    db_topic = db.query(domain.ResearchTopic).filter(domain.ResearchTopic.id == topic_id).first()
+    if not db_topic:
+        raise HTTPException(status_code=404, detail="Topic not found")
+        
+    if db_topic.status != "awaiting_approval":
+        raise HTTPException(status_code=400, detail="Topic is not awaiting approval")
+
+    # Delete existing questions and replace with the newly approved ones
+    db.query(domain.Question).filter(domain.Question.topic_id == topic_id).delete()
+    
+    for q_text in request.questions:
+        new_q = domain.Question(topic_id=topic_id, question_text=q_text)
+        db.add(new_q)
+        
+    db_topic.status = "processing"
+    db.commit()
+    db.refresh(db_topic)
+    
+    # Resume the pipeline
     background_tasks.add_task(run_research_pipeline, db_topic.id)
     
     return db_topic

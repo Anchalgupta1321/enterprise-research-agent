@@ -52,7 +52,11 @@ class ResearchTopicSchema(ResearchTopicBase):
     final_report: Optional[str] = None
     questions: List[QuestionSchema] = []
     sources: List[SourceSchema] = []
+    findings: List[FindingSchema] = []
     model_config = ConfigDict(from_attributes=True)
 
 class ResearchRequest(BaseModel):
     topic: str
+
+class ApproveRequest(BaseModel):
+    questions: List[str]

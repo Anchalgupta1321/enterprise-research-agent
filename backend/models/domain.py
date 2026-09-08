@@ -15,6 +15,10 @@ class ResearchTopic(Base):
     questions = relationship("Question", back_populates="topic_obj")
     sources = relationship("Source", back_populates="topic_obj")
 
+    @property
+    def findings(self):
+        return [f for q in self.questions for f in q.findings]
+
 class Question(Base):
     __tablename__ = "questions"
 

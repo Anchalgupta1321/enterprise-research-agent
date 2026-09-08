@@ -2,6 +2,7 @@ from tavily import TavilyClient
 from backend.core.config import settings
 from backend.models import domain
 from sqlalchemy.orm import Session
+from backend.services.vector_store import vector_store
 
 def search_for_questions(topic: domain.ResearchTopic, questions: list[domain.Question], db: Session) -> list[domain.Source]:
     """Searches the web for answers to the generated questions using Tavily."""
@@ -38,7 +39,23 @@ def search_for_questions(topic: domain.ResearchTopic, questions: list[domain.Que
                 db_sources.append(source)
                 
         except Exception as e:
-            print(f"Error searching for question '{q.question_text}': {e}")
+            print(f"Error searching web for question '{q.question_text}': {e}")
+            
+        try:
+            faiss_results = vector_store.similarity_search(q.question_text, k=2)
+            for res in faiss_results:
+                meta = res.get("metadata", {})
+                source = domain.Source(
+                    topic_id=topic.id,
+                    title=f"Local Document: {meta.get('source', 'Unknown')}",
+                    url=f"local://{meta.get('source', 'unknown')}",
+                    content=meta.get("content", ""),
+                    source_name="Private Knowledge Base"
+                )
+                db.add(source)
+                db_sources.append(source)
+        except Exception as e:
+            print(f"Error searching FAISS for question '{q.question_text}': {e}")
             
     db.commit()
     for s in db_sources:

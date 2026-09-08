@@ -16,86 +16,142 @@ st.set_page_config(
 # Custom CSS for a premium enterprise look
 st.markdown("""
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
+    
     /* Main background and fonts */
     .stApp {
-        background-color: #0e1117;
-        color: #c9d1d9;
+        background-color: #0b0f19;
+        color: #e2e8f0;
+        font-family: 'Outfit', sans-serif;
     }
     
     /* Headers */
-    h1, h2, h3 {
-        color: #f0f6fc !important;
-        font-family: 'Inter', sans-serif;
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Outfit', sans-serif !important;
+        color: #ffffff !important;
+        letter-spacing: -0.02em;
     }
     
     /* Custom Hero Section */
     .hero {
-        padding: 3rem 0;
+        padding: 4rem 2rem;
         text-align: center;
-        background: linear-gradient(90deg, #1f2937 0%, #111827 100%);
-        border-radius: 12px;
-        margin-bottom: 2rem;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #0b0f19 70%);
+        border-radius: 24px;
+        margin-bottom: 3rem;
+        border: 1px solid rgba(139, 92, 246, 0.2);
+        box-shadow: 0 20px 40px -10px rgba(139, 92, 246, 0.15);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    /* Glowing orb effect behind hero */
+    .hero::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(124, 58, 237, 0.15) 0%, transparent 70%);
+        border-radius: 50%;
+        pointer-events: none;
     }
     
     .hero-title {
-        font-size: 3rem;
+        font-size: 4rem;
         font-weight: 800;
-        background: -webkit-linear-gradient(#60a5fa, #3b82f6);
+        background: linear-gradient(135deg, #a78bfa 0%, #3b82f6 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        margin-bottom: 0.5rem;
+        margin-bottom: 1rem;
+        position: relative;
     }
     
     .hero-subtitle {
-        font-size: 1.2rem;
-        color: #9ca3af;
+        font-size: 1.25rem;
+        color: #94a3b8;
+        font-weight: 300;
+        max-width: 600px;
+        margin: 0 auto;
+        position: relative;
     }
     
     /* Input box styling */
     .stTextInput > div > div > input {
-        border-radius: 8px;
-        border: 1px solid #374151;
-        background-color: #1f2937;
+        border-radius: 12px;
+        border: 1px solid rgba(139, 92, 246, 0.3);
+        background: rgba(15, 23, 42, 0.6);
+        backdrop-filter: blur(12px);
         color: white;
-        padding: 12px;
+        padding: 16px;
         font-size: 1.1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .stTextInput > div > div > input:focus {
+        border-color: #8b5cf6;
+        box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
     }
     
     /* Button styling */
     .stButton > button {
         width: 100%;
-        border-radius: 8px;
-        background: linear-gradient(90deg, #2563eb 0%, #1d4ed8 100%);
+        border-radius: 12px;
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
         color: white;
         font-weight: 600;
+        letter-spacing: 0.5px;
         border: none;
-        padding: 0.6rem 1rem;
-        transition: all 0.3s ease;
+        padding: 0.75rem 1.5rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        text-transform: uppercase;
+        font-size: 0.9rem;
     }
     
     .stButton > button:hover {
-        background: linear-gradient(90deg, #1d4ed8 0%, #1e40af 100%);
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+        box-shadow: 0 10px 20px -10px rgba(139, 92, 246, 0.5);
+        background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+        color: white;
     }
     
-    /* Card for results */
+    /* Glassmorphism Cards */
     .report-card {
-        background-color: #1f2937;
-        border-radius: 12px;
-        padding: 2rem;
-        border: 1px solid #374151;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        background: rgba(15, 23, 42, 0.6);
+        backdrop-filter: blur(16px);
+        border-radius: 16px;
+        padding: 2.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     }
     
     /* Markdown formatting inside report */
     .report-card a {
-        color: #60a5fa;
+        color: #a78bfa;
         text-decoration: none;
+        border-bottom: 1px dashed rgba(167, 139, 250, 0.5);
+        transition: all 0.2s ease;
     }
     .report-card a:hover {
-        text-decoration: underline;
+        color: #c4b5fd;
+        border-bottom: 1px solid #c4b5fd;
+    }
+    
+    /* Metric styling */
+    [data-testid="stMetricValue"] {
+        font-size: 2.5rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    
+    /* Sidebar */
+    [data-testid="stSidebar"] {
+        background-color: rgba(11, 15, 25, 0.95);
+        border-right: 1px solid rgba(255, 255, 255, 0.05);
     }
 </style>
 """, unsafe_allow_html=True)
@@ -114,13 +170,30 @@ with st.sidebar:
     - 📊 **Report Synthesis**
     """)
     st.divider()
+    
+    st.markdown("#### Private Knowledge Base")
+    uploaded_files = st.file_uploader("Upload Documents (PDF)", accept_multiple_files=True, type=["pdf"])
+    if st.button("Embed Documents"):
+        if uploaded_files:
+            with st.spinner("Embedding into FAISS..."):
+                try:
+                    files_payload = [("files", (f.name, f.getvalue(), "application/pdf")) for f in uploaded_files]
+                    res = requests.post(f"{API_BASE_URL}/upload_documents", files=files_payload)
+                    res.raise_for_status()
+                    st.success(res.json().get("message", "Success!"))
+                except Exception as e:
+                    st.error(f"Upload failed: {e}")
+        else:
+            st.warning("Please select files first.")
+            
+    st.divider()
     st.caption("v1.0.0 | Powered by Gemini & Tavily")
 
 # Hero Section
 st.markdown("""
 <div class="hero">
-    <div class="hero-title">Enterprise AI Research Agent</div>
-    <div class="hero-subtitle">Generate comprehensive, traceable research reports automatically at scale.</div>
+    <div class="hero-title">Nexus AI Research</div>
+    <div class="hero-subtitle">The next-generation enterprise autonomous agent. Multi-modal RAG, multi-agent debate, and verifiable citations.</div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -171,12 +244,53 @@ if st.session_state.topic_id:
             if st.button("Refresh Status ⟳"):
                 st.rerun()
                 
+        elif status == "awaiting_approval":
+            st.warning("⚠️ **Review Required:** The agent has generated sub-questions for your topic. Please review and edit them before the search begins.")
+            
+            # Form for editing questions
+            with st.form("approve_questions_form"):
+                questions = data.get("questions", [])
+                edited_questions = []
+                for i, q in enumerate(questions):
+                    edited_q = st.text_input(f"Question {i+1}", value=q.get("question_text"), key=f"q_{i}")
+                    if edited_q.strip():
+                        edited_questions.append(edited_q)
+                
+                # Option to add a new question
+                new_q = st.text_input("Add a new question (optional)", key="new_q")
+                if new_q.strip():
+                    edited_questions.append(new_q)
+                    
+                submitted = st.form_submit_button("Approve & Continue Research")
+                if submitted:
+                    with st.spinner("Submitting approved questions..."):
+                        try:
+                            approve_resp = requests.post(
+                                f"{API_BASE_URL}/research/{st.session_state.topic_id}/approve", 
+                                json={"questions": edited_questions}
+                            )
+                            approve_resp.raise_for_status()
+                            st.success("Questions approved! Resuming research...")
+                            st.rerun()
+                        except requests.exceptions.RequestException as e:
+                            st.error(f"Failed to approve questions: {e}")
+                            
         elif status == "completed":
             report = data.get("final_report")
             
             st.success("✨ Research Completed Successfully!")
             
+            # Dashboard Metrics
+            st.markdown("### Process Overview")
+            m1, m2, m3 = st.columns(3)
+            m1.metric("Sources Analyzed", len(data.get("sources", [])))
+            m2.metric("Claims Extracted", len(data.get("findings", [])))
+            m3.metric("Research Vectors", len(data.get("questions", [])))
+            
+            st.markdown("<br>", unsafe_allow_html=True)
+            
             # Display Report in a Card
+            st.markdown("### Final Synthesized Report")
             if report:
                 st.markdown('<div class="report-card">', unsafe_allow_html=True)
                 st.markdown(report)
@@ -186,7 +300,7 @@ if st.session_state.topic_id:
             
             # Traceability section in tabs
             st.markdown("### Traceability & Audit Logs")
-            tab1, tab2 = st.tabs(["📑 Sources Retrieved", "❓ Generated Sub-Questions"])
+            tab1, tab2, tab3 = st.tabs(["📑 Sources Retrieved", "❓ Generated Sub-Questions", "🔍 Citation Explorer (Hallucination Check)"])
             
             with tab1:
                 st.markdown("The following sources were automatically retrieved and analyzed:")
@@ -200,6 +314,23 @@ if st.session_state.topic_id:
                 st.markdown("The main topic was broken down into these specific research vectors:")
                 for q in data.get("questions", []):
                     st.info(q.get("question_text"))
+                    
+            with tab3:
+                st.markdown("Verify the AI's claims by cross-referencing `[SRC-X]` tags with the exact text the AI extracted from the source.")
+                findings = data.get("findings", [])
+                if not findings:
+                    st.info("No explicit findings found.")
+                else:
+                    for f in findings:
+                        with st.expander(f"[SRC-{f['id']}] Extracted Claim"):
+                            st.markdown(f"> {f['finding_text']}")
+                            st.caption(f"Category: {f['category']} | AI Confidence: {f['confidence']}")
+                            
+                            matching_source = next((s for s in data.get("sources", []) if s["id"] == f["source_id"]), None)
+                            if matching_source:
+                                st.markdown(f"**Original Source:** [{matching_source['title']}]({matching_source['url']})")
+                            else:
+                                st.markdown("**Original Source:** Unknown")
                     
         elif status == "failed":
             st.error("❌ Research Pipeline Failed.")
