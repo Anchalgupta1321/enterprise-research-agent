@@ -138,6 +138,16 @@ LIGHT_CSS = """
         color: #0f172a;
         font-family: 'Outfit', sans-serif;
     }
+    p, li, span, label, div[data-testid="stMarkdownContainer"] p {
+        color: #0f172a !important;
+    }
+    [data-testid="stFileUploadDropzone"] {
+        background-color: #ffffff !important;
+        border: 1px dashed #cbd5e1 !important;
+    }
+    [data-testid="stFileUploadDropzone"] * {
+        color: #0f172a !important;
+    }
     h1, h2, h3, h4, h5, h6 {
         font-family: 'Outfit', sans-serif !important;
         color: #0f172a !important;
