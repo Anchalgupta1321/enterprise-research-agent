@@ -13,31 +13,25 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for a premium enterprise look
-st.markdown("""
-<style>
+# Theme state
+if "theme" not in st.session_state:
+    st.session_state.theme = "dark"
+
+DARK_CSS = """
     @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
-    
-    /* Hide Streamlit Header and Footer */
     header {visibility: hidden;}
     footer {visibility: hidden;}
     #MainMenu {visibility: hidden;}
-    
-    /* Main background and fonts */
     .stApp {
         background: linear-gradient(180deg, #050505 0%, #0b0f19 100%);
         color: #e2e8f0;
         font-family: 'Outfit', sans-serif;
     }
-    
-    /* Headers */
     h1, h2, h3, h4, h5, h6 {
         font-family: 'Outfit', sans-serif !important;
         color: #ffffff !important;
         letter-spacing: -0.02em;
     }
-    
-    /* Custom Hero Section */
     .hero {
         padding: 5rem 2rem;
         text-align: center;
@@ -45,7 +39,6 @@ st.markdown("""
         margin-bottom: 2rem;
         position: relative;
     }
-    
     .hero-title {
         font-size: 5rem;
         font-weight: 800;
@@ -55,7 +48,6 @@ st.markdown("""
         margin-bottom: 1rem;
         letter-spacing: -2px;
     }
-    
     .hero-subtitle {
         font-size: 1.25rem;
         color: #8b5cf6;
@@ -65,8 +57,6 @@ st.markdown("""
         letter-spacing: 1px;
         text-transform: uppercase;
     }
-    
-    /* Search Box Container */
     .search-container {
         max-width: 800px;
         margin: 0 auto;
@@ -75,8 +65,6 @@ st.markdown("""
         border-radius: 16px;
         box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
     }
-    
-    /* Input box styling */
     .stTextInput > div > div > input {
         border-radius: 14px;
         border: none;
@@ -86,13 +74,10 @@ st.markdown("""
         font-size: 1.25rem;
         font-weight: 300;
     }
-    
     .stTextInput > div > div > input:focus {
         border-color: #8b5cf6;
         box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
     }
-    
-    /* Button styling */
     .stButton > button {
         width: 100%;
         border-radius: 12px;
@@ -106,15 +91,12 @@ st.markdown("""
         text-transform: uppercase;
         font-size: 0.9rem;
     }
-    
     .stButton > button:hover {
         transform: translateY(-2px);
         box-shadow: 0 10px 20px -10px rgba(139, 92, 246, 0.5);
         background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
         color: white;
     }
-    
-    /* Glassmorphism Cards */
     .report-card {
         background: rgba(15, 23, 42, 0.6);
         backdrop-filter: blur(16px);
@@ -123,8 +105,6 @@ st.markdown("""
         border: 1px solid rgba(255, 255, 255, 0.05);
         box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     }
-    
-    /* Markdown formatting inside report */
     .report-card a {
         color: #a78bfa;
         text-decoration: none;
@@ -135,8 +115,6 @@ st.markdown("""
         color: #c4b5fd;
         border-bottom: 1px solid #c4b5fd;
     }
-    
-    /* Metric styling */
     [data-testid="stMetricValue"] {
         font-size: 2.5rem;
         font-weight: 800;
@@ -144,14 +122,128 @@ st.markdown("""
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
-    
-    /* Sidebar */
     [data-testid="stSidebar"] {
         background-color: rgba(11, 15, 25, 0.95);
         border-right: 1px solid rgba(255, 255, 255, 0.05);
     }
-</style>
-""", unsafe_allow_html=True)
+"""
+
+LIGHT_CSS = """
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
+    header {visibility: hidden;}
+    footer {visibility: hidden;}
+    #MainMenu {visibility: hidden;}
+    .stApp {
+        background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+        color: #0f172a;
+        font-family: 'Outfit', sans-serif;
+    }
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Outfit', sans-serif !important;
+        color: #0f172a !important;
+        letter-spacing: -0.02em;
+    }
+    .hero {
+        padding: 5rem 2rem;
+        text-align: center;
+        background: transparent;
+        margin-bottom: 2rem;
+        position: relative;
+    }
+    .hero-title {
+        font-size: 5rem;
+        font-weight: 800;
+        background: linear-gradient(to right, #0f172a 0%, #475569 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 1rem;
+        letter-spacing: -2px;
+    }
+    .hero-subtitle {
+        font-size: 1.25rem;
+        color: #4f46e5;
+        font-weight: 600;
+        max-width: 600px;
+        margin: 0 auto;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+    .search-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2px;
+        background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+        border-radius: 16px;
+        box-shadow: 0 10px 20px rgba(139, 92, 246, 0.15);
+    }
+    .stTextInput > div > div > input {
+        border-radius: 14px;
+        border: none;
+        background: #ffffff;
+        color: #0f172a;
+        padding: 20px 24px;
+        font-size: 1.25rem;
+        font-weight: 400;
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .stTextInput > div > div > input:focus {
+        border-color: #8b5cf6;
+        box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.3);
+    }
+    .stButton > button {
+        width: 100%;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+        color: white;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        text-transform: uppercase;
+        font-size: 0.9rem;
+    }
+    .stButton > button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px -10px rgba(79, 70, 229, 0.5);
+        background: linear-gradient(135deg, #4338ca 0%, #6d28d9 100%);
+        color: white;
+    }
+    .report-card {
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(16px);
+        border-radius: 16px;
+        padding: 2.5rem;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.1);
+    }
+    .report-card a {
+        color: #6d28d9;
+        text-decoration: none;
+        border-bottom: 1px dashed rgba(109, 40, 217, 0.5);
+        transition: all 0.2s ease;
+    }
+    .report-card a:hover {
+        color: #4c1d95;
+        border-bottom: 1px solid #4c1d95;
+    }
+    [data-testid="stMetricValue"] {
+        font-size: 2.5rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    [data-testid="stSidebar"] {
+        background-color: rgba(248, 250, 252, 0.95);
+        border-right: 1px solid rgba(0, 0, 0, 0.05);
+    }
+"""
+
+if st.session_state.theme == "dark":
+    st.markdown(f"<style>{DARK_CSS}</style>", unsafe_allow_html=True)
+else:
+    st.markdown(f"<style>{LIGHT_CSS}</style>", unsafe_allow_html=True)
 
 # Sidebar
 with st.sidebar:
@@ -183,6 +275,13 @@ with st.sidebar:
         else:
             st.warning("Please select files first.")
             
+    st.divider()
+    theme_toggle = st.toggle("🌙 Dark Mode", value=(st.session_state.theme == "dark"))
+    if theme_toggle:
+        st.session_state.theme = "dark"
+    else:
+        st.session_state.theme = "light"
+        
     st.divider()
     st.caption("v1.0.0 | Powered by Gemini & Tavily")
 
