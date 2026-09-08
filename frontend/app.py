@@ -141,12 +141,18 @@ LIGHT_CSS = """
     p, li, span, label, div[data-testid="stMarkdownContainer"] p {
         color: #0f172a !important;
     }
-    [data-testid="stFileUploadDropzone"] {
+    [data-testid="stFileUploader"] section, 
+    [data-testid="stFileUploader"] div[data-testid="stFileUploadDropzone"] {
         background-color: #ffffff !important;
+        background: #ffffff !important;
         border: 1px dashed #cbd5e1 !important;
     }
-    [data-testid="stFileUploadDropzone"] * {
+    [data-testid="stFileUploader"] * {
         color: #0f172a !important;
+    }
+    [data-testid="stFileUploader"] button {
+        border: 1px solid #cbd5e1 !important;
+        background-color: #f8fafc !important;
     }
     h1, h2, h3, h4, h5, h6 {
         font-family: 'Outfit', sans-serif !important;
