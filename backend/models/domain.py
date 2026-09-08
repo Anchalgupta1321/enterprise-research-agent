@@ -14,6 +14,7 @@ class ResearchTopic(Base):
 
     questions = relationship("Question", back_populates="topic_obj")
     sources = relationship("Source", back_populates="topic_obj")
+    logs = relationship("AgentLog", back_populates="topic_obj")
 
     @property
     def findings(self):
@@ -63,3 +64,13 @@ class Contradiction(Base):
     topic_id = Column(Integer, ForeignKey("research_topics.id"))
     description = Column(Text)
     reason = Column(Text)
+
+class AgentLog(Base):
+    __tablename__ = "agent_logs"
+
+    id = Column(Integer, primary_key=True, index=True)
+    topic_id = Column(Integer, ForeignKey("research_topics.id"))
+    message = Column(String)
+    timestamp = Column(DateTime, default=datetime.utcnow)
+
+    topic_obj = relationship("ResearchTopic", back_populates="logs")

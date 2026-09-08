@@ -18,6 +18,11 @@ class ResearchState(TypedDict):
     contradictions: List[Any]
     needs_more_info: bool
 
+def log_thought(topic_id: int, message: str, db: Session):
+    log = domain.AgentLog(topic_id=topic_id, message=message)
+    db.add(log)
+    db.commit()
+
 def run_question_generation(topic_id: int):
     from backend.core.database import SessionLocal
     db = SessionLocal()
@@ -27,6 +32,8 @@ def run_question_generation(topic_id: int):
             return
             
         print("Generating initial questions...")
+        log_thought(topic_id, "[System] Initializing autonomous research pipeline...", db)
+        log_thought(topic_id, "[Planner Agent] Deconstructing topic into sub-questions...", db)
         questions = generate_questions(db_topic, db)
         
         db_topic.status = "awaiting_approval"
@@ -53,6 +60,7 @@ def run_research_pipeline(topic_id: int):
         db_questions = db_topic.questions
 
         def search_sources_node(state: ResearchState):
+            log_thought(topic_id, f"[Deep Search Agent] Querying Tavily for sources (Loop {state.get('loop_count', 0) + 1})...", db)
             print(f"Searching sources... (Loop {state.get('loop_count', 0) + 1})")
             sources = search_for_questions(db_topic, state.get("questions", []), db)
             current_sources = state.get("sources", [])
@@ -60,12 +68,14 @@ def run_research_pipeline(topic_id: int):
             return {"sources": current_sources}
 
         def extract_findings_node(state: ResearchState):
+            log_thought(topic_id, "[Extractor Agent] Reading source contents and extracting facts...", db)
             print("Extracting findings...")
             findings = extract_findings(state.get("questions", []), state.get("sources", []), db)
             return {"findings": findings}
 
         def evaluate_sufficiency_node(state: ResearchState):
             loop_count = state.get("loop_count", 0)
+            log_thought(topic_id, f"[System] Evaluating if sufficient information is gathered (Loop {loop_count + 1})...", db)
             print(f"Evaluating sufficiency (Loop {loop_count + 1})...")
             
             needs_more = False
@@ -78,11 +88,13 @@ def run_research_pipeline(topic_id: int):
             return "search_sources" if state.get("needs_more_info", False) else "detect_contradictions"
 
         def detect_contradictions_node(state: ResearchState):
+            log_thought(topic_id, "[Skeptic Agent] Cross-referencing findings to detect contradictions...", db)
             print("Detecting contradictions...")
             contradictions = detect_contradictions(db_topic, state.get("findings", []), db)
             return {"contradictions": contradictions}
 
         def generate_report_node(state: ResearchState):
+            log_thought(topic_id, "[Synthesizer Agent] Drafting final report with citations...", db)
             print("Generating report...")
             report = generate_report(db_topic, state.get("questions", []), state.get("findings", []), state.get("contradictions", []), db)
             return {}

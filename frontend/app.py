@@ -351,12 +351,19 @@ if st.session_state.topic_id:
         if status == "processing":
             st.info("🔄 **Pipeline is currently running.** The agents are gathering sources, extracting facts, and synthesizing the report. This usually takes 1-3 minutes.")
             
-            # Simulated progress UI (since we don't have real-time websockets in MVP)
-            progress_bar = st.progress(0)
-            st.caption("Waiting for completion...")
+            # Agent Thought Console
+            st.markdown("### Agent Thought Console")
+            logs = data.get("logs", [])
+            if logs:
+                log_text = "\n".join([f"[{l.get('timestamp', '')[:19]}] {l.get('message', '')}" for l in logs])
+                st.code(log_text, language="bash")
+            else:
+                st.code("[System] Initializing autonomous research pipeline...", language="bash")
             
-            if st.button("Refresh Status ⟳"):
-                st.rerun()
+            st.caption("Auto-refreshing status...")
+            
+            time.sleep(2)
+            st.rerun()
                 
         elif status == "awaiting_approval":
             st.warning("⚠️ **Review Required:** The agent has generated sub-questions for your topic. Please review and edit them before the search begins.")

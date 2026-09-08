@@ -42,6 +42,15 @@ class ContradictionSchema(ContradictionBase):
     topic_id: int
     model_config = ConfigDict(from_attributes=True)
 
+class AgentLogBase(BaseModel):
+    message: str
+
+class AgentLogSchema(AgentLogBase):
+    id: int
+    topic_id: int
+    timestamp: datetime
+    model_config = ConfigDict(from_attributes=True)
+
 class ResearchTopicBase(BaseModel):
     topic: str
 
@@ -53,6 +62,7 @@ class ResearchTopicSchema(ResearchTopicBase):
     questions: List[QuestionSchema] = []
     sources: List[SourceSchema] = []
     findings: List[FindingSchema] = []
+    logs: List[AgentLogSchema] = []
     model_config = ConfigDict(from_attributes=True)
 
 class ResearchRequest(BaseModel):
