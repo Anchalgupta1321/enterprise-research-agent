@@ -18,9 +18,14 @@ st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
     
+    /* Hide Streamlit Header and Footer */
+    header {visibility: hidden;}
+    footer {visibility: hidden;}
+    #MainMenu {visibility: hidden;}
+    
     /* Main background and fonts */
     .stApp {
-        background-color: #0b0f19;
+        background: linear-gradient(180deg, #050505 0%, #0b0f19 100%);
         color: #e2e8f0;
         font-family: 'Outfit', sans-serif;
     }
@@ -34,60 +39,52 @@ st.markdown("""
     
     /* Custom Hero Section */
     .hero {
-        padding: 4rem 2rem;
+        padding: 5rem 2rem;
         text-align: center;
-        background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #0b0f19 70%);
-        border-radius: 24px;
-        margin-bottom: 3rem;
-        border: 1px solid rgba(139, 92, 246, 0.2);
-        box-shadow: 0 20px 40px -10px rgba(139, 92, 246, 0.15);
+        background: transparent;
+        margin-bottom: 2rem;
         position: relative;
-        overflow: hidden;
-    }
-    
-    /* Glowing orb effect behind hero */
-    .hero::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 600px;
-        height: 600px;
-        background: radial-gradient(circle, rgba(124, 58, 237, 0.15) 0%, transparent 70%);
-        border-radius: 50%;
-        pointer-events: none;
     }
     
     .hero-title {
-        font-size: 4rem;
+        font-size: 5rem;
         font-weight: 800;
-        background: linear-gradient(135deg, #a78bfa 0%, #3b82f6 100%);
+        background: linear-gradient(to right, #e2e8f0 0%, #94a3b8 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         margin-bottom: 1rem;
-        position: relative;
+        letter-spacing: -2px;
     }
     
     .hero-subtitle {
         font-size: 1.25rem;
-        color: #94a3b8;
-        font-weight: 300;
+        color: #8b5cf6;
+        font-weight: 400;
         max-width: 600px;
         margin: 0 auto;
-        position: relative;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+    
+    /* Search Box Container */
+    .search-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2px;
+        background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+        border-radius: 16px;
+        box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
     }
     
     /* Input box styling */
     .stTextInput > div > div > input {
-        border-radius: 12px;
-        border: 1px solid rgba(139, 92, 246, 0.3);
-        background: rgba(15, 23, 42, 0.6);
-        backdrop-filter: blur(12px);
+        border-radius: 14px;
+        border: none;
+        background: #0f172a;
         color: white;
-        padding: 16px;
-        font-size: 1.1rem;
-        transition: all 0.3s ease;
+        padding: 20px 24px;
+        font-size: 1.25rem;
+        font-weight: 300;
     }
     
     .stTextInput > div > div > input:focus {
@@ -192,8 +189,8 @@ with st.sidebar:
 # Hero Section
 st.markdown("""
 <div class="hero">
-    <div class="hero-title">Nexus AI Research</div>
-    <div class="hero-subtitle">The next-generation enterprise autonomous agent. Multi-modal RAG, multi-agent debate, and verifiable citations.</div>
+    <div class="hero-title">Nexus</div>
+    <div class="hero-subtitle">Autonomous AI Research Intelligence</div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -202,11 +199,13 @@ if "topic_id" not in st.session_state:
     st.session_state.topic_id = None
 
 # Input Section
-col1, col2, col3 = st.columns([1, 2, 1])
+st.markdown('<div class="search-container">', unsafe_allow_html=True)
+topic_input = st.text_input("Research Topic", placeholder="Enter any complex topic, question, or hypothesis...", label_visibility="collapsed")
+st.markdown('</div><br>', unsafe_allow_html=True)
+
+col1, col2, col3 = st.columns([1, 1, 1])
 with col2:
-    topic_input = st.text_input("Research Topic", placeholder="e.g., How is AI transforming retail operations?", label_visibility="collapsed")
-    
-    if st.button("🚀 Start Research Pipeline"):
+    if st.button("🚀 INITIATE INTELLIGENCE PROTOCOL"):
         if topic_input:
             with st.spinner("Initializing autonomous agents..."):
                 try:
