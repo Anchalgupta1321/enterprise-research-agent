@@ -2,6 +2,7 @@ import streamlit as st
 import requests
 import time
 import os
+import json
 
 # Allows the app to connect to the Render backend when deployed
 API_BASE_URL = os.getenv("API_BASE_URL", "http://127.0.0.1:8000/api")
@@ -498,24 +499,49 @@ if st.session_state.topic_id:
                     st.markdown(prompt)
                 
                 with st.chat_message("assistant"):
-                    with st.spinner("Analyzing report context & synthesizing answer..."):
+                    def sse_stream_generator():
+                        payload = {
+                            "message": prompt,
+                            "history": st.session_state[chat_key][:-1]
+                        }
                         try:
-                            payload = {
-                                "message": prompt,
-                                "history": st.session_state[chat_key][:-1]
-                            }
-                            chat_resp = requests.post(
-                                f"{API_BASE_URL}/research/{st.session_state.topic_id}/chat",
-                                json=payload
-                            )
-                            chat_resp.raise_for_status()
-                            answer = chat_resp.json().get("reply", "No response received.")
-                            st.markdown(answer)
-                            st.session_state[chat_key].append({"role": "assistant", "content": answer})
+                            # Stream from FastAPI SSE endpoint
+                            with requests.post(
+                                f"{API_BASE_URL}/research/{st.session_state.topic_id}/chat/stream",
+                                json=payload,
+                                stream=True,
+                                timeout=60
+                            ) as response:
+                                response.raise_for_status()
+                                for line in response.iter_lines(decode_unicode=True):
+                                    if line:
+                                        if line.startswith("data: "):
+                                            raw_data = line[6:].strip()
+                                            if raw_data == "[DONE]":
+                                                break
+                                            try:
+                                                parsed = json.loads(raw_data)
+                                                token = parsed.get("chunk", "")
+                                                if token:
+                                                    yield token
+                                            except json.JSONDecodeError:
+                                                yield raw_data
                         except Exception as e:
-                            err_msg = f"Failed to get reply: {e}"
-                            st.error(err_msg)
-                            st.session_state[chat_key].append({"role": "assistant", "content": err_msg})
+                            # Fallback to standard chat endpoint if streaming encounters network issue
+                            try:
+                                fallback_resp = requests.post(
+                                    f"{API_BASE_URL}/research/{st.session_state.topic_id}/chat",
+                                    json=payload,
+                                    timeout=60
+                                )
+                                fallback_resp.raise_for_status()
+                                yield fallback_resp.json().get("reply", "No response received.")
+                            except Exception as fb_err:
+                                yield f"*(Error receiving answer: {fb_err})*"
+
+                    # st.write_stream renders real-time token typewriter animation
+                    full_response = st.write_stream(sse_stream_generator)
+                    st.session_state[chat_key].append({"role": "assistant", "content": full_response})
                     
         elif status == "failed":
             st.error("❌ Research Pipeline Failed.")
