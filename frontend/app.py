@@ -46,6 +46,7 @@ def check_backend_health(api_url: str):
         return False, "🔴 Backend Offline / Unreachable"
 
 DEFAULT_API_URL = get_current_api_url()
+API_BASE_URL = DEFAULT_API_URL
 
 st.set_page_config(
     page_title="Modus Enterprise Research Agent", 
@@ -332,14 +333,36 @@ LIGHT_CSS = """
     [data-testid="stFileUploader"] div[data-testid="stFileUploadDropzone"] {
         background-color: #ffffff !important;
         background: #ffffff !important;
-        border: 1px dashed #cbd5e1 !important;
+        border: 1.5px dashed #cbd5e1 !important;
+        border-radius: 12px !important;
     }
     [data-testid="stFileUploader"] * {
         color: #0f172a !important;
     }
+    [data-testid="stFileUploaderFile"],
+    [data-testid="stFileUploaderFileData"],
+    div[data-testid="stFileUploader"] ul li,
+    div[data-testid="stFileUploader"] div[role="listitem"] {
+        background-color: #f1f5f9 !important;
+        background: #f1f5f9 !important;
+        border: 1px solid #cbd5e1 !important;
+        border-radius: 10px !important;
+        color: #0f172a !important;
+    }
+    [data-testid="stFileUploaderFileName"],
+    [data-testid="stFileUploaderFile"] span,
+    [data-testid="stFileUploaderFile"] small {
+        color: #0f172a !important;
+        font-weight: 600 !important;
+    }
     [data-testid="stFileUploader"] button {
         border: 1px solid #cbd5e1 !important;
         background-color: #f8fafc !important;
+        color: #0f172a !important;
+    }
+    [data-testid="stFileUploader"] svg {
+        fill: #475569 !important;
+        stroke: #475569 !important;
     }
     h1, h2, h3, h4, h5, h6 {
         font-family: 'Outfit', sans-serif !important;
@@ -966,7 +989,11 @@ if st.session_state.topic_id:
                 ]
                 
             ch_col1, ch_col2 = st.columns(2)
-            plotly_theme = "plotly_dark" if st.session_state.theme == "dark" else "plotly_white"
+            is_dark = st.session_state.theme == "dark"
+            plotly_theme = "plotly_dark" if is_dark else "plotly_white"
+            chart_font_color = "#f1f5f9" if is_dark else "#0f172a"
+            chart_title_color = "#ffffff" if is_dark else "#0f172a"
+            grid_color = "rgba(255, 255, 255, 0.08)" if is_dark else "rgba(15, 23, 42, 0.12)"
             
             with ch_col1:
                 c1_data = charts_list[0] if len(charts_list) > 0 else {}
@@ -981,13 +1008,26 @@ if st.session_state.topic_id:
                             marker_color=s.get("color", "#6366f1")
                         ))
                     fig1.update_layout(
-                        title=c1_data.get("title", "Strategic Impact Analysis"),
+                        title=dict(
+                            text=c1_data.get("title", "Strategic Impact Analysis"),
+                            font=dict(color=chart_title_color, size=14, family="Outfit, sans-serif")
+                        ),
+                        font=dict(color=chart_font_color, family="Outfit, sans-serif"),
                         template=plotly_theme,
                         barmode="group",
                         height=340,
                         margin=dict(l=20, r=20, t=40, b=20),
                         paper_bgcolor="rgba(0,0,0,0)",
-                        plot_bgcolor="rgba(0,0,0,0)"
+                        plot_bgcolor="rgba(0,0,0,0)",
+                        legend=dict(font=dict(color=chart_font_color, size=11)),
+                        xaxis=dict(
+                            tickfont=dict(color=chart_font_color, size=10),
+                            gridcolor=grid_color
+                        ),
+                        yaxis=dict(
+                            tickfont=dict(color=chart_font_color, size=11),
+                            gridcolor=grid_color
+                        )
                     )
                     st.plotly_chart(fig1, use_container_width=True)
                     
@@ -1008,12 +1048,25 @@ if st.session_state.topic_id:
                         name=c2_data.get("metric_label", "Adoption Index")
                     ))
                     fig2.update_layout(
-                        title=c2_data.get("title", "Adoption Horizon"),
+                        title=dict(
+                            text=c2_data.get("title", "Adoption Horizon"),
+                            font=dict(color=chart_title_color, size=14, family="Outfit, sans-serif")
+                        ),
+                        font=dict(color=chart_font_color, family="Outfit, sans-serif"),
                         template=plotly_theme,
                         height=340,
                         margin=dict(l=20, r=20, t=40, b=20),
                         paper_bgcolor="rgba(0,0,0,0)",
-                        plot_bgcolor="rgba(0,0,0,0)"
+                        plot_bgcolor="rgba(0,0,0,0)",
+                        legend=dict(font=dict(color=chart_font_color, size=11)),
+                        xaxis=dict(
+                            tickfont=dict(color=chart_font_color, size=11),
+                            gridcolor=grid_color
+                        ),
+                        yaxis=dict(
+                            tickfont=dict(color=chart_font_color, size=11),
+                            gridcolor=grid_color
+                        )
                     )
                     st.plotly_chart(fig2, use_container_width=True)
 
@@ -1268,12 +1321,16 @@ if st.session_state.topic_id:
                     ))
 
                 fig_kg.update_layout(
-                    title="Semantic Knowledge Network (Click & Drag to Explore)",
+                    title=dict(
+                        text="Semantic Knowledge Network (Click & Drag to Explore)",
+                        font=dict(color=chart_title_color, size=15, family="Outfit, sans-serif")
+                    ),
+                    font=dict(color=chart_font_color, family="Outfit, sans-serif"),
                     template=plotly_theme,
                     height=450,
                     margin=dict(l=10, r=10, t=40, b=10),
                     showlegend=True,
-                    legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+                    legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1, font=dict(color=chart_font_color, size=11)),
                     xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
                     yaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
                     paper_bgcolor="rgba(0,0,0,0)",
