@@ -6,16 +6,46 @@ import json
 import plotly.graph_objects as go
 import plotly.express as px
 
-# Resolve default API Base URL (Supports Streamlit Secrets, Environment Variables, and Local Fallback)
-def get_default_api_url():
+# Resolve and Normalize API Base URL (Supports Streamlit Secrets, Environment Variables, and Dynamic User Input)
+def normalize_api_url(url: str) -> str:
+    if not url:
+        return "http://127.0.0.1:8000/api"
+    clean = url.strip().rstrip("/")
+    if not clean.endswith("/api"):
+        clean = clean + "/api"
+    return clean
+
+def get_current_api_url() -> str:
+    if "custom_api_url" in st.session_state and st.session_state.custom_api_url:
+        return normalize_api_url(st.session_state.custom_api_url)
     try:
-        if "API_BASE_URL" in st.secrets:
-            return st.secrets["API_BASE_URL"]
+        if "API_BASE_URL" in st.secrets and st.secrets["API_BASE_URL"]:
+            return normalize_api_url(st.secrets["API_BASE_URL"])
     except Exception:
         pass
-    return os.getenv("API_BASE_URL", "http://127.0.0.1:8000/api")
+    env_url = os.getenv("API_BASE_URL")
+    if env_url:
+        return normalize_api_url(env_url)
+    return "http://127.0.0.1:8000/api"
 
-DEFAULT_API_URL = get_default_api_url()
+def check_backend_health(api_url: str):
+    base = api_url.rstrip("/")
+    root_url = base[:-4] if base.endswith("/api") else base
+    try:
+        res = requests.get(f"{root_url}/health", timeout=3.0)
+        if res.status_code == 200:
+            return True, "🟢 Backend Online & Connected"
+        return False, f"🟡 Status {res.status_code} at {root_url}/health"
+    except Exception:
+        try:
+            docs_res = requests.get(f"{root_url}/docs", timeout=3.0)
+            if docs_res.status_code == 200:
+                return True, "🟢 Backend Online & Connected"
+        except Exception:
+            pass
+        return False, "🔴 Backend Offline / Unreachable"
+
+DEFAULT_API_URL = get_current_api_url()
 
 st.set_page_config(
     page_title="Modus Enterprise Research Agent", 
@@ -587,25 +617,20 @@ with st.sidebar:
             
     st.divider()
     st.markdown("#### ⚙️ Backend Gateway")
-    custom_url = st.text_input(
+    sidebar_url_in = st.text_input(
         "API Base URL", 
         value=st.session_state.get("custom_api_url", DEFAULT_API_URL),
-        help="Paste your deployed Render backend URL (e.g., https://your-backend.onrender.com/api) or local FastAPI URL.",
+        help="Paste your deployed Render backend URL (e.g., https://your-backend.onrender.com) or local FastAPI URL.",
         key="api_gateway_input"
     )
-    API_BASE_URL = custom_url.rstrip("/") if custom_url else DEFAULT_API_URL
-    st.session_state.custom_api_url = API_BASE_URL
+    if sidebar_url_in:
+        API_BASE_URL = normalize_api_url(sidebar_url_in)
+        st.session_state.custom_api_url = API_BASE_URL
+    else:
+        API_BASE_URL = get_current_api_url()
 
-    # Live backend connection indicator
-    try:
-        health_check_url = API_BASE_URL.replace("/api", "") + "/health"
-        h_res = requests.get(health_check_url, timeout=2.5)
-        if h_res.status_code == 200:
-            st.caption("🟢 **Backend Online & Connected**")
-        else:
-            st.caption(f"🟡 **Backend Status: {h_res.status_code}**")
-    except Exception:
-        st.caption("🔴 **Backend Offline / Unreachable**")
+    is_online, health_msg = check_backend_health(API_BASE_URL)
+    st.caption(f"**{health_msg}**")
 
     st.divider()
     theme_toggle = st.toggle("🌙 Dark Mode", value=(st.session_state.theme == "dark"))
@@ -659,24 +684,20 @@ with st.expander("⚙️ Backend Gateway Configuration & Live Status", expanded=
         main_url_in = st.text_input(
             "Backend API URL Endpoint",
             value=st.session_state.get("custom_api_url", DEFAULT_API_URL),
-            help="If using Streamlit Cloud, paste your Render backend URL (e.g., https://your-backend.onrender.com/api).",
+            help="If using Streamlit Cloud, paste your Render backend URL (e.g., https://your-backend.onrender.com).",
             key="main_gateway_input"
         )
         if main_url_in:
-            API_BASE_URL = main_url_in.rstrip("/")
+            API_BASE_URL = normalize_api_url(main_url_in)
             st.session_state.custom_api_url = API_BASE_URL
             st.session_state.gateway_confirmed = True
     with gw_c2:
         st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
-        try:
-            h_url = API_BASE_URL.replace("/api", "") + "/health"
-            h_res = requests.get(h_url, timeout=2.0)
-            if h_res.status_code == 200:
-                st.success("🟢 Connected")
-            else:
-                st.warning(f"Status: {h_res.status_code}")
-        except Exception:
-            st.error("🔴 Unreachable")
+        is_conn, h_status = check_backend_health(API_BASE_URL)
+        if is_conn:
+            st.success(h_status)
+        else:
+            st.error(h_status)
 
 # Input Section
 st.markdown('<div class="search-container">', unsafe_allow_html=True)
