@@ -6,8 +6,16 @@ import json
 import plotly.graph_objects as go
 import plotly.express as px
 
-# Allows the app to connect to the Render backend when deployed
-API_BASE_URL = os.getenv("API_BASE_URL", "http://127.0.0.1:8000/api")
+# Resolve default API Base URL (Supports Streamlit Secrets, Environment Variables, and Local Fallback)
+def get_default_api_url():
+    try:
+        if "API_BASE_URL" in st.secrets:
+            return st.secrets["API_BASE_URL"]
+    except Exception:
+        pass
+    return os.getenv("API_BASE_URL", "http://127.0.0.1:8000/api")
+
+DEFAULT_API_URL = get_default_api_url()
 
 st.set_page_config(
     page_title="Modus Enterprise Research Agent", 
@@ -562,6 +570,28 @@ with st.sidebar:
             st.warning("Please select files first.")
             
     st.divider()
+    st.markdown("#### ⚙️ Backend Gateway")
+    custom_url = st.text_input(
+        "API Base URL", 
+        value=st.session_state.get("custom_api_url", DEFAULT_API_URL),
+        help="Paste your deployed Render backend URL (e.g., https://your-backend.onrender.com/api) or local FastAPI URL.",
+        key="api_gateway_input"
+    )
+    API_BASE_URL = custom_url.rstrip("/") if custom_url else DEFAULT_API_URL
+    st.session_state.custom_api_url = API_BASE_URL
+
+    # Live backend connection indicator
+    try:
+        health_check_url = API_BASE_URL.replace("/api", "") + "/health"
+        h_res = requests.get(health_check_url, timeout=2.5)
+        if h_res.status_code == 200:
+            st.caption("🟢 **Backend Online & Connected**")
+        else:
+            st.caption(f"🟡 **Backend Status: {h_res.status_code}**")
+    except Exception:
+        st.caption("🔴 **Backend Offline / Unreachable**")
+
+    st.divider()
     theme_toggle = st.toggle("🌙 Dark Mode", value=(st.session_state.theme == "dark"))
     if theme_toggle:
         st.session_state.theme = "dark"
@@ -647,7 +677,8 @@ if target_topic:
             st.success(f"Pipeline deployed for: '{target_topic}'")
             st.rerun()
         except requests.exceptions.RequestException as e:
-            st.error(f"Failed to start research: {e}")
+            st.error(f"❌ **Connection Error**: Unable to reach backend at `{API_BASE_URL}`.\n\n`{e}`")
+            st.info("💡 **How to Fix**:\n- **If running locally**: Start your FastAPI backend in a terminal with `uvicorn backend.main:app --reload --port 8000`.\n- **If using Streamlit Cloud**: Make sure your Render backend web service is deployed and active. You can paste your live Render URL (e.g., `https://your-service.onrender.com/api`) in the sidebar under **⚙️ Backend Gateway**.")
 
 # Status & Results Section
 if st.session_state.topic_id:
