@@ -81,6 +81,9 @@ If no relevant findings are in the text, return an empty list: []
         
     # Store in FAISS
     if texts_to_embed:
-        vector_store.add_texts(texts_to_embed, metadatas_to_embed)
+        try:
+            vector_store.add_texts(texts_to_embed, metadatas_to_embed)
+        except Exception as e:
+            print(f"Warning: vector store update failed ({e})")
         
     return db_findings
