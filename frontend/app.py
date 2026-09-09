@@ -73,8 +73,8 @@ CUSTOM_CSS = """
     footer {visibility: hidden;}
     #MainMenu {visibility: hidden;}
     .stApp {
-        background: linear-gradient(180deg, #0a0f1d 0%, #0f172a 40%, #0a0f1d 100%);
-        color: #e2e8f0;
+        background: linear-gradient(180deg, #1e293b 0%, #172554 45%, #0f172a 100%) !important;
+        color: #f1f5f9;
         font-family: 'Outfit', sans-serif;
     }
     h1, h2, h3, h4, h5, h6 {
@@ -92,7 +92,7 @@ CUSTOM_CSS = """
     .hero-title {
         font-size: 4.5rem;
         font-weight: 800;
-        background: linear-gradient(to right, #f8fafc 0%, #cbd5e1 50%, #a78bfa 100%);
+        background: linear-gradient(to right, #ffffff 0%, #cbd5e1 50%, #818cf8 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         margin-bottom: 0.5rem;
@@ -100,7 +100,7 @@ CUSTOM_CSS = """
     }
     .hero-subtitle {
         font-size: 1.15rem;
-        color: #a78bfa;
+        color: #a5b4fc;
         font-weight: 600;
         max-width: 600px;
         margin: 0 auto;
@@ -110,18 +110,17 @@ CUSTOM_CSS = """
     .hero-desc-box {
         max-width: 860px;
         margin: 1.5rem auto 1rem auto;
-        padding: 18px 24px;
-        background: rgba(15, 23, 42, 0.75);
-        border: 1px solid rgba(139, 92, 246, 0.3);
+        padding: 20px 26px;
+        background: #1e293b !important;
+        border: 1.5px solid #6366f1 !important;
         border-radius: 16px;
-        backdrop-filter: blur(14px);
-        box-shadow: 0 10px 32px rgba(0, 0, 0, 0.4);
+        box-shadow: 0 12px 36px rgba(0, 0, 0, 0.3) !important;
         text-align: center;
     }
     .hero-desc-text {
         font-size: 0.94rem;
         line-height: 1.65;
-        color: #cbd5e1;
+        color: #e2e8f0;
         margin-bottom: 12px;
     }
     .hero-steps-grid {
@@ -131,20 +130,20 @@ CUSTOM_CSS = """
         margin-top: 12px;
     }
     .hero-step-pill {
-        background: rgba(30, 41, 59, 0.75);
-        border: 1px solid rgba(148, 163, 184, 0.2);
+        background: #0f172a !important;
+        border: 1px solid #475569 !important;
         border-radius: 10px;
-        padding: 8px 6px;
-        font-size: 0.76rem;
+        padding: 10px 8px;
+        font-size: 0.78rem;
         color: #cbd5e1;
         font-weight: 400;
         line-height: 1.35;
     }
     .hero-step-pill b {
-        color: #c084fc;
+        color: #a5b4fc;
         display: block;
-        font-size: 0.8rem;
-        margin-bottom: 3px;
+        font-size: 0.82rem;
+        margin-bottom: 4px;
     }
     .search-container {
         max-width: 800px;
@@ -152,13 +151,13 @@ CUSTOM_CSS = """
         padding: 2px;
         background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
         border-radius: 16px;
-        box-shadow: 0 0 24px rgba(139, 92, 246, 0.35);
+        box-shadow: 0 0 24px rgba(99, 102, 241, 0.4);
     }
     .stTextInput > div > div > input {
         border-radius: 14px;
         border: none;
-        background: #0f172a;
-        color: #ffffff;
+        background: #0f172a !important;
+        color: #ffffff !important;
         padding: 20px 24px;
         font-size: 1.25rem;
         font-weight: 400;
@@ -170,7 +169,7 @@ CUSTOM_CSS = """
     .stButton > button {
         width: 100%;
         border-radius: 12px;
-        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
         color: white;
         font-weight: 600;
         letter-spacing: 0.5px;
@@ -182,42 +181,41 @@ CUSTOM_CSS = """
     }
     .stButton > button:hover {
         transform: translateY(-2px);
-        box-shadow: 0 10px 20px -10px rgba(139, 92, 246, 0.5);
-        background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+        box-shadow: 0 10px 20px -10px rgba(99, 102, 241, 0.6);
+        background: linear-gradient(135deg, #4338ca 0%, #6d28d9 100%);
         color: white;
     }
     .report-card {
-        background: rgba(15, 23, 42, 0.75);
-        backdrop-filter: blur(16px);
+        background: #1e293b !important;
         border-radius: 16px;
         padding: 2.5rem;
-        border: 1px solid rgba(148, 163, 184, 0.15);
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        border: 1px solid #334155 !important;
+        box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35) !important;
     }
     .report-card a {
-        color: #a78bfa;
+        color: #a5b4fc;
         text-decoration: none;
-        border-bottom: 1px dashed rgba(167, 139, 250, 0.5);
+        border-bottom: 1px dashed rgba(165, 180, 252, 0.5);
         transition: all 0.2s ease;
     }
     .report-card a:hover {
-        color: #c4b5fd;
-        border-bottom: 1px solid #c4b5fd;
+        color: #c7d2fe;
+        border-bottom: 1px solid #c7d2fe;
     }
     [data-testid="stMetricValue"] {
         font-size: 2.5rem;
         font-weight: 800;
-        background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+        background: linear-gradient(135deg, #60a5fa 0%, #c084fc 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
     [data-testid="stSidebar"] {
-        background-color: rgba(10, 15, 29, 0.98);
-        border-right: 1px solid rgba(148, 163, 184, 0.12);
+        background-color: #0f172a !important;
+        border-right: 1.5px solid #334155 !important;
     }
     [data-testid="stChatMessage"] {
-        background-color: rgba(15, 23, 42, 0.75);
-        border: 1px solid rgba(148, 163, 184, 0.15);
+        background-color: #1e293b !important;
+        border: 1px solid #334155 !important;
         border-radius: 12px;
         padding: 1rem;
         margin-bottom: 0.75rem;
@@ -226,12 +224,12 @@ CUSTOM_CSS = """
         border-radius: 12px;
     }
     .stepper-container {
-        background: rgba(15, 23, 42, 0.75);
-        border: 1px solid rgba(139, 92, 246, 0.25);
+        background: #1e293b !important;
+        border: 1.5px solid #6366f1 !important;
         border-radius: 16px;
         padding: 1.5rem;
         margin-bottom: 1.5rem;
-        backdrop-filter: blur(12px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
     }
     .step-grid {
         display: grid;
@@ -242,23 +240,23 @@ CUSTOM_CSS = """
     .step-card {
         padding: 12px 8px;
         border-radius: 10px;
-        background: rgba(30, 41, 59, 0.5);
-        border: 1px solid rgba(148, 163, 184, 0.15);
+        background: #0f172a !important;
+        border: 1px solid #334155 !important;
         text-align: center;
         font-size: 0.82rem;
         font-weight: 500;
         color: #94a3b8;
     }
     .step-card.active {
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.3) 0%, rgba(139, 92, 246, 0.3) 100%);
-        border: 1px solid #8b5cf6;
-        color: #ffffff;
-        box-shadow: 0 0 15px rgba(139, 92, 246, 0.35);
+        background: linear-gradient(135deg, rgba(79, 70, 229, 0.4) 0%, rgba(124, 58, 237, 0.4) 100%) !important;
+        border: 1.5px solid #818cf8 !important;
+        color: #ffffff !important;
+        box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
     }
     .step-card.completed {
-        background: rgba(16, 185, 129, 0.15);
-        border: 1px solid rgba(16, 185, 129, 0.35);
-        color: #34d399;
+        background: rgba(16, 185, 129, 0.2) !important;
+        border: 1.5px solid #10b981 !important;
+        color: #34d399 !important;
     }
     .kpi-container {
         display: grid;
@@ -267,12 +265,12 @@ CUSTOM_CSS = """
         margin-bottom: 24px;
     }
     .kpi-box {
-        background: rgba(15, 23, 42, 0.75);
-        border: 1px solid rgba(148, 163, 184, 0.15);
+        background: #1e293b !important;
+        border: 1px solid #334155 !important;
         border-radius: 14px;
         padding: 16px 12px;
         text-align: center;
-        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
     }
     .kpi-val {
         font-size: 1.8rem;
@@ -295,29 +293,29 @@ CUSTOM_CSS = """
         margin-bottom: 24px;
     }
     .debate-bull {
-        background: rgba(16, 185, 129, 0.1);
-        border: 1px solid rgba(16, 185, 129, 0.3);
+        background: rgba(16, 185, 129, 0.12) !important;
+        border: 1.5px solid #10b981 !important;
         border-radius: 14px;
         padding: 20px;
     }
     .debate-bear {
-        background: rgba(239, 68, 68, 0.1);
-        border: 1px solid rgba(239, 68, 68, 0.3);
+        background: rgba(239, 68, 68, 0.12) !important;
+        border: 1.5px solid #ef4444 !important;
         border-radius: 14px;
         padding: 20px;
     }
     [data-testid="stFileUploader"] section, 
     [data-testid="stFileUploader"] div[data-testid="stFileUploadDropzone"] {
-        background-color: rgba(15, 23, 42, 0.8) !important;
-        border: 1.5px dashed rgba(139, 92, 246, 0.35) !important;
+        background-color: #1e293b !important;
+        border: 1.5px dashed #6366f1 !important;
         border-radius: 12px !important;
     }
     [data-testid="stFileUploaderFile"],
     [data-testid="stFileUploaderFileData"],
     div[data-testid="stFileUploader"] ul li,
     div[data-testid="stFileUploader"] div[role="listitem"] {
-        background-color: rgba(30, 41, 59, 0.85) !important;
-        border: 1px solid rgba(148, 163, 184, 0.25) !important;
+        background-color: #0f172a !important;
+        border: 1px solid #475569 !important;
         border-radius: 10px !important;
         color: #ffffff !important;
     }
@@ -328,8 +326,8 @@ CUSTOM_CSS = """
         font-weight: 500 !important;
     }
     [data-testid="stFileUploader"] button {
-        border: 1px solid rgba(148, 163, 184, 0.2) !important;
-        background-color: #1e293b !important;
+        border: 1px solid #475569 !important;
+        background-color: #0f172a !important;
         color: #ffffff !important;
     }
 """
