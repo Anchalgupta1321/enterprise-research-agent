@@ -59,8 +59,8 @@ st.set_page_config(
 if "theme" not in st.session_state:
     st.session_state.theme = "dark"
 
-DARK_CSS = """
-    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
+CUSTOM_CSS = """
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
     header[data-testid="stHeader"] {
         background: transparent !important;
     }
@@ -73,7 +73,7 @@ DARK_CSS = """
     footer {visibility: hidden;}
     #MainMenu {visibility: hidden;}
     .stApp {
-        background: linear-gradient(180deg, #050505 0%, #0b0f19 100%);
+        background: linear-gradient(180deg, #0a0f1d 0%, #0f172a 40%, #0a0f1d 100%);
         color: #e2e8f0;
         font-family: 'Outfit', sans-serif;
     }
@@ -83,7 +83,7 @@ DARK_CSS = """
         letter-spacing: -0.02em;
     }
     .hero {
-        padding: 3.5rem 1.5rem 1.5rem 1.5rem;
+        padding: 3rem 1.5rem 1rem 1.5rem;
         text-align: center;
         background: transparent;
         margin-bottom: 1.5rem;
@@ -92,7 +92,7 @@ DARK_CSS = """
     .hero-title {
         font-size: 4.5rem;
         font-weight: 800;
-        background: linear-gradient(to right, #e2e8f0 0%, #94a3b8 100%);
+        background: linear-gradient(to right, #f8fafc 0%, #cbd5e1 50%, #a78bfa 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         margin-bottom: 0.5rem;
@@ -100,7 +100,7 @@ DARK_CSS = """
     }
     .hero-subtitle {
         font-size: 1.15rem;
-        color: #8b5cf6;
+        color: #a78bfa;
         font-weight: 600;
         max-width: 600px;
         margin: 0 auto;
@@ -111,11 +111,11 @@ DARK_CSS = """
         max-width: 860px;
         margin: 1.5rem auto 1rem auto;
         padding: 18px 24px;
-        background: rgba(15, 23, 42, 0.6);
-        border: 1px solid rgba(139, 92, 246, 0.25);
+        background: rgba(15, 23, 42, 0.75);
+        border: 1px solid rgba(139, 92, 246, 0.3);
         border-radius: 16px;
-        backdrop-filter: blur(12px);
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+        backdrop-filter: blur(14px);
+        box-shadow: 0 10px 32px rgba(0, 0, 0, 0.4);
         text-align: center;
     }
     .hero-desc-text {
@@ -131,17 +131,17 @@ DARK_CSS = """
         margin-top: 12px;
     }
     .hero-step-pill {
-        background: rgba(30, 41, 59, 0.65);
-        border: 1px solid rgba(148, 163, 184, 0.15);
+        background: rgba(30, 41, 59, 0.75);
+        border: 1px solid rgba(148, 163, 184, 0.2);
         border-radius: 10px;
         padding: 8px 6px;
         font-size: 0.76rem;
-        color: #94a3b8;
+        color: #cbd5e1;
         font-weight: 400;
         line-height: 1.35;
     }
     .hero-step-pill b {
-        color: #a78bfa;
+        color: #c084fc;
         display: block;
         font-size: 0.8rem;
         margin-bottom: 3px;
@@ -152,20 +152,20 @@ DARK_CSS = """
         padding: 2px;
         background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
         border-radius: 16px;
-        box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+        box-shadow: 0 0 24px rgba(139, 92, 246, 0.35);
     }
     .stTextInput > div > div > input {
         border-radius: 14px;
         border: none;
         background: #0f172a;
-        color: white;
+        color: #ffffff;
         padding: 20px 24px;
         font-size: 1.25rem;
-        font-weight: 300;
+        font-weight: 400;
     }
     .stTextInput > div > div > input:focus {
         border-color: #8b5cf6;
-        box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
+        box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.3);
     }
     .stButton > button {
         width: 100%;
@@ -187,11 +187,11 @@ DARK_CSS = """
         color: white;
     }
     .report-card {
-        background: rgba(15, 23, 42, 0.6);
+        background: rgba(15, 23, 42, 0.75);
         backdrop-filter: blur(16px);
         border-radius: 16px;
         padding: 2.5rem;
-        border: 1px solid rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(148, 163, 184, 0.15);
         box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     }
     .report-card a {
@@ -212,12 +212,12 @@ DARK_CSS = """
         -webkit-text-fill-color: transparent;
     }
     [data-testid="stSidebar"] {
-        background-color: rgba(11, 15, 25, 0.95);
-        border-right: 1px solid rgba(255, 255, 255, 0.05);
+        background-color: rgba(10, 15, 29, 0.98);
+        border-right: 1px solid rgba(148, 163, 184, 0.12);
     }
     [data-testid="stChatMessage"] {
-        background-color: rgba(15, 23, 42, 0.7);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        background-color: rgba(15, 23, 42, 0.75);
+        border: 1px solid rgba(148, 163, 184, 0.15);
         border-radius: 12px;
         padding: 1rem;
         margin-bottom: 0.75rem;
@@ -226,8 +226,8 @@ DARK_CSS = """
         border-radius: 12px;
     }
     .stepper-container {
-        background: rgba(15, 23, 42, 0.6);
-        border: 1px solid rgba(139, 92, 246, 0.2);
+        background: rgba(15, 23, 42, 0.75);
+        border: 1px solid rgba(139, 92, 246, 0.25);
         border-radius: 16px;
         padding: 1.5rem;
         margin-bottom: 1.5rem;
@@ -242,22 +242,22 @@ DARK_CSS = """
     .step-card {
         padding: 12px 8px;
         border-radius: 10px;
-        background: rgba(255, 255, 255, 0.03);
-        border: 1fr solid rgba(255, 255, 255, 0.06);
+        background: rgba(30, 41, 59, 0.5);
+        border: 1px solid rgba(148, 163, 184, 0.15);
         text-align: center;
         font-size: 0.82rem;
         font-weight: 500;
         color: #94a3b8;
     }
     .step-card.active {
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.25) 0%, rgba(139, 92, 246, 0.25) 100%);
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.3) 0%, rgba(139, 92, 246, 0.3) 100%);
         border: 1px solid #8b5cf6;
         color: #ffffff;
-        box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
+        box-shadow: 0 0 15px rgba(139, 92, 246, 0.35);
     }
     .step-card.completed {
-        background: rgba(16, 185, 129, 0.12);
-        border: 1px solid rgba(16, 185, 129, 0.3);
+        background: rgba(16, 185, 129, 0.15);
+        border: 1px solid rgba(16, 185, 129, 0.35);
         color: #34d399;
     }
     .kpi-container {
@@ -267,8 +267,8 @@ DARK_CSS = """
         margin-bottom: 24px;
     }
     .kpi-box {
-        background: rgba(15, 23, 42, 0.6);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(15, 23, 42, 0.75);
+        border: 1px solid rgba(148, 163, 184, 0.15);
         border-radius: 14px;
         padding: 16px 12px;
         text-align: center;
@@ -295,318 +295,46 @@ DARK_CSS = """
         margin-bottom: 24px;
     }
     .debate-bull {
-        background: rgba(16, 185, 129, 0.08);
-        border: 1px solid rgba(16, 185, 129, 0.25);
+        background: rgba(16, 185, 129, 0.1);
+        border: 1px solid rgba(16, 185, 129, 0.3);
         border-radius: 14px;
         padding: 20px;
     }
     .debate-bear {
-        background: rgba(239, 68, 68, 0.08);
-        border: 1px solid rgba(239, 68, 68, 0.25);
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.3);
         border-radius: 14px;
         padding: 20px;
     }
-"""
-
-LIGHT_CSS = """
-    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
-    header[data-testid="stHeader"] {
-        background: transparent !important;
-    }
-    [data-testid="stSidebarCollapsedControl"] {
-        display: block !important;
-        visibility: visible !important;
-        z-index: 1000001 !important;
-        color: #0f172a !important;
-    }
-    footer {visibility: hidden;}
-    #MainMenu {visibility: hidden;}
-    .stApp {
-        background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
-        color: #0f172a;
-        font-family: 'Outfit', sans-serif;
-    }
-    p, li, span, label, div[data-testid="stMarkdownContainer"] p {
-        color: #0f172a !important;
-    }
     [data-testid="stFileUploader"] section, 
     [data-testid="stFileUploader"] div[data-testid="stFileUploadDropzone"] {
-        background-color: #ffffff !important;
-        background: #ffffff !important;
-        border: 1.5px dashed #cbd5e1 !important;
+        background-color: rgba(15, 23, 42, 0.8) !important;
+        border: 1.5px dashed rgba(139, 92, 246, 0.35) !important;
         border-radius: 12px !important;
-    }
-    [data-testid="stFileUploader"] * {
-        color: #0f172a !important;
     }
     [data-testid="stFileUploaderFile"],
     [data-testid="stFileUploaderFileData"],
     div[data-testid="stFileUploader"] ul li,
     div[data-testid="stFileUploader"] div[role="listitem"] {
-        background-color: #f1f5f9 !important;
-        background: #f1f5f9 !important;
-        border: 1px solid #cbd5e1 !important;
+        background-color: rgba(30, 41, 59, 0.85) !important;
+        border: 1px solid rgba(148, 163, 184, 0.25) !important;
         border-radius: 10px !important;
-        color: #0f172a !important;
+        color: #ffffff !important;
     }
     [data-testid="stFileUploaderFileName"],
     [data-testid="stFileUploaderFile"] span,
     [data-testid="stFileUploaderFile"] small {
-        color: #0f172a !important;
-        font-weight: 600 !important;
+        color: #ffffff !important;
+        font-weight: 500 !important;
     }
     [data-testid="stFileUploader"] button {
-        border: 1px solid #cbd5e1 !important;
-        background-color: #f8fafc !important;
-        color: #0f172a !important;
-    }
-    [data-testid="stFileUploader"] svg {
-        fill: #475569 !important;
-        stroke: #475569 !important;
-    }
-    h1, h2, h3, h4, h5, h6 {
-        font-family: 'Outfit', sans-serif !important;
-        color: #0f172a !important;
-        letter-spacing: -0.02em;
-    }
-    .hero {
-        padding: 3.5rem 1.5rem 1.5rem 1.5rem;
-        text-align: center;
-        background: transparent;
-        margin-bottom: 1.5rem;
-        position: relative;
-    }
-    .hero-title {
-        font-size: 4.5rem;
-        font-weight: 800;
-        background: linear-gradient(to right, #0f172a 0%, #475569 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        margin-bottom: 0.5rem;
-        letter-spacing: -2px;
-    }
-    .hero-subtitle {
-        font-size: 1.15rem;
-        color: #4f46e5;
-        font-weight: 600;
-        max-width: 600px;
-        margin: 0 auto;
-        letter-spacing: 1.5px;
-        text-transform: uppercase;
-    }
-    .hero-desc-box {
-        max-width: 860px;
-        margin: 1.5rem auto 1rem auto;
-        padding: 18px 24px;
-        background: rgba(255, 255, 255, 0.85);
-        border: 1px solid rgba(99, 102, 241, 0.2);
-        border-radius: 16px;
-        backdrop-filter: blur(12px);
-        box-shadow: 0 8px 24px rgba(99, 102, 241, 0.08);
-        text-align: center;
-    }
-    .hero-desc-text {
-        font-size: 0.94rem;
-        line-height: 1.65;
-        color: #334155;
-        margin-bottom: 12px;
-    }
-    .hero-steps-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 10px;
-        margin-top: 12px;
-    }
-    .hero-step-pill {
-        background: #f8fafc;
-        border: 1px solid rgba(0, 0, 0, 0.06);
-        border-radius: 10px;
-        padding: 8px 6px;
-        font-size: 0.76rem;
-        color: #64748b;
-        font-weight: 400;
-        line-height: 1.35;
-    }
-    .hero-step-pill b {
-        color: #4f46e5;
-        display: block;
-        font-size: 0.8rem;
-        margin-bottom: 3px;
-    }
-    .search-container {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 2px;
-        background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
-        border-radius: 16px;
-        box-shadow: 0 10px 20px rgba(139, 92, 246, 0.15);
-    }
-    .stTextInput > div > div > input {
-        border-radius: 14px;
-        border: none;
-        background: #ffffff;
-        color: #0f172a;
-        padding: 20px 24px;
-        font-size: 1.25rem;
-        font-weight: 400;
-        box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
-    }
-    .stTextInput > div > div > input:focus {
-        border-color: #8b5cf6;
-        box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.3);
-    }
-    .stButton > button {
-        width: 100%;
-        border-radius: 12px;
-        background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
-        color: white;
-        font-weight: 600;
-        letter-spacing: 0.5px;
-        border: none;
-        padding: 0.75rem 1.5rem;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        text-transform: uppercase;
-        font-size: 0.9rem;
-    }
-    .stButton > button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 20px -10px rgba(79, 70, 229, 0.5);
-        background: linear-gradient(135deg, #4338ca 0%, #6d28d9 100%);
-        color: white;
-    }
-    .report-card {
-        background: rgba(255, 255, 255, 0.9);
-        backdrop-filter: blur(16px);
-        border-radius: 16px;
-        padding: 2.5rem;
-        border: 1px solid rgba(0, 0, 0, 0.05);
-        box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.1);
-    }
-    .report-card a {
-        color: #6d28d9;
-        text-decoration: none;
-        border-bottom: 1px dashed rgba(109, 40, 217, 0.5);
-        transition: all 0.2s ease;
-    }
-    .report-card a:hover {
-        color: #4c1d95;
-        border-bottom: 1px solid #4c1d95;
-    }
-    [data-testid="stMetricValue"] {
-        font-size: 2.5rem;
-        font-weight: 800;
-        background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-    [data-testid="stSidebar"] {
-        background-color: rgba(248, 250, 252, 0.95);
-        border-right: 1px solid rgba(0, 0, 0, 0.05);
-    }
-    [data-testid="stChatMessage"] {
-        background-color: rgba(255, 255, 255, 0.9);
-        border: 1px solid rgba(0, 0, 0, 0.08);
-        border-radius: 12px;
-        padding: 1rem;
-        margin-bottom: 0.75rem;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-    }
-    [data-testid="stChatMessage"] * {
-        color: #0f172a !important;
-    }
-    [data-testid="stChatInput"] {
-        border-radius: 12px;
-    }
-    .stepper-container {
-        background: rgba(255, 255, 255, 0.9);
-        border: 1px solid rgba(139, 92, 246, 0.2);
-        border-radius: 16px;
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
-        backdrop-filter: blur(12px);
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-    }
-    .step-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 12px;
-        margin-top: 12px;
-    }
-    .step-card {
-        padding: 12px 8px;
-        border-radius: 10px;
-        background: #f8fafc;
-        border: 1px solid #e2e8f0;
-        text-align: center;
-        font-size: 0.82rem;
-        font-weight: 500;
-        color: #64748b;
-    }
-    .step-card.active {
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
-        border: 1px solid #6366f1;
-        color: #4338ca !important;
-        font-weight: 700;
-        box-shadow: 0 2px 10px rgba(99, 102, 241, 0.15);
-    }
-    .step-card.completed {
-        background: rgba(16, 185, 129, 0.08);
-        border: 1px solid rgba(16, 185, 129, 0.3);
-        color: #059669 !important;
-        font-weight: 600;
-    }
-    .kpi-container {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 14px;
-        margin-bottom: 24px;
-    }
-    .kpi-box {
-        background: #ffffff;
-        border: 1px solid rgba(0, 0, 0, 0.08);
-        border-radius: 14px;
-        padding: 16px 12px;
-        text-align: center;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-    }
-    .kpi-val {
-        font-size: 1.8rem;
-        font-weight: 800;
-        background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-    .kpi-lbl {
-        font-size: 0.75rem;
-        color: #64748b !important;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        margin-top: 4px;
-    }
-    .debate-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 16px;
-        margin-bottom: 24px;
-    }
-    .debate-bull {
-        background: rgba(16, 185, 129, 0.06);
-        border: 1px solid rgba(16, 185, 129, 0.25);
-        border-radius: 14px;
-        padding: 20px;
-    }
-    .debate-bear {
-        background: rgba(239, 68, 68, 0.06);
-        border: 1px solid rgba(239, 68, 68, 0.25);
-        border-radius: 14px;
-        padding: 20px;
+        border: 1px solid rgba(148, 163, 184, 0.2) !important;
+        background-color: #1e293b !important;
+        color: #ffffff !important;
     }
 """
 
-if st.session_state.theme == "dark":
-    st.markdown(f"<style>{DARK_CSS}</style>", unsafe_allow_html=True)
-else:
-    st.markdown(f"<style>{LIGHT_CSS}</style>", unsafe_allow_html=True)
+st.markdown(f"<style>{CUSTOM_CSS}</style>", unsafe_allow_html=True)
 
 # Sidebar
 with st.sidebar:
@@ -655,13 +383,6 @@ with st.sidebar:
     is_online, health_msg = check_backend_health(API_BASE_URL)
     st.caption(f"**{health_msg}**")
 
-    st.divider()
-    theme_toggle = st.toggle("🌙 Dark Mode", value=(st.session_state.theme == "dark"))
-    if theme_toggle:
-        st.session_state.theme = "dark"
-    else:
-        st.session_state.theme = "light"
-        
     st.divider()
     st.caption("v1.0.0 | Powered by Gemini & Tavily")
 
@@ -989,11 +710,10 @@ if st.session_state.topic_id:
                 ]
                 
             ch_col1, ch_col2 = st.columns(2)
-            is_dark = st.session_state.theme == "dark"
-            plotly_theme = "plotly_dark" if is_dark else "plotly_white"
-            chart_font_color = "#f1f5f9" if is_dark else "#0f172a"
-            chart_title_color = "#ffffff" if is_dark else "#0f172a"
-            grid_color = "rgba(255, 255, 255, 0.08)" if is_dark else "rgba(15, 23, 42, 0.12)"
+            plotly_theme = "plotly_dark"
+            chart_font_color = "#cbd5e1"
+            chart_title_color = "#ffffff"
+            grid_color = "rgba(148, 163, 184, 0.15)"
             
             with ch_col1:
                 c1_data = charts_list[0] if len(charts_list) > 0 else {}
@@ -1310,7 +1030,7 @@ if st.session_state.topic_id:
                         name=cat,
                         text=[n.get("label", "") for n in cat_nodes],
                         textposition="top center",
-                        textfont=dict(size=11, color="#ffffff" if st.session_state.theme == "dark" else "#0f172a"),
+                        textfont=dict(size=11, color="#ffffff"),
                         marker=dict(
                             size=[n.get("size", 22) for n in cat_nodes],
                             color=category_colors.get(cat, "#6366f1"),
