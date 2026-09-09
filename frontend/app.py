@@ -30,7 +30,15 @@ if "theme" not in st.session_state:
 
 DARK_CSS = """
     @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
-    header {visibility: hidden;}
+    header[data-testid="stHeader"] {
+        background: transparent !important;
+    }
+    [data-testid="stSidebarCollapsedControl"] {
+        display: block !important;
+        visibility: visible !important;
+        z-index: 1000001 !important;
+        color: #ffffff !important;
+    }
     footer {visibility: hidden;}
     #MainMenu {visibility: hidden;}
     .stApp {
@@ -271,7 +279,15 @@ DARK_CSS = """
 
 LIGHT_CSS = """
     @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
-    header {visibility: hidden;}
+    header[data-testid="stHeader"] {
+        background: transparent !important;
+    }
+    [data-testid="stSidebarCollapsedControl"] {
+        display: block !important;
+        visibility: visible !important;
+        z-index: 1000001 !important;
+        color: #0f172a !important;
+    }
     footer {visibility: hidden;}
     #MainMenu {visibility: hidden;}
     .stApp {
@@ -635,6 +651,32 @@ st.markdown("""
 # Session state
 if "topic_id" not in st.session_state:
     st.session_state.topic_id = None
+
+# Main Page Gateway Settings
+with st.expander("⚙️ Backend Gateway Configuration & Live Status", expanded=(not st.session_state.get("gateway_confirmed", False) and "127.0.0.1" in API_BASE_URL)):
+    gw_c1, gw_c2 = st.columns([3, 1])
+    with gw_c1:
+        main_url_in = st.text_input(
+            "Backend API URL Endpoint",
+            value=st.session_state.get("custom_api_url", DEFAULT_API_URL),
+            help="If using Streamlit Cloud, paste your Render backend URL (e.g., https://your-backend.onrender.com/api).",
+            key="main_gateway_input"
+        )
+        if main_url_in:
+            API_BASE_URL = main_url_in.rstrip("/")
+            st.session_state.custom_api_url = API_BASE_URL
+            st.session_state.gateway_confirmed = True
+    with gw_c2:
+        st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
+        try:
+            h_url = API_BASE_URL.replace("/api", "") + "/health"
+            h_res = requests.get(h_url, timeout=2.0)
+            if h_res.status_code == 200:
+                st.success("🟢 Connected")
+            else:
+                st.warning(f"Status: {h_res.status_code}")
+        except Exception:
+            st.error("🔴 Unreachable")
 
 # Input Section
 st.markdown('<div class="search-container">', unsafe_allow_html=True)
