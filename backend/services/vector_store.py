@@ -11,10 +11,15 @@ class VectorStore:
         self.meta_path = meta_path
         
         # Cloud-native Gemini embeddings
-        self.embeddings = GoogleGenerativeAIEmbeddings(
-            model="models/gemini-embedding-001", 
-            google_api_key=settings.GEMINI_API_KEY
-        )
+        try:
+            self.embeddings = GoogleGenerativeAIEmbeddings(
+                model="models/gemini-embedding-001", 
+                google_api_key=settings.GEMINI_API_KEY
+            )
+        except Exception as e:
+            print(f"Warning: Could not initialize GoogleGenerativeAIEmbeddings ({e})")
+            self.embeddings = None
+            
         self.embedding_dim = 3072 # gemini-embedding-001 dimension
         
         # Load or create FAISS index
@@ -36,7 +41,7 @@ class VectorStore:
             self.metadata = []
 
     def add_texts(self, texts: list[str], metadatas: list[dict]):
-        if not texts:
+        if not texts or self.embeddings is None:
             return
         
         try:
@@ -61,7 +66,7 @@ class VectorStore:
             print(f"Warning: Vector embedding failed ({e}). Proceeding without vector index update.")
 
     def similarity_search(self, query: str, k: int = 5):
-        if self.index.ntotal == 0:
+        if self.index.ntotal == 0 or self.embeddings is None:
             return []
             
         try:

@@ -56,29 +56,13 @@ Respond ONLY with a valid JSON array of two chart objects formatted exactly like
     chart_chain = chart_prompt | llm
 
     try:
+        from backend.core.utils import parse_json_from_llm
         res = robust_invoke(chart_chain, {
             "topic": topic.topic,
             "findings": findings_text
         })
 
-        content = res.content if hasattr(res, 'content') else str(res)
-        if isinstance(content, list):
-            text_parts = [b if isinstance(b, str) else b.get("text", "") for b in content]
-            raw_text = "".join(text_parts).strip()
-        else:
-            raw_text = str(content).strip()
-
-        # Clean potential markdown formatting
-        if raw_text.startswith("```json"):
-            raw_text = raw_text[7:]
-        if raw_text.startswith("```"):
-            raw_text = raw_text[3:]
-        if raw_text.endswith("```"):
-            raw_text = raw_text[:-3]
-        raw_text = raw_text.strip()
-
-        # Validate JSON
-        parsed = json.loads(raw_text)
+        parsed = parse_json_from_llm(res)
         charts_json_str = json.dumps(parsed)
 
         topic.charts_data = charts_json_str

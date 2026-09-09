@@ -63,14 +63,9 @@ Respond ONLY with a valid JSON object in this exact schema:
     })
 
     try:
-        response_text = robust_invoke(llm, prompt_val)
-        cleaned_json = response_text.strip()
-        if "```json" in cleaned_json:
-            cleaned_json = cleaned_json.split("```json")[1].split("```")[0].strip()
-        elif "```" in cleaned_json:
-            cleaned_json = cleaned_json.split("```")[1].split("```")[0].strip()
-        
-        kg_data = json.loads(cleaned_json)
+        from backend.core.utils import parse_json_from_llm
+        response = robust_invoke(llm, prompt_val)
+        kg_data = parse_json_from_llm(response)
         
         # Calculate layout positions if not present
         nodes = kg_data.get("nodes", [])

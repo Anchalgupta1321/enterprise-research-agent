@@ -43,7 +43,7 @@ If no relevant findings are in the text, return an empty list: []
             
             try:
                 import time
-                time.sleep(6) # Strict Rate limit: Max 10 requests per minute for Gemini Free Tier
+                time.sleep(2) # Balanced rate limit throttling for Gemini Flash Lite
                 
                 from backend.core.utils import parse_json_from_llm, robust_invoke
                 response = robust_invoke(chain, {
@@ -51,13 +51,25 @@ If no relevant findings are in the text, return an empty list: []
                     "source_text": content_chunk
                 })
                 
-                findings_data = parse_json_from_llm(response.content)
+                findings_data = parse_json_from_llm(response)
+                if isinstance(findings_data, dict):
+                    if "findings" in findings_data and isinstance(findings_data["findings"], list):
+                        findings_data = findings_data["findings"]
+                    else:
+                        findings_data = [findings_data]
+                elif not isinstance(findings_data, list):
+                    findings_data = []
                 
                 for item in findings_data:
+                    if not isinstance(item, dict):
+                        continue
+                    f_text = item.get("finding", "")
+                    if not f_text:
+                        continue
                     finding = domain.Finding(
                         question_id=q.id,
                         source_id=s.id,
-                        finding_text=item.get("finding", ""),
+                        finding_text=f_text,
                         category=item.get("category", "Uncategorized"),
                         confidence=item.get("confidence", "Medium")
                     )

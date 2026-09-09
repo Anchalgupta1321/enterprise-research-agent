@@ -26,12 +26,21 @@ Example: ["Question 1", "Question 2"]
         from backend.core.utils import parse_json_from_llm, robust_invoke
         response = robust_invoke(chain, {"topic": topic.topic})
         
-        questions_text = parse_json_from_llm(response.content)
-
+        questions_text = parse_json_from_llm(response)
         
+        if isinstance(questions_text, dict):
+            for val in questions_text.values():
+                if isinstance(val, list):
+                    questions_text = val
+                    break
+        elif not isinstance(questions_text, list):
+            questions_text = [str(questions_text)]
+
         db_questions = []
         for q_text in questions_text:
-            db_q = domain.Question(topic_id=topic.id, question_text=q_text)
+            if isinstance(q_text, dict) and "question" in q_text:
+                q_text = q_text["question"]
+            db_q = domain.Question(topic_id=topic.id, question_text=str(q_text))
             db.add(db_q)
             db_questions.append(db_q)
             

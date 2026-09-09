@@ -55,29 +55,14 @@ Respond ONLY with a valid JSON object in this exact format:
     audit_chain = audit_prompt | llm
 
     try:
+        from backend.core.utils import parse_json_from_llm
         res = robust_invoke(audit_chain, {
             "topic": topic.topic,
             "report": report[:4000], # Keep within prompt limits
             "findings": findings_text[:4000]
         })
         
-        content = res.content if hasattr(res, 'content') else str(res)
-        if isinstance(content, list):
-            text_parts = [b if isinstance(b, str) else b.get("text", "") for b in content]
-            raw_text = "".join(text_parts).strip()
-        else:
-            raw_text = str(content).strip()
-
-        # Clean potential markdown formatting
-        if raw_text.startswith("```json"):
-            raw_text = raw_text[7:]
-        if raw_text.startswith("```"):
-            raw_text = raw_text[3:]
-        if raw_text.endswith("```"):
-            raw_text = raw_text[:-3]
-        raw_text = raw_text.strip()
-
-        parsed = json.loads(raw_text)
+        parsed = parse_json_from_llm(res)
         score = float(parsed.get("grounding_score", 95.0))
         verdict = str(parsed.get("verdict", "VERIFIED_EXCELLENT"))
         summary = str(parsed.get("critique_summary", "Audit completed. Report verified against all primary findings."))

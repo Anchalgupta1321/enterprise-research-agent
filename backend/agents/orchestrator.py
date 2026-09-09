@@ -79,12 +79,12 @@ def run_research_pipeline(topic_id: int):
 
         def evaluate_sufficiency_node(state: ResearchState):
             loop_count = state.get("loop_count", 0)
-            log_thought(topic_id, f"[System] Evaluating if sufficient information is gathered (Loop {loop_count + 1})...", db)
-            print(f"Evaluating sufficiency (Loop {loop_count + 1})...")
+            findings = state.get("findings", [])
+            log_thought(topic_id, f"[System] Evaluating gathered intelligence sufficiency ({len(findings)} findings gathered)...", db)
+            print(f"Evaluating sufficiency (Loop {loop_count + 1}, findings count: {len(findings)})...")
             
-            needs_more = False
-            if loop_count < 1:
-                needs_more = True
+            # Loop again only if fewer than 3 findings were gathered on the first pass
+            needs_more = len(findings) < 3 and loop_count < 1
                 
             return {"loop_count": loop_count + 1, "needs_more_info": needs_more}
 

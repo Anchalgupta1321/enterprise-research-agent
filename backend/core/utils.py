@@ -2,10 +2,12 @@ import json
 import re
 
 def parse_json_from_llm(text):
-    """Robustly parses JSON from LLM output, handling markdown blocks and other weirdness."""
+    """Robustly parses JSON from LLM output, handling AIMessage objects, markdown blocks, and other formats."""
+    if hasattr(text, "content"):
+        text = text.content
+
     # Sometimes LangChain returns a list of content blocks instead of a string
     if isinstance(text, list):
-        # Extract the actual text from the blocks
         text_parts = []
         for block in text:
             if isinstance(block, str):

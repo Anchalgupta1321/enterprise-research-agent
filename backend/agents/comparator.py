@@ -50,12 +50,24 @@ If there are no contradictions, return an empty list: []
             "findings_text": findings_text[:30000] # Limit token usage
         })
         
-        contradictions_data = parse_json_from_llm(response.content)
+        contradictions_data = parse_json_from_llm(response)
+        if isinstance(contradictions_data, dict):
+            if "contradictions" in contradictions_data and isinstance(contradictions_data["contradictions"], list):
+                contradictions_data = contradictions_data["contradictions"]
+            else:
+                contradictions_data = [contradictions_data]
+        elif not isinstance(contradictions_data, list):
+            contradictions_data = []
         
         for item in contradictions_data:
+            if not isinstance(item, dict):
+                continue
+            desc = item.get("description", "")
+            if not desc:
+                continue
             c = domain.Contradiction(
                 topic_id=topic.id,
-                description=item.get("description", ""),
+                description=desc,
                 reason=item.get("reason", "")
             )
             db.add(c)
