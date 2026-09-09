@@ -1456,6 +1456,9 @@ if st.session_state.topic_id:
             with st.expander("View Error Logs"):
                 st.text(data.get("final_report"))
             
+    elif response.status_code == 404:
+        st.session_state.topic_id = None
+        st.info("💡 Previous session cleared. Click **🚀 INITIATE INTELLIGENCE PROTOCOL** above to start research on your topic and uploaded PDF!")
     else:
-        st.error("Could not fetch status from backend API.")
+        st.error(f"Could not fetch status from backend API (Status {response.status_code}).")
 
