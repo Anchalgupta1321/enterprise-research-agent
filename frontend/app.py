@@ -36,29 +36,68 @@ DARK_CSS = """
         letter-spacing: -0.02em;
     }
     .hero {
-        padding: 5rem 2rem;
+        padding: 3.5rem 1.5rem 1.5rem 1.5rem;
         text-align: center;
         background: transparent;
-        margin-bottom: 2rem;
+        margin-bottom: 1.5rem;
         position: relative;
     }
     .hero-title {
-        font-size: 5rem;
+        font-size: 4.5rem;
         font-weight: 800;
         background: linear-gradient(to right, #e2e8f0 0%, #94a3b8 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        margin-bottom: 1rem;
+        margin-bottom: 0.5rem;
         letter-spacing: -2px;
     }
     .hero-subtitle {
-        font-size: 1.25rem;
+        font-size: 1.15rem;
         color: #8b5cf6;
-        font-weight: 400;
+        font-weight: 600;
         max-width: 600px;
         margin: 0 auto;
-        letter-spacing: 1px;
+        letter-spacing: 1.5px;
         text-transform: uppercase;
+    }
+    .hero-desc-box {
+        max-width: 860px;
+        margin: 1.5rem auto 1rem auto;
+        padding: 18px 24px;
+        background: rgba(15, 23, 42, 0.6);
+        border: 1px solid rgba(139, 92, 246, 0.25);
+        border-radius: 16px;
+        backdrop-filter: blur(12px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+        text-align: center;
+    }
+    .hero-desc-text {
+        font-size: 0.94rem;
+        line-height: 1.65;
+        color: #cbd5e1;
+        margin-bottom: 12px;
+    }
+    .hero-steps-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        margin-top: 12px;
+    }
+    .hero-step-pill {
+        background: rgba(30, 41, 59, 0.65);
+        border: 1px solid rgba(148, 163, 184, 0.15);
+        border-radius: 10px;
+        padding: 8px 6px;
+        font-size: 0.76rem;
+        color: #94a3b8;
+        font-weight: 400;
+        line-height: 1.35;
+    }
+    .hero-step-pill b {
+        color: #a78bfa;
+        display: block;
+        font-size: 0.8rem;
+        margin-bottom: 3px;
     }
     .search-container {
         max-width: 800px;
@@ -254,29 +293,68 @@ LIGHT_CSS = """
         letter-spacing: -0.02em;
     }
     .hero {
-        padding: 5rem 2rem;
+        padding: 3.5rem 1.5rem 1.5rem 1.5rem;
         text-align: center;
         background: transparent;
-        margin-bottom: 2rem;
+        margin-bottom: 1.5rem;
         position: relative;
     }
     .hero-title {
-        font-size: 5rem;
+        font-size: 4.5rem;
         font-weight: 800;
         background: linear-gradient(to right, #0f172a 0%, #475569 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        margin-bottom: 1rem;
+        margin-bottom: 0.5rem;
         letter-spacing: -2px;
     }
     .hero-subtitle {
-        font-size: 1.25rem;
+        font-size: 1.15rem;
         color: #4f46e5;
         font-weight: 600;
         max-width: 600px;
         margin: 0 auto;
-        letter-spacing: 1px;
+        letter-spacing: 1.5px;
         text-transform: uppercase;
+    }
+    .hero-desc-box {
+        max-width: 860px;
+        margin: 1.5rem auto 1rem auto;
+        padding: 18px 24px;
+        background: rgba(255, 255, 255, 0.85);
+        border: 1px solid rgba(99, 102, 241, 0.2);
+        border-radius: 16px;
+        backdrop-filter: blur(12px);
+        box-shadow: 0 8px 24px rgba(99, 102, 241, 0.08);
+        text-align: center;
+    }
+    .hero-desc-text {
+        font-size: 0.94rem;
+        line-height: 1.65;
+        color: #334155;
+        margin-bottom: 12px;
+    }
+    .hero-steps-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        margin-top: 12px;
+    }
+    .hero-step-pill {
+        background: #f8fafc;
+        border: 1px solid rgba(0, 0, 0, 0.06);
+        border-radius: 10px;
+        padding: 8px 6px;
+        font-size: 0.76rem;
+        color: #64748b;
+        font-weight: 400;
+        line-height: 1.35;
+    }
+    .hero-step-pill b {
+        color: #4f46e5;
+        display: block;
+        font-size: 0.8rem;
+        margin-bottom: 3px;
     }
     .search-container {
         max-width: 800px;
@@ -497,7 +575,30 @@ with st.sidebar:
 st.markdown("""
 <div class="hero">
     <div class="hero-title">Nexus</div>
-    <div class="hero-subtitle">Autonomous AI Research Intelligence</div>
+    <div class="hero-subtitle">Autonomous Multi-Agent Enterprise Research Intelligence</div>
+    <div class="hero-desc-box">
+        <div class="hero-desc-text">
+            <b>Nexus AI</b> is an enterprise-grade autonomous intelligence platform that deconstructs complex topics, navigates live web and private document vectors, conducts dialectical debates (Optimist vs. Skeptic), self-audits citations, and generates C-suite boardroom intelligence with interactive visual analytics.
+        </div>
+        <div class="hero-steps-grid">
+            <div class="hero-step-pill">
+                <b>1. Decompose & Plan</b>
+                Autonomous sub-questions with Human-in-the-Loop approval
+            </div>
+            <div class="hero-step-pill">
+                <b>2. Hybrid Retrieval</b>
+                Live Tavily search + Private FAISS document vectors
+            </div>
+            <div class="hero-step-pill">
+                <b>3. Dialectical Debate</b>
+                Optimist vs. Skeptic adversarial tension & Judge synthesis
+            </div>
+            <div class="hero-step-pill">
+                <b>4. Audit & Visualize</b>
+                Reflexion fact-check, Plotly charts & Boardroom Council
+            </div>
+        </div>
+    </div>
 </div>
 """, unsafe_allow_html=True)
 
