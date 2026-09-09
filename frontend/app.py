@@ -26,7 +26,7 @@ def get_current_api_url() -> str:
     env_url = os.getenv("API_BASE_URL")
     if env_url:
         return normalize_api_url(env_url)
-    return "http://127.0.0.1:8000/api"
+    return "https://enterprise-research-agent-ug91.onrender.com/api"
 
 def check_backend_health(api_url: str):
     base = api_url.rstrip("/")
