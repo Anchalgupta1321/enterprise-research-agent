@@ -15,7 +15,7 @@ def test_static_frontend_index_serving():
     response = client.get("/")
     assert response.status_code == 200
     assert "<title>Enterprise AI Research Platform</title>" in response.text
-    assert "Modus Research" in response.text
+    assert "MODUS AI" in response.text
 
 def test_static_frontend_css_and_js_serving():
     """Verify FastAPI serves CSS and JS static assets."""

@@ -6,7 +6,7 @@
     <title>Enterprise AI Research Platform</title>
     <meta name="description" content="Autonomous multi-agent enterprise research and RAG pipeline.">
     
-    <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+    <!-- Google Fonts: Plus Jakarta Sans & Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -17,11 +17,10 @@
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <!-- Marked.js for Markdown Rendering -->
+    <!-- Marked.js & Chart.js & Canvas Confetti -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    
-    <!-- Chart.js for Visual Analytics -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/styles.css">
@@ -32,21 +31,17 @@
             theme: {
                 extend: {
                     colors: {
-                        zinc: {
-                            850: '#151518',
-                            900: '#121215',
-                            950: '#09090b',
-                        },
-                        accent: {
-                            DEFAULT: '#2563eb',
-                            hover: '#1d4ed8',
-                            light: '#3b82f6',
-                            subtle: 'rgba(37, 99, 235, 0.1)'
+                        brand: {
+                            blue: '#2563eb',
+                            purple: '#7c3aed',
+                            emerald: '#10b981',
+                            amber: '#f59e0b',
+                            rose: '#f43f5e'
                         }
                     },
                     fontFamily: {
-                        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
-                        display: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'sans-serif'],
                         mono: ['JetBrains Mono', 'monospace']
                     }
                 }
@@ -54,388 +49,421 @@
         }
     </script>
 </head>
-<body class="bg-[#09090b] text-zinc-100 font-sans antialiased min-h-screen selection:bg-blue-600 selection:text-white flex flex-col">
+<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen flex flex-col relative overflow-x-hidden selection:bg-indigo-500 selection:text-white">
 
-    <!-- Navbar: Authentic Product Header -->
-    <header class="border-b border-zinc-800/80 bg-[#09090b]/90 backdrop-blur-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
+    <!-- Glowing Background Ambient Meshes -->
+    <div class="fixed top-0 left-1/4 w-[500px] h-[500px] bg-blue-600/15 rounded-full blur-[120px] pointer-events-none"></div>
+    <div class="fixed bottom-0 right-1/4 w-[600px] h-[600px] bg-purple-600/15 rounded-full blur-[140px] pointer-events-none"></div>
+    <div class="fixed top-1/3 right-10 w-[400px] h-[400px] bg-emerald-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+
+    <!-- Header Navigation -->
+    <header class="border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-xl sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <!-- Brand Logo -->
-            <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo({top:0, behavior:'smooth'})">
-                <div class="w-8 h-8 rounded-lg bg-zinc-900 border border-zinc-700/80 flex items-center justify-center text-blue-500 font-bold text-sm">
-                    <i class="fa-solid fa-layer-group"></i>
+            <div class="flex items-center gap-3 cursor-pointer group" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-500 to-purple-500 p-0.5 shadow-lg shadow-indigo-500/30 group-hover:scale-105 transition-all">
+                    <div class="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
+                        <i class="fa-solid fa-brain text-indigo-400 text-base"></i>
+                    </div>
                 </div>
-                <div class="flex items-center gap-2">
-                    <span class="font-display font-bold text-sm text-zinc-100 tracking-tight">Modus Research</span>
-                    <span class="text-[10px] font-medium px-2 py-0.5 rounded bg-zinc-800/80 text-zinc-400 border border-zinc-700/50">ENTERPRISE</span>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-display font-extrabold text-base tracking-tight bg-gradient-to-r from-white via-slate-200 to-indigo-300 bg-clip-text text-transparent">MODUS AI</span>
+                        <span class="px-2 py-0.5 text-[10px] font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 rounded-full">ENTERPRISE</span>
+                    </div>
+                    <p class="text-[11px] text-slate-400 font-medium">Multi-Agent Research Platform</p>
                 </div>
             </div>
 
             <!-- Header Status & Actions -->
             <div class="flex items-center gap-3">
-                <div id="backendHealthBadge" class="flex items-center gap-2 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-950/40 text-emerald-400 border border-emerald-800/50">
-                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                    <span id="backendStatusText" class="text-[11px]">Connecting...</span>
+                <div id="backendHealthBadge" class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 shadow-sm shadow-emerald-500/10">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span id="backendStatusText">Connecting API...</span>
                 </div>
 
-                <a href="/docs" target="_blank" class="text-xs text-zinc-400 hover:text-zinc-200 px-2.5 py-1 rounded-md bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 transition flex items-center gap-1.5">
-                    <i class="fa-solid fa-code text-zinc-400 text-[10px]"></i> API Docs
+                <a href="/docs" target="_blank" class="hidden sm:flex items-center gap-1.5 text-xs text-slate-300 hover:text-white bg-slate-900 hover:bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700/80 transition shadow-sm">
+                    <i class="fa-solid fa-code text-indigo-400"></i> API Docs
                 </a>
 
-                <button onclick="toggleSettingsModal()" class="text-zinc-400 hover:text-zinc-200 p-1.5 rounded-md hover:bg-zinc-900 border border-transparent hover:border-zinc-800 transition" title="Settings">
-                    <i class="fa-solid fa-gear text-xs"></i>
+                <button onclick="toggleSettingsModal()" class="text-slate-400 hover:text-white p-2 rounded-lg bg-slate-900/60 hover:bg-slate-800 border border-slate-800 transition" title="Settings">
+                    <i class="fa-solid fa-gear text-sm"></i>
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- Main App Layout -->
-    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+    <!-- Main App Workspace -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6 relative z-10">
 
-        <!-- Top Console / Topic Prompt Bar -->
-        <section class="bg-zinc-900/90 border border-zinc-800 rounded-xl p-5 shadow-sm space-y-4">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-zinc-800/60 pb-3">
-                <div>
-                    <h1 class="font-display font-bold text-lg text-zinc-100 tracking-tight">Enterprise Research Workspace</h1>
-                    <p class="text-xs text-zinc-400">Autonomous multi-agent web crawler, vector RAG indexer, and verified report generator.</p>
-                </div>
-                <div class="flex items-center gap-2 text-xs">
-                    <span class="text-zinc-500 font-mono">Engine:</span>
-                    <span class="px-2 py-0.5 rounded bg-zinc-800 text-zinc-300 font-mono text-[11px]">LangGraph + Tavily</span>
-                </div>
-            </div>
-
-            <!-- Search Form -->
-            <form id="researchForm" class="space-y-3" onsubmit="submitResearchTopic(event)">
-                <div class="flex flex-col sm:flex-row items-stretch gap-2">
-                    <div class="relative flex-1">
-                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-zinc-500">
-                            <i class="fa-solid fa-magnifying-glass text-xs"></i>
+        <!-- Top Console: Vibrant Hero Console -->
+        <section class="relative rounded-2xl bg-gradient-to-b from-slate-900/90 via-slate-900/70 to-slate-950/90 border-2 border-indigo-500/30 p-6 sm:p-8 shadow-2xl shadow-indigo-950/50 backdrop-blur-lg overflow-hidden group">
+            <div class="absolute -right-20 -top-20 w-80 h-80 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <div class="relative z-10 space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800/80 pb-4">
+                    <div>
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-indigo-300 border border-indigo-500/40 uppercase tracking-wider">
+                                <i class="fa-solid fa-sparkles me-1"></i> Autonomous RAG Engine
+                            </span>
                         </div>
-                        <input 
-                            type="text" 
-                            id="topicInput"
-                            placeholder="Enter enterprise research query (e.g., Enterprise Generative AI Adoption & Security Risks 2026)..." 
-                            required
-                            class="w-full bg-zinc-950 text-zinc-100 placeholder-zinc-500 text-xs sm:text-sm pl-9 pr-4 py-2.5 rounded-lg border border-zinc-700/80 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/30 transition"
-                        >
+                        <h1 class="font-display font-extrabold text-2xl sm:text-3xl text-white tracking-tight">
+                            Enterprise AI Research Workspace
+                        </h1>
+                        <p class="text-xs sm:text-sm text-slate-300">
+                            Deploy multi-agent crawlers to search live web intelligence, query PDF vector embeddings, and generate audited briefs.
+                        </p>
                     </div>
-                    <button 
-                        type="submit" 
-                        id="submitTopicBtn"
-                        class="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs rounded-lg shadow-sm transition flex items-center justify-center gap-2 whitespace-nowrap active:scale-[0.98]"
-                    >
-                        <span>Start Research</span>
-                        <i class="fa-solid fa-arrow-right text-[10px]"></i>
+
+                    <!-- Demo Trigger CTA Button -->
+                    <button type="button" onclick="loadSampleDemoSession()" class="px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-bold text-xs rounded-xl shadow-lg shadow-emerald-500/25 transition-all flex items-center gap-2 shrink-0 active:scale-95">
+                        <i class="fa-solid fa-bolt text-xs"></i>
+                        <span>Load Interactive Demo Report</span>
                     </button>
                 </div>
-            </form>
 
-            <!-- Quick Template Chips -->
-            <div class="flex flex-wrap items-center gap-2 text-xs text-zinc-400 pt-1">
-                <span class="text-zinc-500 text-[11px]">Quick Templates:</span>
-                <button type="button" onclick="setPromptChip('Enterprise Generative AI Adoption & Security Risks 2026')" class="px-2.5 py-1 rounded bg-zinc-950 hover:bg-zinc-800 text-zinc-300 border border-zinc-800 text-[11px] transition">
-                    GenAI Security 2026
-                </button>
-                <button type="button" onclick="setPromptChip('Global Semiconductor Supply Chain Resilience & Geopolitical Impact')" class="px-2.5 py-1 rounded bg-zinc-950 hover:bg-zinc-800 text-zinc-300 border border-zinc-800 text-[11px] transition">
-                    Semiconductor Supply Chain
-                </button>
-                <button type="button" onclick="setPromptChip('Autonomous AI Agents in Financial Fraud Detection')" class="px-2.5 py-1 rounded bg-zinc-950 hover:bg-zinc-800 text-zinc-300 border border-zinc-800 text-[11px] transition">
-                    Fraud Detection Agents
-                </button>
+                <!-- Input Search Bar -->
+                <form id="researchForm" class="space-y-3" onsubmit="submitResearchTopic(event)">
+                    <div class="flex flex-col sm:flex-row items-stretch gap-2.5">
+                        <div class="relative flex-1">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-indigo-400">
+                                <i class="fa-solid fa-magnifying-glass text-sm"></i>
+                            </div>
+                            <input 
+                                type="text" 
+                                id="topicInput"
+                                placeholder="Enter research query (e.g. Enterprise Generative AI Adoption & Security Risks 2026)..." 
+                                required
+                                class="w-full bg-slate-950/90 text-white placeholder-slate-400 text-xs sm:text-sm pl-10 pr-4 py-3.5 rounded-xl border-2 border-indigo-500/40 focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/20 transition-all shadow-inner font-medium"
+                            >
+                        </div>
+                        <button 
+                            type="submit" 
+                            id="submitTopicBtn"
+                            class="px-6 py-3.5 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-bold text-xs sm:text-sm rounded-xl shadow-lg shadow-indigo-500/30 transition-all flex items-center justify-center gap-2 whitespace-nowrap active:scale-[0.98]"
+                        >
+                            <span>Launch Research Agent</span>
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Color-Coded Prompt Chips -->
+                <div class="flex flex-wrap items-center gap-2 pt-1 text-xs">
+                    <span class="text-slate-400 font-medium text-xs me-1 me-1">Preset Templates:</span>
+                    <button type="button" onclick="setPromptChip('Enterprise Generative AI Adoption & Security Risks 2026')" class="px-3 py-1.5 rounded-lg bg-indigo-950/60 hover:bg-indigo-900/80 text-indigo-300 border border-indigo-500/40 hover:border-indigo-400 transition flex items-center gap-1.5 shadow-sm">
+                        <span class="w-2 h-2 rounded-full bg-indigo-400"></span> GenAI Security 2026
+                    </button>
+                    <button type="button" onclick="setPromptChip('Global Semiconductor Supply Chain Resilience & Geopolitical Impact')" class="px-3 py-1.5 rounded-lg bg-emerald-950/60 hover:bg-emerald-900/80 text-emerald-300 border border-emerald-500/40 hover:border-emerald-400 transition flex items-center gap-1.5 shadow-sm">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400"></span> Semiconductor Supply Chain
+                    </button>
+                    <button type="button" onclick="setPromptChip('Autonomous AI Agents in Financial Fraud Detection')" class="px-3 py-1.5 rounded-lg bg-amber-950/60 hover:bg-amber-900/80 text-amber-300 border border-amber-500/40 hover:border-amber-400 transition flex items-center gap-1.5 shadow-sm">
+                        <span class="w-2 h-2 rounded-full bg-amber-400"></span> Fraud Detection Agents
+                    </button>
+                </div>
             </div>
         </section>
 
-        <!-- Main Workspace Dual-Deck Grid -->
+        <!-- Two-Column Workspace Layout -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
 
-            <!-- LEFT PANEL: Knowledge Base & Recent Runs (4 Columns) -->
+            <!-- LEFT SIDEBAR (4 Columns) -->
             <div class="lg:col-span-4 space-y-6">
 
-                <!-- Knowledge Base RAG Upload -->
-                <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-4 shadow-sm space-y-3">
+                <!-- Knowledge Base RAG Upload Dropzone (Cyan/Emerald Card) -->
+                <div class="bg-gradient-to-b from-slate-900 to-slate-950 border-2 border-emerald-500/30 hover:border-emerald-500/50 rounded-2xl p-5 shadow-xl shadow-emerald-950/20 transition-all space-y-4">
                     <div class="flex items-center justify-between">
-                        <h3 class="font-display font-semibold text-xs text-zinc-200 flex items-center gap-2">
-                            <i class="fa-solid fa-folder-open text-blue-400"></i> Document Knowledge Base
+                        <h3 class="font-display font-bold text-sm text-emerald-400 flex items-center gap-2">
+                            <i class="fa-solid fa-folder-open text-emerald-400"></i> Document Knowledge Base
                         </h3>
-                        <span id="docCountBadge" class="px-2 py-0.5 text-[10px] font-medium bg-zinc-800 text-zinc-400 border border-zinc-700/60 rounded">
+                        <span id="docCountBadge" class="px-2.5 py-0.5 text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 rounded-full">
                             0 Docs
                         </span>
                     </div>
 
-                    <!-- Dropzone -->
                     <div 
                         id="dropZone"
                         onclick="document.getElementById('fileInput').click()"
-                        class="border border-dashed border-zinc-700 hover:border-blue-500 bg-zinc-950/60 hover:bg-zinc-950 rounded-lg p-4 text-center cursor-pointer transition group"
+                        class="border-2 border-dashed border-emerald-500/40 hover:border-emerald-400 bg-slate-950/80 hover:bg-emerald-950/30 rounded-xl p-5 text-center cursor-pointer transition-all group"
                     >
                         <input type="file" id="fileInput" multiple accept=".pdf" class="hidden" onchange="handleFileUpload(this.files)">
-                        <div class="w-8 h-8 mx-auto rounded bg-zinc-800 group-hover:bg-blue-500/20 flex items-center justify-center text-zinc-400 group-hover:text-blue-400 transition mb-1.5">
-                            <i class="fa-solid fa-cloud-arrow-up text-xs"></i>
+                        <div class="w-10 h-10 mx-auto rounded-xl bg-emerald-500/20 text-emerald-400 group-hover:scale-110 flex items-center justify-center transition mb-2">
+                            <i class="fa-solid fa-cloud-arrow-up text-base"></i>
                         </div>
-                        <p class="text-xs font-medium text-zinc-300">Upload PDF documents</p>
-                        <p class="text-[10px] text-zinc-500 mt-0.5">Index into local vector store for RAG grounding</p>
+                        <p class="text-xs font-bold text-slate-200">Upload PDF Documents</p>
+                        <p class="text-[11px] text-slate-400 mt-0.5">Embed PDFs into vector store for RAG research</p>
                     </div>
 
-                    <!-- Progress bar -->
-                    <div id="uploadStatusContainer" class="hidden space-y-1.5 text-xs">
-                        <div class="flex items-center justify-between text-zinc-400 text-[11px]">
+                    <div id="uploadStatusContainer" class="hidden space-y-2 text-xs">
+                        <div class="flex items-center justify-between text-emerald-300 font-semibold text-[11px]">
                             <span id="uploadStatusText">Embedding PDF...</span>
                             <span id="uploadPercent">0%</span>
                         </div>
-                        <div class="w-full bg-zinc-800 rounded-full h-1 overflow-hidden">
-                            <div id="uploadProgressBar" class="bg-blue-500 h-full w-0 transition-all duration-300"></div>
+                        <div class="w-full bg-slate-950 rounded-full h-2 overflow-hidden border border-emerald-500/30">
+                            <div id="uploadProgressBar" class="bg-gradient-to-r from-emerald-500 to-teal-400 h-full w-0 transition-all duration-300"></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Recent Research Runs -->
-                <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-4 shadow-sm space-y-3">
+                <!-- Recent Research Runs (Amber Card) -->
+                <div class="bg-gradient-to-b from-slate-900 to-slate-950 border-2 border-amber-500/30 hover:border-amber-500/50 rounded-2xl p-5 shadow-xl shadow-amber-950/20 transition-all space-y-4">
                     <div class="flex items-center justify-between">
-                        <h3 class="font-display font-semibold text-xs text-zinc-200 flex items-center gap-2">
-                            <i class="fa-solid fa-clock-rotate-left text-zinc-400"></i> Research History
+                        <h3 class="font-display font-bold text-sm text-amber-400 flex items-center gap-2">
+                            <i class="fa-solid fa-clock-rotate-left text-amber-400"></i> Research History
                         </h3>
-                        <button onclick="fetchResearchHistory()" class="text-zinc-500 hover:text-zinc-300 text-xs" title="Refresh">
+                        <button onclick="fetchResearchHistory()" class="text-xs text-amber-400 hover:text-white p-1 rounded hover:bg-amber-950/50 transition" title="Refresh">
                             <i class="fa-solid fa-arrows-rotate"></i>
                         </button>
                     </div>
 
-                    <div id="historyList" class="space-y-2 max-h-72 overflow-y-auto pr-1 text-xs">
-                        <div class="text-center py-6 text-zinc-500 text-xs">
-                            <i class="fa-solid fa-spinner fa-spin text-sm mb-1 block"></i>
+                    <div id="historyList" class="space-y-2.5 max-h-72 overflow-y-auto pr-1 text-xs">
+                        <div class="text-center py-6 text-slate-400">
+                            <i class="fa-solid fa-spinner fa-spin text-base mb-1.5 block text-amber-400"></i>
                             Loading sessions...
                         </div>
                     </div>
                 </div>
 
-                <!-- Architecture Summary -->
-                <div class="bg-zinc-900/60 border border-zinc-800/80 rounded-xl p-4 space-y-2.5">
-                    <h4 class="font-display font-semibold text-xs text-zinc-300">System Workflow</h4>
-                    <div class="space-y-1.5 text-[11px] text-zinc-400">
-                        <div class="flex items-center justify-between border-b border-zinc-800/60 pb-1">
-                            <span>1. Planner Agent</span>
-                            <span class="text-zinc-500 font-mono">Generates sub-questions</span>
+                <!-- Agent System Workflow (Violet Card) -->
+                <div class="bg-gradient-to-b from-slate-900 to-slate-950 border-2 border-purple-500/30 rounded-2xl p-5 shadow-xl space-y-3">
+                    <h4 class="font-display font-bold text-xs text-purple-300 flex items-center gap-2 me-1">
+                        <i class="fa-solid fa-network-wired text-purple-400 me-1 me-1 me-1 me-1"></i> Multi-Agent Architecture
+                    </h4>
+                    <div class="space-y-2 text-xs">
+                        <div class="p-2.5 bg-purple-950/40 rounded-xl border border-purple-500/30 flex items-center justify-between">
+                            <span class="text-purple-300 font-semibold">1. Planner Agent</span>
+                            <span class="text-slate-400 text-[11px]">Formulates sub-questions</span>
                         </div>
-                        <div class="flex items-center justify-between border-b border-zinc-800/60 pb-1">
-                            <span>2. HITL Checkpoint</span>
-                            <span class="text-zinc-500 font-mono">User question edit/approval</span>
+                        <div class="p-2.5 bg-amber-950/40 rounded-xl border border-amber-500/30 flex items-center justify-between">
+                            <span class="text-amber-300 font-semibold">2. HITL Approval</span>
+                            <span class="text-slate-400 text-[11px]">Human question edit & approval</span>
                         </div>
-                        <div class="flex items-center justify-between border-b border-zinc-800/60 pb-1">
-                            <span>3. Web RAG Crawler</span>
-                            <span class="text-zinc-500 font-mono">Tavily + FAISS vector store</span>
+                        <div class="p-2.5 bg-blue-950/40 rounded-xl border border-blue-500/30 flex items-center justify-between">
+                            <span class="text-blue-300 font-semibold">3. Web Crawler RAG</span>
+                            <span class="text-slate-400 text-[11px]">Tavily + Vector search</span>
                         </div>
-                        <div class="flex items-center justify-between">
-                            <span>4. Synthesis & Audit</span>
-                            <span class="text-zinc-500 font-mono">Audited Markdown brief</span>
+                        <div class="p-2.5 bg-emerald-950/40 rounded-xl border border-emerald-500/30 flex items-center justify-between">
+                            <span class="text-emerald-300 font-semibold">4. Synthesizer & Auditor</span>
+                            <span class="text-slate-400 text-[11px]">Audited Markdown report</span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- RIGHT PANEL: Main Active Workspace (8 Columns) -->
+            <!-- RIGHT WORKSPACE (8 Columns) -->
             <div class="lg:col-span-8 space-y-6">
 
-                <!-- WORKSPACE STATE 1: Empty Placeholder -->
-                <div id="emptyWorkspaceState" class="bg-zinc-900 border border-zinc-800 rounded-xl p-12 text-center shadow-sm space-y-3">
-                    <div class="w-12 h-12 mx-auto rounded-lg bg-zinc-800 border border-zinc-700/80 flex items-center justify-center text-zinc-400 text-lg">
-                        <i class="fa-solid fa-terminal"></i>
+                <!-- WORKSPACE STATE 1: Empty Placeholder with Demo Prompt -->
+                <div id="emptyWorkspaceState" class="bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 border-2 border-indigo-500/30 rounded-2xl p-10 text-center shadow-2xl space-y-5">
+                    <div class="w-16 h-16 mx-auto rounded-2xl bg-indigo-500/20 border border-indigo-500/40 flex items-center justify-center text-indigo-400 text-2xl shadow-lg shadow-indigo-500/20">
+                        <i class="fa-solid fa-compass-drafting"></i>
                     </div>
-                    <div class="space-y-1">
-                        <h3 class="font-display font-bold text-base text-zinc-100">No Active Session Selected</h3>
-                        <p class="text-xs text-zinc-400 max-w-sm mx-auto">
-                            Submit a new enterprise query above or select a past session from the history panel.
+                    <div class="space-y-2">
+                        <h3 class="font-display font-extrabold text-xl text-white">Interactive Research Workspace</h3>
+                        <p class="text-xs sm:text-sm text-slate-300 max-w-md mx-auto leading-relaxed">
+                            Submit a new topic above to start a live research pipeline, or try the interactive sample demo report below.
                         </p>
+                    </div>
+                    <div class="pt-2">
+                        <button type="button" onclick="loadSampleDemoSession()" class="px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-extrabold text-xs rounded-xl shadow-lg shadow-emerald-500/30 transition-all inline-flex items-center gap-2 active:scale-95">
+                            <i class="fa-solid fa-play"></i> Launch Sample Interactive Demo Report
+                        </button>
                     </div>
                 </div>
 
                 <!-- WORKSPACE STATE 2: Human-In-The-Loop (HITL) Question Approval Deck -->
-                <div id="hitlApprovalCard" class="hidden bg-zinc-900 border border-amber-500/40 rounded-xl p-5 shadow-sm space-y-4">
-                    <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
+                <div id="hitlApprovalCard" class="hidden bg-gradient-to-b from-slate-900 via-amber-950/20 to-slate-950 border-2 border-amber-500/50 rounded-2xl p-6 shadow-2xl space-y-5 animate-fade-in">
+                    <div class="flex items-center justify-between border-b border-amber-500/30 pb-4">
                         <div>
-                            <span class="px-2 py-0.5 text-[10px] font-semibold bg-amber-950/60 text-amber-400 border border-amber-800/60 rounded">
-                                HUMAN-IN-THE-LOOP CHECKPOINT
+                            <span class="px-3 py-1 text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 rounded-full uppercase tracking-wider">
+                                <i class="fa-solid fa-user-check me-1 me-1"></i> Human-In-The-Loop Checkpoint
                             </span>
-                            <h3 class="font-display font-bold text-base text-zinc-100 mt-1">Review AI Sub-Questions</h3>
+                            <h3 class="font-display font-extrabold text-xl text-white mt-2">Review & Edit AI Sub-Questions</h3>
                         </div>
-                        <span class="text-[11px] font-mono text-zinc-400 bg-zinc-950 px-2.5 py-1 rounded border border-zinc-800">
+                        <span class="text-xs font-mono font-bold text-amber-400 bg-slate-950 px-3 py-1.5 rounded-lg border border-amber-500/30">
                             Topic ID: #<span id="hitlTopicId">-</span>
                         </span>
                     </div>
 
-                    <p class="text-xs text-zinc-300">
-                        The AI Planner formulated the sub-questions below. You can modify question text, add specific focus areas, or remove questions before resuming multi-agent execution.
+                    <p class="text-xs sm:text-sm text-slate-200">
+                        The AI Planner generated the target sub-questions below. You can edit text inline, add custom questions, or delete items before starting multi-agent research.
                     </p>
 
-                    <!-- Editable Questions Container -->
-                    <div id="hitlQuestionsList" class="space-y-2.5">
-                        <!-- Question Inputs Render Here -->
+                    <!-- Editable Questions List -->
+                    <div id="hitlQuestionsList" class="space-y-3">
+                        <!-- Dynamic Question Cards Render Here -->
                     </div>
 
                     <!-- Action Controls -->
-                    <div class="flex items-center justify-between pt-2 border-t border-zinc-800">
-                        <button type="button" onclick="addHitlQuestionField()" class="px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 rounded-md text-xs border border-zinc-700 transition flex items-center gap-1.5">
-                            <i class="fa-solid fa-plus text-zinc-400"></i> Add Question
+                    <div class="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-800">
+                        <button type="button" onclick="addHitlQuestionField()" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-slate-200 rounded-xl text-xs font-bold border border-slate-700 transition flex items-center gap-1.5 shadow-sm">
+                            <i class="fa-solid fa-plus text-indigo-400"></i> Add Question
                         </button>
 
-                        <button type="button" onclick="submitHitlApprovals()" id="hitlApproveBtn" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs rounded-md shadow-sm transition flex items-center gap-2">
-                            <i class="fa-solid fa-check me-0.5"></i> Approve Sub-Questions
+                        <button type="button" onclick="submitHitlApprovals()" id="hitlApproveBtn" class="px-6 py-2.5 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-extrabold text-xs sm:text-sm rounded-xl shadow-lg shadow-amber-500/30 transition flex items-center gap-2">
+                            <i class="fa-solid fa-check-double"></i> Approve & Resume Research
                         </button>
                     </div>
                 </div>
 
-                <!-- WORKSPACE STATE 3: Real-Time Pipeline Progress & Log Visualizer -->
-                <div id="liveProgressCard" class="hidden bg-zinc-900 border border-zinc-800 rounded-xl p-5 shadow-sm space-y-4">
+                <!-- WORKSPACE STATE 3: Real-Time Pipeline Progress & Live Log Stream -->
+                <div id="liveProgressCard" class="hidden bg-gradient-to-b from-slate-900 to-slate-950 border-2 border-indigo-500/40 rounded-2xl p-6 shadow-2xl space-y-5">
                     <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-2.5">
-                            <div class="w-7 h-7 rounded bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 text-xs">
-                                <i class="fa-solid fa-spinner fa-spin"></i>
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-xl bg-indigo-500/20 border border-indigo-500/40 flex items-center justify-center text-indigo-400">
+                                <i class="fa-solid fa-spinner fa-spin text-base"></i>
                             </div>
                             <div>
-                                <h3 class="font-display font-semibold text-sm text-zinc-100">Research Pipeline Running</h3>
-                                <p class="text-xs text-zinc-400" id="currentTopicTitleLabel">Processing topic query...</p>
+                                <h3 class="font-display font-bold text-lg text-white">Multi-Agent Pipeline Executing</h3>
+                                <p class="text-xs text-indigo-300 font-medium" id="currentTopicTitleLabel">Processing query...</p>
                             </div>
                         </div>
-                        <span id="liveStatusBadge" class="px-2.5 py-0.5 text-[11px] font-semibold bg-blue-950/50 text-blue-400 border border-blue-800/60 rounded">
+                        <span id="liveStatusBadge" class="px-3 py-1 text-xs font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 rounded-full uppercase">
                             PROCESSING
                         </span>
                     </div>
 
                     <!-- Step Timeline -->
-                    <div class="grid grid-cols-4 gap-2 text-center text-xs pt-1">
-                        <div id="stepPlanner" class="p-2 rounded bg-zinc-950 border border-zinc-800">
-                            <span class="font-semibold block text-zinc-300 text-[11px]">1. Planning</span>
+                    <div class="grid grid-cols-4 gap-2 text-center text-xs">
+                        <div id="stepPlanner" class="p-2.5 rounded-xl border border-slate-800 bg-slate-950 transition">
+                            <i class="fa-solid fa-lightbulb text-indigo-400 block mb-1"></i>
+                            <span class="font-bold block text-slate-200">1. Planning</span>
                         </div>
-                        <div id="stepWebSearch" class="p-2 rounded bg-zinc-950 border border-zinc-800">
-                            <span class="font-semibold block text-zinc-300 text-[11px]">2. Web Crawling</span>
+                        <div id="stepWebSearch" class="p-2.5 rounded-xl border border-slate-800 bg-slate-950 transition">
+                            <i class="fa-solid fa-globe text-blue-400 block mb-1"></i>
+                            <span class="font-bold block text-slate-200">2. Crawling</span>
                         </div>
-                        <div id="stepSynthesis" class="p-2 rounded bg-zinc-950 border border-zinc-800">
-                            <span class="font-semibold block text-zinc-300 text-[11px]">3. Synthesis</span>
+                        <div id="stepSynthesis" class="p-2.5 rounded-xl border border-slate-800 bg-slate-950 transition">
+                            <i class="fa-solid fa-layer-group text-purple-400 block mb-1"></i>
+                            <span class="font-bold block text-slate-200">3. Synthesis</span>
                         </div>
-                        <div id="stepAudit" class="p-2 rounded bg-zinc-950 border border-zinc-800">
-                            <span class="font-semibold block text-zinc-300 text-[11px]">4. Verification</span>
+                        <div id="stepAudit" class="p-2.5 rounded-xl border border-slate-800 bg-slate-950 transition">
+                            <i class="fa-solid fa-shield-halved text-emerald-400 block mb-1"></i>
+                            <span class="font-bold block text-slate-200">4. Audit</span>
                         </div>
                     </div>
 
-                    <!-- Log Output Box -->
-                    <div class="space-y-1.5">
-                        <div class="flex items-center justify-between text-[11px] text-zinc-400">
-                            <span><i class="fa-solid fa-terminal text-zinc-500 me-1"></i> Agent Execution Log</span>
-                            <span class="text-zinc-500">Live</span>
+                    <!-- Log Stream Console -->
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between text-xs text-slate-400">
+                            <span><i class="fa-solid fa-terminal text-indigo-400 me-1 me-1"></i> Live Agent Logs</span>
+                            <span class="text-indigo-400 font-mono text-[10px] animate-pulse">● STREAMING</span>
                         </div>
-                        <div id="agentLogConsole" class="bg-zinc-950 border border-zinc-800 rounded-lg p-3 font-mono text-xs text-zinc-300 max-h-48 overflow-y-auto space-y-1">
-                            <div class="text-zinc-500 italic">[SYSTEM] Agent workflow initiated...</div>
+                        <div id="agentLogConsole" class="bg-slate-950 border border-slate-800 rounded-xl p-4 font-mono text-xs text-slate-300 max-h-52 overflow-y-auto space-y-1.5 shadow-inner">
+                            <div class="text-slate-500 italic">[SYSTEM] Agent workflow initialized...</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- WORKSPACE STATE 4: Final Research Report Dashboard & Chat -->
-                <div id="reportWorkspaceCard" class="hidden space-y-4">
+                <!-- WORKSPACE STATE 4: Final Research Report Dashboard & Streaming Chat -->
+                <div id="reportWorkspaceCard" class="hidden space-y-6 animate-fade-in">
 
-                    <!-- Header Bar -->
-                    <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-5 shadow-sm space-y-3">
-                        <div class="flex flex-wrap items-center justify-between gap-3">
-                            <div>
-                                <div class="flex items-center gap-2 mb-1">
-                                    <span class="px-2 py-0.5 text-[10px] font-semibold bg-emerald-950/60 text-emerald-400 border border-emerald-800/60 rounded">
-                                        COMPLETED
-                                    </span>
-                                    <span class="text-xs text-zinc-400"><span id="reportCreatedAt">-</span></span>
-                                </div>
-                                <h2 id="reportTopicTitle" class="font-display font-bold text-xl text-zinc-100 tracking-tight">
+                    <!-- Header Summary Card -->
+                    <div class="bg-gradient-to-r from-slate-900 via-indigo-950/40 to-slate-900 border-2 border-indigo-500/40 rounded-2xl p-6 shadow-2xl space-y-5">
+                        <div class="flex flex-wrap items-center justify-between gap-4">
+                            <div class="space-y-1">
+                                <span class="px-3 py-1 text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 rounded-full uppercase tracking-wider me-2">
+                                    <i class="fa-solid fa-circle-check me-1"></i> COMPLETED
+                                </span>
+                                <span class="text-xs text-slate-400">Created: <span id="reportCreatedAt">-</span></span>
+                                <h2 id="reportTopicTitle" class="font-display font-extrabold text-2xl text-white tracking-tight pt-1">
                                     Research Topic Title
                                 </h2>
                             </div>
 
-                            <div class="flex items-center gap-3 bg-zinc-950 px-3.5 py-2 rounded-lg border border-zinc-800">
+                            <!-- Audit Score Gauge -->
+                            <div class="flex items-center gap-4 bg-slate-950 px-5 py-3.5 rounded-xl border border-emerald-500/40 shadow-lg shadow-emerald-950/20">
                                 <div class="text-center">
-                                    <span class="text-[10px] text-zinc-400 font-medium block uppercase">Audit Score</span>
-                                    <span id="auditScoreVal" class="text-lg font-display font-bold text-emerald-400">94%</span>
+                                    <span class="text-[10px] text-slate-400 font-bold block uppercase tracking-wider">Audit Score</span>
+                                    <span id="auditScoreVal" class="text-2xl font-display font-extrabold text-emerald-400 me-1">94%</span>
                                 </div>
-                                <div class="h-6 w-px bg-zinc-800"></div>
+                                <div class="h-8 w-px bg-slate-800"></div>
                                 <div>
-                                    <span class="text-[10px] text-zinc-400 font-medium block uppercase">Verdict</span>
-                                    <span id="auditVerdictBadge" class="text-xs font-semibold text-zinc-200">
-                                        VERIFIED
+                                    <span class="text-[10px] text-slate-400 font-bold block uppercase tracking-wider">Audit Verdict</span>
+                                    <span id="auditVerdictBadge" class="text-xs font-bold text-emerald-300 bg-emerald-500/20 px-2.5 py-1 rounded-md border border-emerald-500/40">
+                                        VERIFIED ACCURATE
                                     </span>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Tab Toolbar -->
-                        <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-zinc-800">
-                            <div class="flex items-center gap-1.5">
-                                <button onclick="switchTab('reportTab')" id="tabBtnReport" class="px-3 py-1.5 rounded-md text-xs font-medium bg-zinc-800 text-zinc-100 border border-zinc-700 transition">
-                                    <i class="fa-solid fa-file-lines text-zinc-400 me-1"></i> Executive Brief
+                        <!-- Interactive Tab Controls -->
+                        <div class="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-800">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <button onclick="switchTab('reportTab')" id="tabBtnReport" class="px-4 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md shadow-indigo-500/25 transition flex items-center gap-1.5">
+                                    <i class="fa-solid fa-file-lines"></i> Executive Brief
                                 </button>
-                                <button onclick="switchTab('sourcesTab')" id="tabBtnSources" class="px-3 py-1.5 rounded-md text-xs font-medium bg-zinc-950 hover:bg-zinc-800 text-zinc-400 border border-zinc-800 transition">
-                                    <i class="fa-solid fa-globe me-1"></i> Sources (<span id="sourceCountVal">0</span>)
+                                <button onclick="switchTab('sourcesTab')" id="tabBtnSources" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-950 hover:bg-slate-800 text-slate-300 border border-slate-800 hover:border-slate-700 transition flex items-center gap-1.5">
+                                    <i class="fa-solid fa-globe text-blue-400"></i> Sources (<span id="sourceCountVal">0</span>)
                                 </button>
-                                <button onclick="switchTab('analyticsTab')" id="tabBtnAnalytics" class="px-3 py-1.5 rounded-md text-xs font-medium bg-zinc-950 hover:bg-zinc-800 text-zinc-400 border border-zinc-800 transition">
-                                    <i class="fa-solid fa-chart-simple me-1"></i> Analytics
+                                <button onclick="switchTab('analyticsTab')" id="tabBtnAnalytics" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-950 hover:bg-slate-800 text-slate-300 border border-slate-800 hover:border-slate-700 transition flex items-center gap-1.5">
+                                    <i class="fa-solid fa-chart-pie text-purple-400"></i> Visual Analytics
                                 </button>
-                                <button onclick="switchTab('chatTab')" id="tabBtnChat" class="px-3 py-1.5 rounded-md text-xs font-medium bg-zinc-950 hover:bg-zinc-800 text-zinc-400 border border-zinc-800 transition">
-                                    <i class="fa-solid fa-message text-blue-400 me-1"></i> Report Copilot
+                                <button onclick="switchTab('chatTab')" id="tabBtnChat" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-950 hover:bg-slate-800 text-slate-300 border border-slate-800 hover:border-slate-700 transition flex items-center gap-1.5">
+                                    <i class="fa-solid fa-comments text-emerald-400"></i> Streaming RAG Copilot
                                 </button>
                             </div>
 
-                            <div class="flex items-center gap-1.5">
-                                <button onclick="exportReportMarkdown()" class="px-2.5 py-1.5 rounded text-xs bg-zinc-950 hover:bg-zinc-800 text-zinc-300 border border-zinc-800 transition" title="Export Markdown">
-                                    <i class="fa-solid fa-download me-1"></i> Export .md
+                            <div class="flex items-center gap-2">
+                                <button onclick="exportReportMarkdown()" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-950 hover:bg-slate-800 text-slate-200 border border-slate-700 transition shadow-sm" title="Export Markdown">
+                                    <i class="fa-solid fa-download me-1"></i> Markdown
                                 </button>
-                                <button onclick="window.print()" class="px-2.5 py-1.5 rounded text-xs bg-zinc-950 hover:bg-zinc-800 text-zinc-300 border border-zinc-800 transition" title="Print PDF">
-                                    <i class="fa-solid fa-print me-1"></i> PDF
+                                <button onclick="window.print()" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-950 hover:bg-slate-800 text-slate-200 border border-slate-700 transition shadow-sm" title="Print PDF">
+                                    <i class="fa-solid fa-print me-1"></i> Print PDF
                                 </button>
                             </div>
                         </div>
                     </div>
 
-                    <!-- TAB 1: Executive Report -->
-                    <div id="tabContentReport" class="bg-zinc-900 border border-zinc-800 rounded-xl p-6 shadow-sm space-y-4">
-                        <div id="reportMarkdownContainer" class="prose prose-invert max-w-none prose-headings:font-display leading-relaxed text-xs sm:text-sm text-zinc-200">
+                    <!-- TAB 1: Executive Brief -->
+                    <div id="tabContentReport" class="bg-slate-900/90 border-2 border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl space-y-4">
+                        <div id="reportMarkdownContainer" class="prose prose-invert max-w-none prose-headings:font-display leading-relaxed text-sm text-slate-200">
                             <!-- Report Rendered Here -->
                         </div>
                     </div>
 
                     <!-- TAB 2: Verified Sources -->
-                    <div id="tabContentSources" class="hidden bg-zinc-900 border border-zinc-800 rounded-xl p-5 shadow-sm space-y-3">
-                        <h3 class="font-display font-semibold text-sm text-zinc-100">Citations & Web Intelligence</h3>
-                        <div id="sourcesListContainer" class="space-y-2">
+                    <div id="tabContentSources" class="hidden bg-slate-900/90 border-2 border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+                        <h3 class="font-display font-extrabold text-lg text-white">Verified Research Sources</h3>
+                        <div id="sourcesListContainer" class="space-y-3">
                             <!-- Dynamic Sources -->
                         </div>
                     </div>
 
                     <!-- TAB 3: Visual Analytics -->
-                    <div id="tabContentAnalytics" class="hidden bg-zinc-900 border border-zinc-800 rounded-xl p-5 shadow-sm space-y-4">
-                        <h3 class="font-display font-semibold text-sm text-zinc-100">Metrics Visualization</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="bg-zinc-950 p-3.5 rounded-lg border border-zinc-800">
-                                <h4 class="text-xs font-medium text-zinc-400 mb-2">Category Confidence</h4>
-                                <canvas id="chartCanvas1" class="max-h-56"></canvas>
+                    <div id="tabContentAnalytics" class="hidden bg-slate-900/90 border-2 border-slate-800 rounded-2xl p-6 shadow-xl space-y-6">
+                        <h3 class="font-display font-extrabold text-lg text-white">Data Metrics Visualization</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 shadow-inner">
+                                <h4 class="text-xs font-bold text-indigo-300 mb-3">Category Opportunity vs Risk</h4>
+                                <canvas id="chartCanvas1" class="max-h-60"></canvas>
                             </div>
-                            <div class="bg-zinc-950 p-3.5 rounded-lg border border-zinc-800">
-                                <h4 class="text-xs font-medium text-zinc-400 mb-2">Source Attribution</h4>
-                                <canvas id="chartCanvas2" class="max-h-56"></canvas>
+                            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 shadow-inner">
+                                <h4 class="text-xs font-bold text-emerald-300 mb-3">RAG Retrieval Source Attribution</h4>
+                                <canvas id="chartCanvas2" class="max-h-60"></canvas>
                             </div>
                         </div>
                     </div>
 
-                    <!-- TAB 4: Streaming Chat Assistant -->
-                    <div id="tabContentChat" class="hidden bg-zinc-900 border border-zinc-800 rounded-xl p-5 shadow-sm space-y-3">
-                        <div class="flex items-center justify-between border-b border-zinc-800 pb-2.5">
+                    <!-- TAB 4: Streaming RAG AI Assistant Chat -->
+                    <div id="tabContentChat" class="hidden bg-slate-900/90 border-2 border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
                             <div>
-                                <h3 class="font-display font-semibold text-sm text-zinc-100 flex items-center gap-2">
-                                    <i class="fa-solid fa-message text-blue-400"></i> Report AI Copilot
+                                <h3 class="font-display font-extrabold text-lg text-white flex items-center gap-2 me-1">
+                                    <i class="fa-solid fa-robot text-emerald-400 me-1"></i> RAG AI Copilot Assistant
                                 </h3>
-                                <p class="text-xs text-zinc-400">Streaming RAG Q&A grounded in this research session.</p>
+                                <p class="text-xs text-slate-400">Ask questions grounded in this research report.</p>
                             </div>
-                            <button onclick="clearChatHistory()" class="text-xs text-zinc-500 hover:text-zinc-300">Clear</button>
+                            <button onclick="clearChatHistory()" class="text-xs text-slate-400 hover:text-white">Clear Chat</button>
                         </div>
 
-                        <div id="chatHistoryContainer" class="bg-zinc-950 border border-zinc-800/80 rounded-lg p-3 min-h-[260px] max-h-[380px] overflow-y-auto space-y-2.5 text-xs font-sans">
-                            <div class="flex items-start gap-2.5 bg-zinc-900 p-2.5 rounded border border-zinc-800 text-zinc-300">
-                                <div class="w-6 h-6 rounded bg-blue-600/20 text-blue-400 flex items-center justify-center font-bold text-[10px] shrink-0">AI</div>
+                        <div id="chatHistoryContainer" class="bg-slate-950 border border-slate-800 rounded-xl p-4 min-h-[280px] max-h-[420px] overflow-y-auto space-y-3 font-sans text-xs sm:text-sm">
+                            <div class="flex items-start gap-3 bg-slate-900/80 p-3 rounded-xl border border-indigo-500/30 text-slate-200">
+                                <div class="w-7 h-7 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-extrabold text-xs shrink-0">AI</div>
                                 <div>
-                                    <p class="font-semibold text-[11px] text-zinc-200 mb-0.5">MODUS Copilot</p>
-                                    <p class="text-xs text-zinc-300">Ask any follow-up question or detail about this report.</p>
+                                    <p class="font-bold text-xs text-white mb-0.5">MODUS Copilot</p>
+                                    <p class="text-xs text-slate-300 me-1">Hello! I have fully indexed this research report. Ask me follow-up questions!</p>
                                 </div>
                             </div>
                         </div>
@@ -444,17 +472,17 @@
                             <input 
                                 type="text" 
                                 id="chatInput" 
-                                placeholder="Type follow-up question..." 
+                                placeholder="Ask follow-up question..." 
                                 required
-                                class="flex-1 bg-zinc-950 text-zinc-100 placeholder-zinc-500 text-xs px-3 py-2 rounded-md border border-zinc-800 focus:outline-none focus:border-blue-500"
+                                class="flex-1 bg-slate-950 text-white placeholder-slate-500 text-xs sm:text-sm px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-indigo-400"
                             >
                             <button 
                                 type="submit" 
                                 id="sendChatBtn"
-                                class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs rounded-md shadow-sm transition flex items-center gap-1.5"
+                                class="px-5 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-bold text-xs rounded-xl shadow-md transition flex items-center gap-2"
                             >
                                 <span>Send</span>
-                                <i class="fa-solid fa-paper-plane text-[10px]"></i>
+                                <i class="fa-solid fa-paper-plane text-xs"></i>
                             </button>
                         </form>
                     </div>
@@ -467,41 +495,41 @@
     </main>
 
     <!-- Settings Modal -->
-    <div id="settingsModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-zinc-900 border border-zinc-800 rounded-xl max-w-sm w-full p-5 space-y-4 shadow-xl">
-            <div class="flex items-center justify-between border-b border-zinc-800 pb-2.5">
-                <h3 class="font-display font-bold text-sm text-zinc-100">API Connection Settings</h3>
-                <button onclick="toggleSettingsModal()" class="text-zinc-500 hover:text-zinc-200 text-xs"><i class="fa-solid fa-xmark"></i></button>
+    <div id="settingsModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border-2 border-indigo-500/40 rounded-2xl max-w-md w-full p-6 space-y-5 shadow-2xl">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <h3 class="font-display font-bold text-base text-white">API Settings</h3>
+                <button onclick="toggleSettingsModal()" class="text-slate-400 hover:text-white text-sm"><i class="fa-solid fa-xmark"></i></button>
             </div>
             
-            <div class="space-y-2 text-xs">
-                <label class="block font-medium text-zinc-300">Backend API URL</label>
+            <div class="space-y-3 text-xs">
+                <label class="block font-semibold text-slate-300">Backend API URL</label>
                 <input 
                     type="url" 
                     id="customApiUrlInput" 
-                    placeholder="https://your-service.onrender.com/api" 
-                    class="w-full bg-zinc-950 text-zinc-100 p-2.5 rounded-md border border-zinc-800 focus:outline-none focus:border-blue-500"
+                    placeholder="https://enterprise-research-agent-ug91.onrender.com/api" 
+                    class="w-full bg-slate-950 text-white p-3 rounded-xl border border-slate-700 focus:outline-none focus:border-indigo-400"
                 >
-                <p class="text-[11px] text-zinc-500">Auto-detected when deployed on Render.</p>
+                <p class="text-[11px] text-slate-400">Automatically resolves host origin when deployed on Render.</p>
             </div>
 
-            <div class="flex justify-end gap-2 pt-2 border-t border-zinc-800">
-                <button onclick="resetApiUrl()" class="px-3 py-1.5 bg-zinc-800 text-zinc-300 rounded text-xs">Reset</button>
-                <button onclick="saveApiUrlSettings()" class="px-3 py-1.5 bg-blue-600 text-white font-semibold rounded text-xs">Save</button>
+            <div class="flex justify-end gap-2 pt-2 border-t border-slate-800">
+                <button onclick="resetApiUrl()" class="px-4 py-2 bg-slate-800 text-slate-300 rounded-xl text-xs font-bold">Reset</button>
+                <button onclick="saveApiUrlSettings()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-xs">Save</button>
             </div>
         </div>
     </div>
 
     <!-- Footer -->
-    <footer class="border-t border-zinc-800/60 bg-[#09090b] mt-10 py-5 text-center text-xs text-zinc-500">
-        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-            <span>© 2026 Modus AI Enterprise Platform</span>
-            <div class="flex items-center gap-3 text-[11px]">
-                <span>FastAPI Backend</span>
+    <footer class="border-t border-slate-800/80 bg-slate-950 py-6 text-center text-xs text-slate-400 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <span>© 2026 MODUS Enterprise AI Research Platform</span>
+            <div class="flex items-center gap-4 text-xs">
+                <span class="text-indigo-400">FastAPI Backend</span>
                 <span>•</span>
-                <span>Tavily RAG</span>
+                <span class="text-emerald-400">Tavily Web Crawling</span>
                 <span>•</span>
-                <span>Render Service</span>
+                <span class="text-purple-400">Render Service</span>
             </div>
         </div>
     </footer>
