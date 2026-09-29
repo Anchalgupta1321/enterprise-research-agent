@@ -1,0 +1,152 @@
+/* Authentic Product Styling - Linear / Vercel Dark Theme */
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: #09090b;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #27272a;
+    border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #3f3f46;
+}
+
+/* Crisp Markdown Report Styles */
+#reportMarkdownContainer h1 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #f4f4f5;
+    margin-top: 1.25rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid #27272a;
+    letter-spacing: -0.02em;
+}
+
+#reportMarkdownContainer h2 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: #e4e4e7;
+    margin-top: 1.1rem;
+    margin-bottom: 0.6rem;
+    letter-spacing: -0.01em;
+}
+
+#reportMarkdownContainer h3 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #60a5fa;
+    margin-top: 0.9rem;
+    margin-bottom: 0.4rem;
+}
+
+#reportMarkdownContainer p {
+    color: #d4d4d8;
+    line-height: 1.65;
+    margin-bottom: 0.85rem;
+}
+
+#reportMarkdownContainer ul, #reportMarkdownContainer ol {
+    margin-left: 1.1rem;
+    margin-bottom: 0.85rem;
+    color: #d4d4d8;
+}
+
+#reportMarkdownContainer li {
+    margin-bottom: 0.3rem;
+}
+
+#reportMarkdownContainer blockquote {
+    border-left: 2px solid #2563eb;
+    background: #121215;
+    padding: 0.6rem 0.85rem;
+    border-radius: 0 0.5rem 0.5rem 0;
+    margin: 0.85rem 0;
+    color: #93c5fd;
+    font-style: normal;
+}
+
+#reportMarkdownContainer table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.85rem 0;
+    font-size: 0.8rem;
+}
+
+#reportMarkdownContainer th, #reportMarkdownContainer td {
+    padding: 0.55rem 0.75rem;
+    border: 1px solid #27272a;
+    text-align: left;
+}
+
+#reportMarkdownContainer th {
+    background: #18181b;
+    color: #e4e4e7;
+    font-weight: 600;
+}
+
+#reportMarkdownContainer code {
+    background: #18181b;
+    color: #f43f5e;
+    padding: 0.12rem 0.35rem;
+    border-radius: 0.25rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82em;
+    border: 1px solid #27272a;
+}
+
+#reportMarkdownContainer pre {
+    background: #09090b;
+    padding: 0.85rem;
+    border-radius: 0.5rem;
+    border: 1px solid #27272a;
+    overflow-x: auto;
+    margin: 0.85rem 0;
+}
+
+#reportMarkdownContainer pre code {
+    background: transparent;
+    color: #e4e4e7;
+    padding: 0;
+    border: none;
+}
+
+/* Print Styles */
+@media print {
+    header, footer, #researchForm, #emptyWorkspaceState, #hitlApprovalCard, #liveProgressCard, .lg\:col-span-4, #chatForm, button {
+        display: none !important;
+    }
+    body {
+        background: white !important;
+        color: black !important;
+    }
+    #tabContentReport {
+        border: none !important;
+        background: white !important;
+        color: black !important;
+        box-shadow: none !important;
+    }
+    #reportMarkdownContainer h1, #reportMarkdownContainer h2, #reportMarkdownContainer h3, #reportMarkdownContainer p {
+        color: black !important;
+    }
+}
