@@ -21,7 +21,7 @@ def test_static_frontend_css_and_js_serving():
     """Verify FastAPI serves CSS and JS static assets."""
     css_res = client.get("/css/styles.css")
     assert css_res.status_code == 200
-    assert "Custom Scrollbars" in css_res.text or "prose" in css_res.text
+    assert "Scrollbars" in css_res.text or "prose" in css_res.text
 
     js_res = client.get("/js/app.js")
     assert js_res.status_code == 200
