@@ -1,19 +1,20 @@
-# Nexus AI: Autonomous Enterprise Research Agent 🧠
+# MODUS AI: Enterprise AI Research Platform 🧠
 
 <div align="center">
 
 [![Python 3.11+](https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
-[![Streamlit](https://img.shields.io/badge/Streamlit-1.40+-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://streamlit.io/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-Glassmorphism-38BDF8?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 [![LangGraph](https://img.shields.io/badge/LangGraph-Cyclic_State_Machine-1C3C3C?style=for-the-badge&logo=langchain&logoColor=white)](https://langchain-ai.github.io/langgraph/)
 [![Google Gemini](https://img.shields.io/badge/Google_Gemini-Flash_Lite-8E75B2?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev/)
-[![FAISS](https://img.shields.io/badge/Vector_DB-FAISS-00599C?style=for-the-badge&logo=meta&logoColor=white)](https://github.com/facebookresearch/faiss)
+[![Render](https://img.shields.io/badge/Render-Deployed-46E3B7?style=for-the-badge&logo=render&logoColor=white)](https://render.com/)
 
-**An enterprise-grade autonomous research platform featuring cyclic multi-agent orchestration, dialectical debate synthesis, real-time SSE token streaming, and citation auditability.**
+**An enterprise-grade autonomous research platform featuring multi-agent RAG orchestration, Web Speech API audio briefing, interactive C-suite boardroom personas, real-time SSE streaming, and self-reflective audit verification.**
 
-[🚀 Live Streamlit App](https://enterprise-research-agent-nzp42bp4cvdaeaaoybprqi.streamlit.app/) • [API Documentation (Swagger)](http://127.0.0.1:8000/docs) • [Architecture](#-system-architecture) • [Key Capabilities](#-key-capabilities)
+[🚀 Live Deployed App](https://enterprise-research-agent-ug91.onrender.com/) • [API Documentation (Swagger)](https://enterprise-research-agent-ug91.onrender.com/docs) • [Architecture](#-system-architecture) • [Key Capabilities](#-key-capabilities)
 
 </div>
+
 
 ---
 

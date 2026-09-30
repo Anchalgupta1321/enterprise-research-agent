@@ -348,22 +348,62 @@ function showCompletedReportWorkspace(data) {
 
     // Render Sources
     const sourcesContainer = document.getElementById('sourcesListContainer');
-    document.getElementById('sourceCountVal').innerText = data.sources ? data.sources.length : 0;
+    window.currentSources = data.sources || [];
+    document.getElementById('sourceCountVal').innerText = window.currentSources.length;
     sourcesContainer.innerHTML = '';
 
-    if (data.sources && data.sources.length > 0) {
-        data.sources.forEach(src => {
+    if (window.currentSources && window.currentSources.length > 0) {
+        window.currentSources.forEach((src, idx) => {
             const div = document.createElement('div');
-            div.className = "p-4 bg-white dark:bg-slate-950 rounded-xl border border-sky-200 dark:border-slate-800 space-y-1.5 hover:border-sky-400 transition shadow-sm text-xs";
-            div.innerHTML = `
-                <div class="flex items-center justify-between">
-                    <span class="font-bold text-sky-700 dark:text-sky-400 text-xs">${escapeHtml(src.source_name || 'Tavily Web Intelligence')}</span>
-                    <a href="${escapeHtml(src.url)}" target="_blank" class="text-sky-600 hover:text-sky-800 flex items-center gap-1 font-bold">
-                        <span>Visit Citation</span> <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+            div.className = "p-4 bg-white dark:bg-slate-950 rounded-xl border border-sky-200 dark:border-slate-800 space-y-2 hover:border-sky-400 dark:hover:border-sky-500 transition shadow-sm text-xs group relative";
+            
+            const rawUrl = src.url || '';
+            const isLocal = rawUrl.startsWith('local://');
+            const isValidHttp = rawUrl.startsWith('http://') || rawUrl.startsWith('https://');
+            
+            let urlBadgeHTML = '';
+            if (isValidHttp) {
+                urlBadgeHTML = `
+                    <a href="${escapeHtml(rawUrl)}" target="_blank" rel="noopener noreferrer" 
+                       class="px-2.5 py-1 bg-emerald-50 dark:bg-emerald-950/60 hover:bg-emerald-100 dark:hover:bg-emerald-900 text-emerald-700 dark:text-emerald-300 font-bold border border-emerald-200 dark:border-emerald-800 rounded-lg text-xs transition flex items-center gap-1">
+                        <span>Visit Citation</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
                     </a>
+                `;
+            } else if (isLocal) {
+                urlBadgeHTML = `
+                    <span class="px-2.5 py-1 bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 font-bold border border-amber-200 dark:border-amber-800 rounded-lg text-xs flex items-center gap-1">
+                        <i class="fa-solid fa-database text-[10px]"></i> Local RAG
+                    </span>
+                `;
+            } else {
+                urlBadgeHTML = `
+                    <button onclick="openCitationModal(${idx})" class="px-2.5 py-1 bg-sky-50 dark:bg-sky-950/60 text-sky-700 dark:text-sky-300 font-bold border border-sky-200 dark:border-sky-800 rounded-lg text-xs hover:bg-sky-100 transition flex items-center gap-1">
+                        <span>Inspect Source</span>
+                        <i class="fa-solid fa-eye text-[10px]"></i>
+                    </button>
+                `;
+            }
+
+            div.innerHTML = `
+                <div class="flex items-center justify-between gap-2">
+                    <span class="px-2.5 py-0.5 rounded-full font-bold text-[11px] ${isLocal ? 'bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-800' : 'bg-sky-100 dark:bg-sky-950 text-sky-800 dark:text-sky-300 border border-sky-300 dark:border-sky-800'}">
+                        ${escapeHtml(src.source_name || (isLocal ? 'Internal Vector DB' : 'Tavily Web Search'))}
+                    </span>
+                    <div class="flex items-center gap-1.5">
+                        <button onclick="openCitationModal(${idx})" class="px-2 py-1 text-slate-600 dark:text-slate-300 hover:text-sky-600 dark:hover:text-sky-400 font-semibold text-xs flex items-center gap-1 bg-slate-100 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 hover:border-sky-300 transition" title="Preview Full Snippet & Metadata">
+                            <i class="fa-solid fa-magnifying-glass-doc text-[11px]"></i>
+                            <span>Preview</span>
+                        </button>
+                        ${urlBadgeHTML}
+                    </div>
                 </div>
-                <h4 class="font-bold text-slate-900 dark:text-white text-sm">${escapeHtml(src.title || src.url)}</h4>
-                <p class="text-xs text-slate-600 dark:text-slate-300 line-clamp-2">${escapeHtml(src.content)}</p>
+                <h4 class="font-bold text-slate-900 dark:text-white text-sm hover:text-sky-600 dark:hover:text-sky-400 cursor-pointer transition" onclick="openCitationModal(${idx})">
+                    ${escapeHtml(src.title || rawUrl || 'Untitled Research Source')}
+                </h4>
+                <p class="text-xs text-slate-600 dark:text-slate-300 line-clamp-2 leading-relaxed cursor-pointer" onclick="openCitationModal(${idx})">
+                    ${escapeHtml(src.content || 'No text snippet available for this citation.')}
+                </p>
             `;
             sourcesContainer.appendChild(div);
         });
@@ -681,6 +721,54 @@ function closeAgentNodeModal() {
     document.getElementById('agentNodeModal').classList.add('hidden');
 }
 
+// Citation Inspector Modal Handlers
+function openCitationModal(index) {
+    const src = (window.currentSources && window.currentSources[index]) ? window.currentSources[index] : null;
+    if (!src) return;
+
+    const modal = document.getElementById('citationModal');
+    if (!modal) return;
+
+    document.getElementById('citationModalTitle').innerText = src.title || 'Citation Details';
+    document.getElementById('citationModalSource').innerText = src.source_name || 'Verified Research Source';
+    document.getElementById('citationModalContent').innerText = src.content || 'No detailed content snippet provided for this source.';
+
+    const urlBtn = document.getElementById('citationModalUrlBtn');
+    const isLocal = src.url && src.url.startsWith('local://');
+    const isValidHttp = src.url && (src.url.startsWith('http://') || src.url.startsWith('https://'));
+
+    if (isValidHttp) {
+        urlBtn.href = src.url;
+        urlBtn.target = "_blank";
+        urlBtn.rel = "noopener noreferrer";
+        urlBtn.classList.remove('hidden');
+        urlBtn.innerHTML = `<span>Visit Original Web Citation</span> <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>`;
+    } else if (isLocal) {
+        urlBtn.href = "#";
+        urlBtn.target = "";
+        urlBtn.classList.remove('hidden');
+        urlBtn.innerHTML = `<i class="fa-solid fa-database text-xs"></i> <span>Private RAG Document (${src.url})</span>`;
+    } else {
+        urlBtn.classList.add('hidden');
+    }
+
+    modal.classList.remove('hidden');
+}
+
+function closeCitationModal() {
+    const modal = document.getElementById('citationModal');
+    if (modal) modal.classList.add('hidden');
+}
+
+function copyCitationSnippet() {
+    const content = document.getElementById('citationModalContent').innerText;
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(content).then(() => {
+            alert('Citation excerpt copied to clipboard!');
+        });
+    }
+}
+
 // Streaming SSE Chat Assistant
 async function sendChatMessage(event) {
     event.preventDefault();
@@ -824,15 +912,21 @@ Enterprise adoption of **Generative AI & Autonomous Agent Architecture** has acc
         sources: [
             {
                 title: "Gartner 2026 AI Security Architecture Benchmarks",
-                url: "https://example.com/gartner-ai-security-2026",
+                url: "https://www.gartner.com/en/topics/generative-ai",
                 content: "Detailed analysis of enterprise multi-agent guardrails and DLP frameworks in production environments.",
-                source_name: "Tavily Intelligence"
+                source_name: "Gartner Research"
             },
             {
                 title: "MIT Tech Review: Autonomous Agent Threat Vectors",
-                url: "https://example.com/mit-agent-security",
+                url: "https://www.technologyreview.com/topic/artificial-intelligence/",
                 content: "Empirical study on prompt injection vulnerabilities in RAG tool execution graphs.",
-                source_name: "Academic RAG"
+                source_name: "MIT Tech Review"
+            },
+            {
+                title: "Stanford HAI: Multi-Agent System Alignment & Safety",
+                url: "https://hai.stanford.edu/news",
+                content: "Evaluating safety protocols, agentic tool execution boundaries, and continuous human-in-the-loop audit checkpoints.",
+                source_name: "Stanford RAG"
             }
         ],
         charts_data: JSON.stringify({

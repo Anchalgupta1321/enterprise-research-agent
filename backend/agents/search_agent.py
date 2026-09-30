@@ -28,12 +28,22 @@ def search_for_questions(topic: domain.ResearchTopic, questions: list[domain.Que
                     
                 seen_urls.add(url)
                 
+                domain_name = "Tavily Web Search"
+                if url:
+                    try:
+                        from urllib.parse import urlparse
+                        netloc = urlparse(url).netloc.replace("www.", "")
+                        if netloc:
+                            domain_name = netloc.capitalize()
+                    except Exception:
+                        pass
+
                 source = domain.Source(
                     topic_id=topic.id,
-                    title=result.get("title", "Unknown Title"),
+                    title=result.get("title", "Research Source"),
                     url=url,
                     content=result.get("content", ""),
-                    source_name=result.get("raw_content", "")[:50] if result.get("raw_content") else "Web Search"
+                    source_name=domain_name
                 )
                 db.add(source)
                 db_sources.append(source)

@@ -719,6 +719,53 @@
         </div>
     </div>
 
+    <!-- Citation Details Inspector Modal -->
+    <div id="citationModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 border-2 border-sky-300 dark:border-slate-800 rounded-2xl max-w-xl w-full p-6 space-y-4 shadow-2xl animate-fade-in">
+            <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+                <div class="flex items-center gap-2.5">
+                    <span class="w-9 h-9 rounded-xl bg-sky-100 dark:bg-sky-950 text-sky-600 dark:text-sky-400 flex items-center justify-center font-bold text-sm">
+                        <i class="fa-solid fa-quote-right"></i>
+                    </span>
+                    <div>
+                        <h3 class="font-display font-extrabold text-base text-slate-900 dark:text-white">Citation Inspector</h3>
+                        <p id="citationModalSource" class="text-xs text-sky-600 dark:text-sky-400 font-bold">Verified Research Source</p>
+                    </div>
+                </div>
+                <button onclick="closeCitationModal()" class="text-slate-400 hover:text-slate-700 dark:hover:text-white text-lg transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="space-y-3">
+                <h4 id="citationModalTitle" class="font-bold text-slate-900 dark:text-white text-sm sm:text-base leading-snug"></h4>
+                
+                <div class="p-4 bg-slate-50 dark:bg-slate-950 rounded-xl border border-slate-200 dark:border-slate-800 text-xs text-slate-700 dark:text-slate-300 leading-relaxed max-h-60 overflow-y-auto">
+                    <p id="citationModalContent"></p>
+                </div>
+
+                <div class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 pt-1">
+                    <span class="flex items-center gap-1.5 font-medium text-emerald-600 dark:text-emerald-400">
+                        <i class="fa-solid fa-circle-check"></i> Reflexion Audited & Grounded
+                    </span>
+                    <button onclick="copyCitationSnippet()" class="text-sky-600 dark:text-sky-400 hover:underline font-bold flex items-center gap-1">
+                        <i class="fa-solid fa-copy"></i> Copy Excerpt
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between gap-3 pt-3 border-t border-slate-200 dark:border-slate-800">
+                <button onclick="closeCitationModal()" class="px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold rounded-xl text-xs transition">
+                    Close
+                </button>
+                <a id="citationModalUrlBtn" href="#" target="_blank" rel="noopener noreferrer" class="px-5 py-2 bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white font-bold rounded-xl text-xs shadow-md flex items-center gap-2 transition">
+                    <span>Visit Original Citation</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="border-t border-sky-200/80 dark:border-slate-800 bg-white/70 dark:bg-slate-950/70 backdrop-blur-xl py-6 text-center text-xs text-slate-600 dark:text-slate-400 relative z-10 shadow-sm mt-10">
         <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
