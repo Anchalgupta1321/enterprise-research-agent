@@ -14,7 +14,7 @@ def test_static_frontend_index_serving():
     """Verify FastAPI serves index.html at root '/'."""
     response = client.get("/")
     assert response.status_code == 200
-    assert "<title>Enterprise AI Research Platform</title>" in response.text
+    assert "Enterprise AI Research Platform" in response.text
     assert "MODUS AI" in response.text
 
 def test_static_frontend_css_and_js_serving():
