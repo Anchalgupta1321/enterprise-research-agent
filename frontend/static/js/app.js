@@ -1,4 +1,4 @@
-// MODUS Enterprise AI Research Platform - Client Logic
+// MODUS Enterprise AI Research Platform - Client Application
 
 let currentTopicId = null;
 let pollingInterval = null;
@@ -42,13 +42,13 @@ async function checkBackendHealth() {
     try {
         const res = await fetch(`${rootUrl}/health`, { method: 'GET', signal: AbortSignal.timeout(4000) });
         if (res.ok) {
-            healthBadge.className = "flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 shadow-sm shadow-emerald-500/10";
+            healthBadge.className = "flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 shadow-sm";
             statusText.innerText = "Backend Online & Ready";
         } else {
             throw new Error(`HTTP ${res.status}`);
         }
     } catch (e) {
-        healthBadge.className = "flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-rose-500/15 text-rose-400 border border-rose-500/30 shadow-sm shadow-rose-500/10";
+        healthBadge.className = "flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold bg-rose-100 text-rose-800 border border-rose-300 shadow-sm";
         statusText.innerText = "Backend Disconnected";
     }
 }
@@ -110,7 +110,7 @@ function startPollingTopic(topicId) {
                 pollingInterval = null;
                 fetchResearchHistory();
                 if (typeof confetti === 'function') {
-                    confetti({ particleCount: 70, spread: 60, origin: { y: 0.6 } });
+                    confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
                 }
             }
         } catch (e) {
@@ -164,11 +164,11 @@ function showHitlQuestionDeck(data) {
 
 function createQuestionCardElement(text, idx) {
     const div = document.createElement('div');
-    div.className = "flex items-center gap-3 bg-slate-950/90 p-3 rounded-xl border border-amber-500/30 focus-within:border-amber-400/80 transition shadow-md";
+    div.className = "flex items-center gap-3 bg-white p-3 rounded-xl border border-pink-200 focus-within:border-pink-500 transition shadow-sm";
     div.innerHTML = `
-        <span class="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-400 text-xs font-bold flex items-center justify-center shrink-0 me-1">${idx + 1}</span>
-        <input type="text" value="${escapeHtml(text)}" class="hitl-q-input flex-1 bg-transparent text-xs sm:text-sm text-slate-100 focus:outline-none font-medium" placeholder="Enter target sub-question...">
-        <button type="button" onclick="this.parentElement.remove()" class="text-slate-400 hover:text-rose-400 p-1.5 rounded-lg hover:bg-slate-900 transition" title="Delete question">
+        <span class="w-6 h-6 rounded-lg bg-pink-100 text-pink-700 text-xs font-bold flex items-center justify-center shrink-0 me-1">${idx + 1}</span>
+        <input type="text" value="${escapeHtml(text)}" class="hitl-q-input flex-1 bg-transparent text-xs sm:text-sm text-slate-900 focus:outline-none font-medium" placeholder="Enter target sub-question...">
+        <button type="button" onclick="this.parentElement.remove()" class="text-slate-400 hover:text-rose-600 p-1.5 rounded-lg hover:bg-pink-50 transition" title="Delete question">
             <i class="fa-solid fa-trash-can text-xs"></i>
         </button>
     `;
@@ -233,9 +233,9 @@ function showLiveProgress(data) {
         consoleBox.innerHTML = '';
         data.logs.forEach(log => {
             const line = document.createElement('div');
-            line.className = "flex items-start gap-2 text-slate-300";
+            line.className = "flex items-start gap-2 text-slate-200";
             const time = log.timestamp ? new Date(log.timestamp).toLocaleTimeString() : '';
-            line.innerHTML = `<span class="text-indigo-400 shrink-0 font-mono text-[10px]">[${time}]</span> <span>${escapeHtml(log.message)}</span>`;
+            line.innerHTML = `<span class="text-sky-400 shrink-0 font-mono text-[10px]">[${time}]</span> <span>${escapeHtml(log.message)}</span>`;
             consoleBox.appendChild(line);
         });
         consoleBox.scrollTop = consoleBox.scrollHeight;
@@ -260,7 +260,7 @@ function showCompletedReportWorkspace(data) {
     if (data.final_report) {
         markdownContainer.innerHTML = marked.parse(data.final_report);
     } else {
-        markdownContainer.innerHTML = `<p class="text-slate-400 italic">No report content available.</p>`;
+        markdownContainer.innerHTML = `<p class="text-slate-500 italic">No report content available.</p>`;
     }
 
     // Render Sources
@@ -271,16 +271,16 @@ function showCompletedReportWorkspace(data) {
     if (data.sources && data.sources.length > 0) {
         data.sources.forEach(src => {
             const div = document.createElement('div');
-            div.className = "p-4 bg-slate-950/80 rounded-xl border border-slate-800 space-y-1.5 hover:border-indigo-500/40 transition shadow-sm text-xs";
+            div.className = "p-4 bg-white rounded-xl border border-sky-200 space-y-1.5 hover:border-sky-400 transition shadow-sm text-xs";
             div.innerHTML = `
                 <div class="flex items-center justify-between">
-                    <span class="font-bold text-indigo-400 text-xs">${escapeHtml(src.source_name || 'Tavily Web Intelligence')}</span>
-                    <a href="${escapeHtml(src.url)}" target="_blank" class="text-slate-400 hover:text-white flex items-center gap-1 font-semibold">
+                    <span class="font-bold text-sky-700 text-xs">${escapeHtml(src.source_name || 'Tavily Web Intelligence')}</span>
+                    <a href="${escapeHtml(src.url)}" target="_blank" class="text-sky-600 hover:text-sky-800 flex items-center gap-1 font-bold">
                         <span>Visit Citation</span> <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
                     </a>
                 </div>
-                <h4 class="font-bold text-white text-sm">${escapeHtml(src.title || src.url)}</h4>
-                <p class="text-xs text-slate-300 line-clamp-2">${escapeHtml(src.content)}</p>
+                <h4 class="font-bold text-slate-900 text-sm">${escapeHtml(src.title || src.url)}</h4>
+                <p class="text-xs text-slate-600 line-clamp-2">${escapeHtml(src.content)}</p>
             `;
             sourcesContainer.appendChild(div);
         });
@@ -319,8 +319,8 @@ function renderAnalyticsCharts(data) {
             datasets: [{
                 label: 'Confidence Metric Score',
                 data: values,
-                backgroundColor: 'rgba(99, 102, 241, 0.7)',
-                borderColor: '#6366f1',
+                backgroundColor: 'rgba(56, 189, 248, 0.75)',
+                borderColor: '#0284c7',
                 borderWidth: 1.5,
                 borderRadius: 6
             }]
@@ -329,8 +329,8 @@ function renderAnalyticsCharts(data) {
             responsive: true,
             plugins: { legend: { display: false } },
             scales: {
-                y: { beginAtZero: true, max: 100, grid: { color: '#1e293b' }, ticks: { color: '#94a3b8', font: { size: 11 } } },
-                x: { grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 11 } } }
+                y: { beginAtZero: true, max: 100, grid: { color: '#e2e8f0' }, ticks: { color: '#475569', font: { size: 11 } } },
+                x: { grid: { display: false }, ticks: { color: '#475569', font: { size: 11 } } }
             }
         }
     });
@@ -341,13 +341,13 @@ function renderAnalyticsCharts(data) {
             labels: ['Tavily Web Crawling', 'Local RAG Documents', 'Multi-Agent Synthesis'],
             datasets: [{
                 data: [50, 35, 15],
-                backgroundColor: ['#6366f1', '#10b981', '#f59e0b'],
+                backgroundColor: ['#38bdf8', '#f472b6', '#a855f7'],
                 borderWidth: 0
             }]
         },
         options: {
             responsive: true,
-            plugins: { legend: { position: 'bottom', labels: { color: '#cbd5e1', font: { size: 11 } } } }
+            plugins: { legend: { position: 'bottom', labels: { color: '#334155', font: { size: 11 } } } }
         }
     });
 }
@@ -425,16 +425,16 @@ async function sendChatMessage(event) {
 function appendChatMessage(role, text, customId = null) {
     const container = document.getElementById('chatHistoryContainer');
     const div = document.createElement('div');
-    div.className = `flex items-start gap-3 p-3 rounded-xl border ${role === 'user' ? 'bg-indigo-950/40 border-indigo-500/40' : 'bg-slate-900/90 border-slate-800'}`;
+    div.className = `flex items-start gap-3 p-3 rounded-xl border ${role === 'user' ? 'bg-sky-50 border-sky-300' : 'bg-white border-slate-200'}`;
     
     const icon = role === 'user' ? 'YOU' : 'AI';
-    const iconBg = role === 'user' ? 'bg-indigo-600 text-white' : 'bg-indigo-500/20 text-indigo-400 border border-indigo-500/40';
+    const iconBg = role === 'user' ? 'bg-sky-500 text-white' : 'bg-pink-100 text-pink-700 border border-pink-300';
     
     div.innerHTML = `
         <div class="w-7 h-7 rounded-lg ${iconBg} flex items-center justify-center font-extrabold text-xs shrink-0 me-1">${icon}</div>
         <div class="flex-1">
-            <p class="font-bold text-xs text-white mb-0.5">${role === 'user' ? 'You' : 'MODUS Copilot'}</p>
-            <p id="${customId || ''}" class="text-xs text-slate-200 whitespace-pre-wrap">${escapeHtml(text)}</p>
+            <p class="font-bold text-xs text-slate-900 mb-0.5">${role === 'user' ? 'You' : 'MODUS Copilot'}</p>
+            <p id="${customId || ''}" class="text-xs text-slate-800 whitespace-pre-wrap">${escapeHtml(text)}</p>
         </div>
     `;
     container.appendChild(div);
@@ -445,11 +445,11 @@ function clearChatHistory() {
     chatHistory = [];
     const container = document.getElementById('chatHistoryContainer');
     container.innerHTML = `
-        <div class="flex items-start gap-3 bg-slate-900/80 p-3 rounded-xl border border-indigo-500/30 text-slate-200">
-            <div class="w-7 h-7 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-extrabold text-xs shrink-0">AI</div>
+        <div class="flex items-start gap-3 bg-white p-3 rounded-xl border border-sky-200 text-slate-800 shadow-sm">
+            <div class="w-7 h-7 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center font-extrabold text-xs shrink-0">AI</div>
             <div>
-                <p class="font-bold text-xs text-white mb-0.5">MODUS Copilot</p>
-                <p class="text-xs text-slate-300">Chat context reset. Ask follow-up questions!</p>
+                <p class="font-bold text-xs text-slate-900 mb-0.5">MODUS Copilot</p>
+                <p class="text-xs text-slate-600">Chat context reset. Ask follow-up questions!</p>
             </div>
         </div>
     `;
@@ -532,9 +532,9 @@ async function fetchResearchHistory() {
 
         if (savedTopics.length === 0) {
             list.innerHTML = `
-                <div class="text-center py-4 text-slate-400 text-xs">
-                    <p class="mb-2 text-slate-400">No active history.</p>
-                    <button onclick="loadSampleDemoSession()" class="px-3 py-1.5 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 font-bold border border-amber-500/40 rounded-lg text-xs transition">
+                <div class="text-center py-4 text-slate-500 text-xs">
+                    <p class="mb-2 text-slate-600 font-medium">No active history.</p>
+                    <button onclick="loadSampleDemoSession()" class="px-3 py-1.5 bg-pink-100 hover:bg-pink-200 text-pink-800 font-bold border border-pink-300 rounded-lg text-xs transition">
                         ⚡ Try Demo Report
                     </button>
                 </div>
@@ -544,28 +544,28 @@ async function fetchResearchHistory() {
 
         list.innerHTML = '';
         for (const tid of savedTopics) {
-            if (tid === 999) continue; // Skip demo id in backend fetch
+            if (tid === 999) continue;
             try {
                 const res = await fetch(`${API_BASE_URL}/research/${tid}`);
                 if (!res.ok) continue;
                 const topicData = await res.json();
 
                 const item = document.createElement('div');
-                item.className = `p-3 rounded-xl border-2 cursor-pointer transition-all ${currentTopicId === topicData.id ? 'bg-indigo-950/60 border-indigo-500 shadow-lg' : 'bg-slate-950/80 border-slate-800 hover:border-slate-700'}`;
+                item.className = `p-3 rounded-xl border-2 cursor-pointer transition-all ${currentTopicId === topicData.id ? 'bg-sky-100/90 border-sky-400 shadow-md' : 'bg-white/90 border-slate-200 hover:border-sky-300'}`;
                 item.onclick = () => selectTopicSession(topicData.id);
                 
                 const statusBadgeClass = topicData.status === 'completed' 
-                    ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40' 
-                    : (topicData.status === 'awaiting_approval' ? 'bg-amber-500/20 text-amber-300 border-amber-500/40' : 'bg-indigo-500/20 text-indigo-300 border-indigo-500/40');
+                    ? 'bg-emerald-100 text-emerald-800 border-emerald-300' 
+                    : (topicData.status === 'awaiting_approval' ? 'bg-amber-100 text-amber-800 border-amber-300' : 'bg-sky-100 text-sky-800 border-sky-300');
 
                 item.innerHTML = `
                     <div class="flex items-center justify-between text-[11px] mb-1">
-                        <span class="font-mono font-bold text-slate-400">#${topicData.id}</span>
+                        <span class="font-mono font-bold text-slate-500">#${topicData.id}</span>
                         <span class="px-2 py-0.5 rounded-full border text-[10px] font-bold ${statusBadgeClass}">
                             ${topicData.status.toUpperCase()}
                         </span>
                     </div>
-                    <p class="font-semibold text-slate-100 line-clamp-1 text-xs">${escapeHtml(topicData.topic)}</p>
+                    <p class="font-semibold text-slate-800 line-clamp-1 text-xs">${escapeHtml(topicData.topic)}</p>
                 `;
                 list.appendChild(item);
             } catch (e) {}
@@ -594,13 +594,13 @@ function setupDragAndDrop() {
     ['dragenter', 'dragover'].forEach(eventName => {
         dropZone.addEventListener(eventName, (e) => {
             e.preventDefault();
-            dropZone.classList.add('border-emerald-400', 'bg-emerald-500/10');
+            dropZone.classList.add('border-sky-500', 'bg-sky-100');
         }, false);
     });
     ['dragleave', 'drop'].forEach(eventName => {
         dropZone.addEventListener(eventName, (e) => {
             e.preventDefault();
-            dropZone.classList.remove('border-emerald-400', 'bg-emerald-500/10');
+            dropZone.classList.remove('border-sky-500', 'bg-sky-100');
         }, false);
     });
     dropZone.addEventListener('drop', (e) => {
@@ -660,10 +660,10 @@ function switchTab(tabName) {
         
         if (nameLower === tabName.replace('Tab', '').toLowerCase()) {
             content.classList.remove('hidden');
-            btn.className = "px-4 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md shadow-indigo-500/25 transition flex items-center gap-1.5";
+            btn.className = "px-4 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-sky-500 to-indigo-600 text-white shadow-md shadow-sky-500/20 transition flex items-center gap-1.5";
         } else {
             content.classList.add('hidden');
-            btn.className = "px-4 py-2 rounded-xl text-xs font-bold bg-slate-950 hover:bg-slate-800 text-slate-300 border border-slate-800 hover:border-slate-700 transition flex items-center gap-1.5";
+            btn.className = "px-4 py-2 rounded-xl text-xs font-bold bg-white hover:bg-sky-50 text-slate-700 border border-sky-200 hover:border-sky-300 transition flex items-center gap-1.5 shadow-sm";
         }
     });
 }
