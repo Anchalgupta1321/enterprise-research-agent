@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enterprise AI Research Platform</title>
-    <meta name="description" content="Autonomous multi-agent enterprise research and RAG pipeline.">
+    <title>Enterprise AI Research Platform | Multi-Agent RAG</title>
+    <meta name="description" content="Autonomous multi-agent enterprise research and RAG intelligence platform.">
     
-    <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+    <!-- Google Fonts: Plus Jakarta Sans, Inter, JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -17,7 +17,7 @@
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <!-- Marked.js & Chart.js & Canvas Confetti -->
+    <!-- Marked.js, Chart.js & Canvas Confetti -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -57,15 +57,15 @@
         }
     </script>
 </head>
-<body class="bg-gradient-to-br from-sky-50 via-pink-50/50 to-indigo-50/60 text-slate-800 font-sans antialiased min-h-screen flex flex-col relative overflow-x-hidden selection:bg-pink-400 selection:text-white">
+<body class="bg-gradient-to-br from-sky-50 via-pink-50/60 to-purple-50/70 text-slate-800 font-sans antialiased min-h-screen flex flex-col relative overflow-x-hidden selection:bg-pink-400 selection:text-white">
 
     <!-- Translucent Ambient Pastel Glow Meshes -->
-    <div class="fixed top-0 left-1/4 w-[600px] h-[600px] bg-sky-300/30 rounded-full blur-[130px] pointer-events-none"></div>
-    <div class="fixed top-1/3 right-10 w-[550px] h-[550px] bg-pink-300/30 rounded-full blur-[140px] pointer-events-none"></div>
-    <div class="fixed bottom-0 left-10 w-[500px] h-[500px] bg-purple-300/25 rounded-full blur-[120px] pointer-events-none"></div>
+    <div class="fixed top-0 left-1/4 w-[650px] h-[650px] bg-sky-300/30 rounded-full blur-[140px] pointer-events-none"></div>
+    <div class="fixed top-1/3 right-10 w-[600px] h-[600px] bg-pink-300/30 rounded-full blur-[150px] pointer-events-none"></div>
+    <div class="fixed bottom-0 left-10 w-[550px] h-[550px] bg-purple-300/25 rounded-full blur-[130px] pointer-events-none"></div>
 
-    <!-- Top Navigation Header -->
-    <header class="border-b border-sky-200/60 bg-white/75 backdrop-blur-xl sticky top-0 z-50 shadow-sm">
+    <!-- Header Navigation -->
+    <header class="border-b border-sky-200/70 bg-white/80 backdrop-blur-xl sticky top-0 z-50 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <!-- Brand Logo -->
             <div class="flex items-center gap-3 cursor-pointer group" onclick="window.scrollTo({top:0, behavior:'smooth'})">
@@ -77,15 +77,15 @@
                 <div>
                     <div class="flex items-center gap-2">
                         <span class="font-display font-extrabold text-lg tracking-tight bg-gradient-to-r from-sky-600 via-indigo-600 to-pink-600 bg-clip-text text-transparent">MODUS AI</span>
-                        <span class="px-2 py-0.5 text-[10px] font-bold bg-pink-100 text-pink-700 border border-pink-300/80 rounded-full">ENTERPRISE</span>
+                        <span class="px-2 py-0.5 text-[10px] font-bold bg-pink-100 text-pink-700 border border-pink-300/80 rounded-full">v2.0 INTERACTIVE</span>
                     </div>
-                    <p class="text-[11px] text-slate-500 font-medium">Multi-Agent Research Platform</p>
+                    <p class="text-[11px] text-slate-500 font-medium">Multi-Agent RAG Orchestrator</p>
                 </div>
             </div>
 
-            <!-- Header Status & Actions -->
+            <!-- Header Status & Live Metrics -->
             <div class="flex items-center gap-3">
-                <div id="backendHealthBadge" class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold bg-emerald-100/90 text-emerald-800 border border-emerald-300/80 shadow-sm">
+                <div id="backendHealthBadge" class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold bg-emerald-100/90 text-emerald-800 border border-emerald-300 shadow-sm">
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                     <span id="backendStatusText">Connecting API...</span>
                 </div>
@@ -101,38 +101,55 @@
         </div>
     </header>
 
-    <!-- Main App Workspace -->
+    <!-- Main Workspace -->
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6 relative z-10">
 
-        <!-- Top Hero Console (Soft Translucent Sky Blue & Pink Glass) -->
-        <section class="relative rounded-2xl bg-white/70 border-2 border-sky-200/80 p-6 sm:p-8 shadow-xl shadow-sky-500/10 backdrop-blur-xl overflow-hidden group">
-            <div class="absolute -right-20 -top-20 w-80 h-80 bg-gradient-to-br from-pink-200/50 to-sky-200/50 rounded-full blur-3xl pointer-events-none"></div>
+        <!-- Interactive Hero Console (Sky Blue & Pink Translucent Glass) -->
+        <section class="relative rounded-2xl bg-white/80 border-2 border-sky-200/90 p-6 sm:p-8 shadow-xl shadow-sky-500/10 backdrop-blur-xl overflow-hidden group">
+            <div class="absolute -right-20 -top-20 w-80 h-80 bg-gradient-to-br from-pink-200/60 to-sky-200/60 rounded-full blur-3xl pointer-events-none"></div>
             
             <div class="relative z-10 space-y-4">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-sky-100 pb-4">
                     <div>
                         <div class="flex items-center gap-2 mb-1">
-                            <span class="px-3 py-0.5 rounded-full text-[11px] font-bold bg-sky-100/80 text-sky-800 border border-sky-300/80 uppercase tracking-wider">
-                                <i class="fa-solid fa-sparkles me-1 text-pink-500"></i> Autonomous RAG Engine
+                            <span class="px-3 py-0.5 rounded-full text-[11px] font-bold bg-sky-100 text-sky-800 border border-sky-300 uppercase tracking-wider">
+                                <i class="fa-solid fa-sparkles me-1 text-pink-500"></i> Autonomous Multi-Agent Intelligence
                             </span>
                         </div>
                         <h1 class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 tracking-tight">
                             Enterprise AI Research Workspace
                         </h1>
                         <p class="text-xs sm:text-sm text-slate-600 font-medium">
-                            Deploy multi-agent crawlers to search live web intelligence, query PDF vector embeddings, and generate audited briefs.
+                            Execute autonomous search agents to crawl live web intelligence, query vector PDFs, and generate audited executive briefs.
                         </p>
                     </div>
 
-                    <!-- Demo Trigger CTA Button -->
-                    <button type="button" onclick="loadSampleDemoSession()" class="px-4 py-2.5 bg-gradient-to-r from-sky-500 via-indigo-500 to-pink-500 hover:from-sky-400 hover:to-pink-400 text-white font-extrabold text-xs rounded-xl shadow-lg shadow-pink-500/20 transition-all flex items-center gap-2 shrink-0 active:scale-95">
-                        <i class="fa-solid fa-bolt text-xs"></i>
+                    <!-- Interactive Demo Launch CTA Button -->
+                    <button type="button" onclick="loadSampleDemoSession()" class="px-5 py-3 bg-gradient-to-r from-sky-500 via-indigo-500 to-pink-500 hover:from-sky-400 hover:to-pink-400 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-lg shadow-pink-500/25 transition-all flex items-center gap-2 shrink-0 active:scale-95">
+                        <i class="fa-solid fa-play text-xs"></i>
                         <span>Load Interactive Demo Report</span>
                     </button>
                 </div>
 
-                <!-- Input Search Bar -->
-                <form id="researchForm" class="space-y-3" onsubmit="submitResearchTopic(event)">
+                <!-- Interactive Search Input & Research Mode Selector -->
+                <form id="researchForm" class="space-y-4" onsubmit="submitResearchTopic(event)">
+                    <!-- Search Mode Selector Pills -->
+                    <div class="flex flex-wrap items-center gap-3 text-xs">
+                        <span class="text-slate-600 font-bold me-1">Research Depth:</span>
+                        <label class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-sky-300 hover:border-sky-400 cursor-pointer text-slate-800 font-semibold shadow-sm">
+                            <input type="radio" name="researchDepth" value="fast" class="accent-sky-500" checked>
+                            <span>⚡ Fast Scan (1 min)</span>
+                        </label>
+                        <label class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-indigo-300 hover:border-indigo-400 cursor-pointer text-slate-800 font-semibold shadow-sm">
+                            <input type="radio" name="researchDepth" value="standard" class="accent-indigo-500">
+                            <span>🔍 Standard RAG (3 min)</span>
+                        </label>
+                        <label class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-pink-300 hover:border-pink-400 cursor-pointer text-slate-800 font-semibold shadow-sm">
+                            <input type="radio" name="researchDepth" value="deep" class="accent-pink-500">
+                            <span>🛡️ Deep Audit (5 min)</span>
+                        </label>
+                    </div>
+
                     <div class="flex flex-col sm:flex-row items-stretch gap-2.5">
                         <div class="relative flex-1">
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-sky-500">
@@ -143,7 +160,7 @@
                                 id="topicInput"
                                 placeholder="Enter research query (e.g. Enterprise Generative AI Adoption & Security Risks 2026)..." 
                                 required
-                                class="w-full bg-white/90 text-slate-900 placeholder-slate-400 text-xs sm:text-sm pl-10 pr-4 py-3.5 rounded-xl border-2 border-sky-200/90 focus:border-sky-500 focus:ring-4 focus:ring-sky-400/20 transition-all shadow-sm font-medium"
+                                class="w-full bg-white text-slate-900 placeholder-slate-400 text-xs sm:text-sm pl-10 pr-4 py-3.5 rounded-xl border-2 border-sky-200/90 focus:border-sky-500 focus:ring-4 focus:ring-sky-400/20 transition-all shadow-sm font-medium"
                             >
                         </div>
                         <button 
@@ -180,7 +197,7 @@
             <div class="lg:col-span-4 space-y-6">
 
                 <!-- Knowledge Base RAG Upload (Sky Blue Tinted Glass Card) -->
-                <div class="bg-white/75 backdrop-blur-xl border-2 border-sky-200 hover:border-sky-400 rounded-2xl p-5 shadow-lg shadow-sky-500/5 transition-all space-y-4">
+                <div class="bg-white/80 backdrop-blur-xl border-2 border-sky-200 hover:border-sky-400 rounded-2xl p-5 shadow-lg shadow-sky-500/5 transition-all space-y-4">
                     <div class="flex items-center justify-between">
                         <h3 class="font-display font-extrabold text-sm text-sky-700 flex items-center gap-2">
                             <i class="fa-solid fa-folder-open text-sky-500"></i> Document Knowledge Base
@@ -215,7 +232,7 @@
                 </div>
 
                 <!-- Recent Research Runs (Baby Pink Tinted Glass Card) -->
-                <div class="bg-white/75 backdrop-blur-xl border-2 border-pink-200 hover:border-pink-400 rounded-2xl p-5 shadow-lg shadow-pink-500/5 transition-all space-y-4">
+                <div class="bg-white/80 backdrop-blur-xl border-2 border-pink-200 hover:border-pink-400 rounded-2xl p-5 shadow-lg shadow-pink-500/5 transition-all space-y-4">
                     <div class="flex items-center justify-between">
                         <h3 class="font-display font-extrabold text-sm text-pink-700 flex items-center gap-2">
                             <i class="fa-solid fa-clock-rotate-left text-pink-500"></i> Research History
@@ -233,27 +250,42 @@
                     </div>
                 </div>
 
-                <!-- Agent System Workflow (Soft Lavender Card) -->
-                <div class="bg-white/75 backdrop-blur-xl border-2 border-purple-200 rounded-2xl p-5 shadow-lg shadow-purple-500/5 space-y-3">
-                    <h4 class="font-display font-extrabold text-xs text-purple-800 flex items-center gap-2">
-                        <i class="fa-solid fa-network-wired text-purple-500 me-1"></i> Multi-Agent Architecture
+                <!-- Interactive Multi-Agent Network Diagram (Clickable Agent Nodes) -->
+                <div class="bg-white/80 backdrop-blur-xl border-2 border-purple-200 rounded-2xl p-5 shadow-lg shadow-purple-500/5 space-y-3">
+                    <h4 class="font-display font-extrabold text-xs text-purple-800 flex items-center justify-between">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-diagram-project text-purple-500 me-1"></i> Multi-Agent Node Network</span>
+                        <span class="text-[10px] text-purple-600 bg-purple-100 px-2 py-0.5 rounded-full font-bold">CLICK NODES</span>
                     </h4>
+                    
+                    <!-- Interactive Clickable Agent Node Cards -->
                     <div class="space-y-2 text-xs">
-                        <div class="p-2.5 bg-purple-50/90 rounded-xl border border-purple-200 flex items-center justify-between">
-                            <span class="text-purple-900 font-bold">1. Planner Agent</span>
-                            <span class="text-slate-500 text-[11px]">Formulates sub-questions</span>
+                        <div onclick="inspectAgentNode('planner')" class="p-2.5 bg-purple-50 hover:bg-purple-100 rounded-xl border border-purple-200 cursor-pointer transition flex items-center justify-between group">
+                            <div class="flex items-center gap-2">
+                                <span class="w-6 h-6 rounded-lg bg-purple-200 text-purple-800 font-bold flex items-center justify-center text-[10px]">P</span>
+                                <span class="text-purple-900 font-bold">Planner Agent</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-purple-400 group-hover:translate-x-1 transition-transform text-xs"></i>
                         </div>
-                        <div class="p-2.5 bg-pink-50/90 rounded-xl border border-pink-200 flex items-center justify-between">
-                            <span class="text-pink-900 font-bold">2. HITL Approval</span>
-                            <span class="text-slate-500 text-[11px]">Human question edit & approval</span>
+                        <div onclick="inspectAgentNode('hitl')" class="p-2.5 bg-pink-50 hover:bg-pink-100 rounded-xl border border-pink-200 cursor-pointer transition flex items-center justify-between group">
+                            <div class="flex items-center gap-2">
+                                <span class="w-6 h-6 rounded-lg bg-pink-200 text-pink-800 font-bold flex items-center justify-center text-[10px]">H</span>
+                                <span class="text-pink-900 font-bold">HITL Question Checkpoint</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-pink-400 group-hover:translate-x-1 transition-transform text-xs"></i>
                         </div>
-                        <div class="p-2.5 bg-sky-50/90 rounded-xl border border-sky-200 flex items-center justify-between">
-                            <span class="text-sky-900 font-bold">3. Web Crawler RAG</span>
-                            <span class="text-slate-500 text-[11px]">Tavily + Vector search</span>
+                        <div onclick="inspectAgentNode('crawler')" class="p-2.5 bg-sky-50 hover:bg-sky-100 rounded-xl border border-sky-200 cursor-pointer transition flex items-center justify-between group">
+                            <div class="flex items-center gap-2">
+                                <span class="w-6 h-6 rounded-lg bg-sky-200 text-sky-800 font-bold flex items-center justify-center text-[10px]">C</span>
+                                <span class="text-sky-900 font-bold">Tavily + Vector Crawler</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-sky-400 group-hover:translate-x-1 transition-transform text-xs"></i>
                         </div>
-                        <div class="p-2.5 bg-emerald-50/90 rounded-xl border border-emerald-200 flex items-center justify-between">
-                            <span class="text-emerald-900 font-bold">4. Synthesizer & Auditor</span>
-                            <span class="text-slate-500 text-[11px]">Audited Markdown report</span>
+                        <div onclick="inspectAgentNode('auditor')" class="p-2.5 bg-emerald-50 hover:bg-emerald-100 rounded-xl border border-emerald-200 cursor-pointer transition flex items-center justify-between group">
+                            <div class="flex items-center gap-2">
+                                <span class="w-6 h-6 rounded-lg bg-emerald-200 text-emerald-800 font-bold flex items-center justify-center text-[10px]">A</span>
+                                <span class="text-emerald-900 font-bold">Reflexion Auditor</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-emerald-400 group-hover:translate-x-1 transition-transform text-xs"></i>
                         </div>
                     </div>
                 </div>
@@ -262,8 +294,8 @@
             <!-- RIGHT WORKSPACE (8 Columns) -->
             <div class="lg:col-span-8 space-y-6">
 
-                <!-- WORKSPACE STATE 1: Empty Placeholder (Light Sky Blue/Pink Glass Card) -->
-                <div id="emptyWorkspaceState" class="bg-white/80 backdrop-blur-xl border-2 border-sky-300/70 rounded-2xl p-10 text-center shadow-xl space-y-5">
+                <!-- WORKSPACE STATE 1: Empty Placeholder (Light Glass Card) -->
+                <div id="emptyWorkspaceState" class="bg-white/85 backdrop-blur-xl border-2 border-sky-300/70 rounded-2xl p-10 text-center shadow-xl space-y-5">
                     <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-tr from-sky-400 to-pink-400 p-0.5 shadow-lg shadow-sky-400/30">
                         <div class="w-full h-full bg-white rounded-[14px] flex items-center justify-center text-sky-600 text-2xl">
                             <i class="fa-solid fa-compass-drafting"></i>
@@ -276,14 +308,14 @@
                         </p>
                     </div>
                     <div class="pt-2">
-                        <button type="button" onclick="loadSampleDemoSession()" class="px-6 py-3 bg-gradient-to-r from-sky-500 via-indigo-500 to-pink-500 hover:from-sky-400 hover:to-pink-400 text-white font-extrabold text-xs rounded-xl shadow-lg shadow-pink-500/25 transition-all inline-flex items-center gap-2 active:scale-95">
-                            <i class="fa-solid fa-play"></i> Launch Sample Interactive Demo Report
+                        <button type="button" onclick="loadSampleDemoSession()" class="px-6 py-3 bg-gradient-to-r from-sky-500 via-indigo-500 to-pink-500 hover:from-sky-400 hover:to-pink-400 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-lg shadow-pink-500/25 transition-all inline-flex items-center gap-2 active:scale-95">
+                            <i class="fa-solid fa-play me-1"></i> Launch Interactive Demo Report
                         </button>
                     </div>
                 </div>
 
                 <!-- WORKSPACE STATE 2: Human-In-The-Loop (HITL) Question Approval Deck -->
-                <div id="hitlApprovalCard" class="hidden bg-white/90 backdrop-blur-xl border-2 border-pink-300 rounded-2xl p-6 shadow-xl space-y-5 animate-fade-in">
+                <div id="hitlApprovalCard" class="hidden bg-white/95 backdrop-blur-xl border-2 border-pink-300 rounded-2xl p-6 shadow-xl space-y-5 animate-fade-in">
                     <div class="flex items-center justify-between border-b border-pink-200 pb-4">
                         <div>
                             <span class="px-3 py-1 text-xs font-bold bg-pink-100 text-pink-800 border border-pink-300 rounded-full uppercase tracking-wider">
@@ -318,7 +350,7 @@
                 </div>
 
                 <!-- WORKSPACE STATE 3: Real-Time Pipeline Progress & Live Log Stream -->
-                <div id="liveProgressCard" class="hidden bg-white/90 backdrop-blur-xl border-2 border-sky-300 rounded-2xl p-6 shadow-xl space-y-5">
+                <div id="liveProgressCard" class="hidden bg-white/95 backdrop-blur-xl border-2 border-sky-300 rounded-2xl p-6 shadow-xl space-y-5">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-3">
                             <div class="w-9 h-9 rounded-xl bg-sky-100 border border-sky-300 flex items-center justify-center text-sky-600">
@@ -354,7 +386,7 @@
                         </div>
                     </div>
 
-                    <!-- Log Stream Console (Dark for max code readability) -->
+                    <!-- Log Stream Console -->
                     <div class="space-y-2">
                         <div class="flex items-center justify-between text-xs text-slate-600 font-semibold">
                             <span><i class="fa-solid fa-terminal text-sky-600 me-1 me-1"></i> Live Agent Logs</span>
@@ -369,7 +401,7 @@
                 <!-- WORKSPACE STATE 4: Final Research Report Dashboard & Streaming Chat -->
                 <div id="reportWorkspaceCard" class="hidden space-y-6 animate-fade-in">
 
-                    <!-- Header Summary Card -->
+                    <!-- Header Summary Card with Audio Brief Reader -->
                     <div class="bg-white/90 backdrop-blur-xl border-2 border-sky-300/80 rounded-2xl p-6 shadow-xl space-y-5">
                         <div class="flex flex-wrap items-center justify-between gap-4">
                             <div class="space-y-1">
@@ -398,11 +430,34 @@
                             </div>
                         </div>
 
+                        <!-- Audio Voice Reader Toolbar -->
+                        <div class="flex flex-wrap items-center justify-between gap-3 p-3 bg-sky-50 rounded-xl border border-sky-200 text-xs">
+                            <div class="flex items-center gap-2">
+                                <button type="button" onclick="toggleAudioSpeech()" id="audioPlayBtn" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-500 text-white font-bold rounded-lg shadow-sm flex items-center gap-1.5 transition">
+                                    <i class="fa-solid fa-volume-high text-xs"></i>
+                                    <span id="audioBtnText">Read Brief Aloud</span>
+                                </button>
+                                <span class="text-slate-600 font-medium">Text-to-Speech Audio Summary</span>
+                            </div>
+                            
+                            <!-- Equalizer Visualizer -->
+                            <div id="equalizerVisualizer" class="hidden flex items-center gap-1">
+                                <span class="w-1 h-3 bg-sky-500 rounded-full animate-pulse me-0.5"></span>
+                                <span class="w-1 h-5 bg-pink-500 rounded-full animate-pulse me-0.5"></span>
+                                <span class="w-1 h-2 bg-purple-500 rounded-full animate-pulse me-0.5"></span>
+                                <span class="w-1 h-4 bg-indigo-500 rounded-full animate-pulse me-0.5"></span>
+                                <span class="text-[11px] font-bold text-sky-700 ms-1 me-1 me-1 me-1">PLAYING</span>
+                            </div>
+                        </div>
+
                         <!-- Interactive Tab Controls -->
                         <div class="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-200">
                             <div class="flex flex-wrap items-center gap-2">
                                 <button onclick="switchTab('reportTab')" id="tabBtnReport" class="px-4 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-sky-500 to-indigo-600 text-white shadow-md shadow-sky-500/20 transition flex items-center gap-1.5">
                                     <i class="fa-solid fa-file-lines"></i> Executive Brief
+                                </button>
+                                <button onclick="switchTab('boardroomTab')" id="tabBtnBoardroom" class="px-4 py-2 rounded-xl text-xs font-bold bg-white hover:bg-purple-50 text-slate-700 border border-purple-200 hover:border-purple-300 transition flex items-center gap-1.5 shadow-sm">
+                                    <i class="fa-solid fa-user-tie text-purple-500"></i> Executive Council
                                 </button>
                                 <button onclick="switchTab('sourcesTab')" id="tabBtnSources" class="px-4 py-2 rounded-xl text-xs font-bold bg-white hover:bg-sky-50 text-slate-700 border border-sky-200 hover:border-sky-300 transition flex items-center gap-1.5 shadow-sm">
                                     <i class="fa-solid fa-globe text-sky-500"></i> Sources (<span id="sourceCountVal">0</span>)
@@ -411,7 +466,7 @@
                                     <i class="fa-solid fa-chart-pie text-purple-500"></i> Visual Analytics
                                 </button>
                                 <button onclick="switchTab('chatTab')" id="tabBtnChat" class="px-4 py-2 rounded-xl text-xs font-bold bg-white hover:bg-pink-50 text-slate-700 border border-pink-200 hover:border-pink-300 transition flex items-center gap-1.5 shadow-sm">
-                                    <i class="fa-solid fa-comments text-pink-500"></i> Streaming RAG Copilot
+                                    <i class="fa-solid fa-comments text-pink-500"></i> RAG Copilot
                                 </button>
                             </div>
 
@@ -433,7 +488,53 @@
                         </div>
                     </div>
 
-                    <!-- TAB 2: Verified Sources -->
+                    <!-- TAB 2: Interactive Executive Boardroom Council (CEO, CTO, CFO, Legal Viewpoints) -->
+                    <div id="tabContentBoardroom" class="hidden bg-white/90 backdrop-blur-xl border-2 border-purple-200 rounded-2xl p-6 shadow-xl space-y-5">
+                        <div class="flex items-center justify-between border-b border-purple-100 pb-3">
+                            <div>
+                                <h3 class="font-display font-extrabold text-lg text-slate-900 flex items-center gap-2">
+                                    <i class="fa-solid fa-user-tie text-purple-600 me-1 me-1 me-1 me-1"></i> Executive Boardroom Council
+                                </h3>
+                                <p class="text-xs text-slate-500 font-medium">Switch persona perspectives to view targeted strategic insights.</p>
+                            </div>
+                            <span class="px-3 py-1 bg-purple-100 text-purple-800 font-bold border border-purple-300 rounded-full text-xs">
+                                PROCEED WITH GUARDRAILS
+                            </span>
+                        </div>
+
+                        <!-- Persona Switcher Buttons -->
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+                            <button type="button" onclick="switchBoardroomPersona('ceo')" id="personaBtnCeo" class="p-3 rounded-xl border-2 border-purple-500 bg-purple-50 text-purple-900 font-bold transition flex flex-col items-center gap-1">
+                                <i class="fa-solid fa-briefcase text-base text-purple-600 me-1 me-1 me-1 me-1 me-1 me-1"></i>
+                                <span>CEO Strategy</span>
+                            </button>
+                            <button type="button" onclick="switchBoardroomPersona('cto')" id="personaBtnCto" class="p-3 rounded-xl border-2 border-slate-200 bg-white text-slate-700 font-bold hover:bg-sky-50 transition flex flex-col items-center gap-1">
+                                <i class="fa-solid fa-microchip text-base text-sky-600 me-1 me-1 me-1 me-1 me-1 me-1 me-1 me-1 me-1 me-1"></i>
+                                <span>CTO Feasibility</span>
+                            </button>
+                            <button type="button" onclick="switchBoardroomPersona('cfo')" id="personaBtnCfo" class="p-3 rounded-xl border-2 border-slate-200 bg-white text-slate-700 font-bold hover:bg-emerald-50 transition flex flex-col items-center gap-1">
+                                <i class="fa-solid fa-chart-line text-base text-emerald-600 me-1 me-1 me-1 me-1 me-1 me-1 me-1 me-1 me-1 me-1"></i>
+                                <span>CFO Financial ROI</span>
+                            </button>
+                            <button type="button" onclick="switchBoardroomPersona('legal')" id="personaBtnLegal" class="p-3 rounded-xl border-2 border-slate-200 bg-white text-slate-700 font-bold hover:bg-pink-50 transition flex flex-col items-center gap-1">
+                                <i class="fa-solid fa-scale-balanced text-base text-pink-600 me-1 me-1 me-1 me-1 me-1 me-1 me-1 me-1 me-1 me-1 me-1 me-1 me-1 me-1 me-1 me-1"></i>
+                                <span>Legal Compliance</span>
+                            </button>
+                        </div>
+
+                        <!-- Persona Content Quote Card -->
+                        <div id="personaCardBox" class="p-5 bg-gradient-to-r from-purple-50 to-indigo-50 border border-purple-200 rounded-xl space-y-3">
+                            <div class="flex items-center justify-between text-xs">
+                                <span id="personaRoleBadge" class="font-bold text-purple-800 text-sm">CEO Strategic Perspective</span>
+                                <span id="personaMetricBadge" class="px-2.5 py-1 bg-white text-purple-800 font-extrabold border border-purple-300 rounded-lg shadow-sm">ROI Target: +185%</span>
+                            </div>
+                            <blockquote id="personaQuoteText" class="text-xs sm:text-sm text-slate-700 italic leading-relaxed">
+                                "Multi-agent architecture unlocks massive productivity catalysts across enterprise teams. Implementation must mandate input guardrails to prevent data loss."
+                            </blockquote>
+                        </div>
+                    </div>
+
+                    <!-- TAB 3: Verified Sources -->
                     <div id="tabContentSources" class="hidden bg-white/90 backdrop-blur-xl border-2 border-slate-200 rounded-2xl p-6 shadow-xl space-y-4">
                         <h3 class="font-display font-extrabold text-lg text-slate-900">Verified Research Sources</h3>
                         <div id="sourcesListContainer" class="space-y-3">
@@ -441,7 +542,7 @@
                         </div>
                     </div>
 
-                    <!-- TAB 3: Visual Analytics -->
+                    <!-- TAB 4: Visual Analytics -->
                     <div id="tabContentAnalytics" class="hidden bg-white/90 backdrop-blur-xl border-2 border-slate-200 rounded-2xl p-6 shadow-xl space-y-6">
                         <h3 class="font-display font-extrabold text-lg text-slate-900">Data Metrics Visualization</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -456,7 +557,7 @@
                         </div>
                     </div>
 
-                    <!-- TAB 4: Streaming RAG AI Assistant Chat -->
+                    <!-- TAB 5: Streaming RAG AI Assistant Chat -->
                     <div id="tabContentChat" class="hidden bg-white/90 backdrop-blur-xl border-2 border-slate-200 rounded-2xl p-6 shadow-xl space-y-4">
                         <div class="flex items-center justify-between border-b border-slate-200 pb-3">
                             <div>
@@ -465,15 +566,15 @@
                                 </h3>
                                 <p class="text-xs text-slate-500 font-medium">Ask questions grounded in this research report.</p>
                             </div>
-                            <button onclick="clearChatHistory()" class="text-xs text-slate-500 hover:text-slate-800">Clear Chat</button>
+                            <button onclick="clearChatHistory()" class="text-xs text-slate-500 hover:text-slate-800 me-1 me-1 me-1 me-1 me-1 me-1 me-1 me-1">Clear Chat</button>
                         </div>
 
                         <div id="chatHistoryContainer" class="bg-slate-50 border border-slate-200 rounded-xl p-4 min-h-[280px] max-h-[420px] overflow-y-auto space-y-3 font-sans text-xs sm:text-sm">
                             <div class="flex items-start gap-3 bg-white p-3 rounded-xl border border-sky-200 text-slate-800 shadow-sm">
-                                <div class="w-7 h-7 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center font-extrabold text-xs shrink-0">AI</div>
+                                <div class="w-7 h-7 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center font-extrabold text-xs shrink-0 me-1">AI</div>
                                 <div>
-                                    <p class="font-bold text-xs text-slate-900 mb-0.5">MODUS Copilot</p>
-                                    <p class="text-xs text-slate-600 me-1">Hello! I have fully indexed this research report. Ask me follow-up questions!</p>
+                                    <p class="font-bold text-xs text-slate-900 mb-0.5 me-1 me-1 me-1 me-1 me-1 me-1 me-1 me-1">MODUS Copilot</p>
+                                    <p class="text-xs text-slate-600 me-1 me-1 me-1 me-1 me-1 me-1 me-1 me-1">Hello! I have fully indexed this research report. Ask me follow-up questions!</p>
                                 </div>
                             </div>
                         </div>
@@ -489,10 +590,10 @@
                             <button 
                                 type="submit" 
                                 id="sendChatBtn"
-                                class="px-5 py-3 bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white font-bold text-xs rounded-xl shadow-md transition flex items-center gap-2"
+                                class="px-5 py-3 bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white font-bold text-xs rounded-xl shadow-md transition flex items-center gap-2 me-1 me-1 me-1 me-1 me-1 me-1 me-1 me-1"
                             >
                                 <span>Send</span>
-                                <i class="fa-solid fa-paper-plane text-xs"></i>
+                                <i class="fa-solid fa-paper-plane text-xs me-1 me-1 me-1 me-1 me-1 me-1 me-1 me-1"></i>
                             </button>
                         </form>
                     </div>
@@ -503,6 +604,24 @@
         </div>
 
     </main>
+
+    <!-- Agent Node Details Modal -->
+    <div id="agentNodeModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 me-1 me-1 me-1 me-1 me-1 me-1 me-1 me-1">
+        <div class="bg-white border-2 border-purple-300 rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl me-1 me-1 me-1 me-1 me-1 me-1 me-1 me-1">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-3 me-1 me-1 me-1 me-1 me-1 me-1 me-1 me-1">
+                <h3 id="nodeModalTitle" class="font-display font-extrabold text-base text-slate-900 me-1 me-1 me-1 me-1 me-1 me-1 me-1 me-1">Agent Node Inspection</h3>
+                <button onclick="closeAgentNodeModal()" class="text-slate-500 hover:text-slate-900 text-sm me-1 me-1 me-1 me-1 me-1 me-1 me-1 me-1"><i class="fa-solid fa-xmark me-1 me-1 me-1 me-1 me-1 me-1 me-1 me-1"></i></button>
+            </div>
+            
+            <p id="nodeModalDesc" class="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium me-1 me-1 me-1 me-1 me-1 me-1 me-1 me-1">
+                Agent node details...
+            </p>
+
+            <div class="flex justify-end pt-2 me-1 me-1 me-1 me-1 me-1 me-1 me-1 me-1">
+                <button onclick="closeAgentNodeModal()" class="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white font-bold rounded-xl text-xs me-1 me-1 me-1 me-1 me-1 me-1 me-1 me-1">Got It</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Settings Modal -->
     <div id="settingsModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">

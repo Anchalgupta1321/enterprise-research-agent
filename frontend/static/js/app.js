@@ -1,10 +1,12 @@
-// MODUS Enterprise AI Research Platform - Client Application
+// MODUS Enterprise AI Research Platform - Client Logic
 
 let currentTopicId = null;
 let pollingInterval = null;
 let chatHistory = [];
 let chartInstance1 = null;
 let chartInstance2 = null;
+let speechSynth = window.speechSynthesis;
+let isSpeaking = false;
 
 // Resolve API URL dynamically
 function getApiBaseUrl() {
@@ -352,6 +354,105 @@ function renderAnalyticsCharts(data) {
     });
 }
 
+// Interactive Web Speech API Audio Brief Reader
+function toggleAudioSpeech() {
+    if (!speechSynth) {
+        alert("Web Speech API is not supported in this browser.");
+        return;
+    }
+
+    const btnText = document.getElementById('audioBtnText');
+    const eq = document.getElementById('equalizerVisualizer');
+
+    if (isSpeaking) {
+        speechSynth.cancel();
+        isSpeaking = false;
+        btnText.innerText = "Read Brief Aloud";
+        eq.classList.add('hidden');
+    } else {
+        const reportText = document.getElementById('reportMarkdownContainer').innerText;
+        if (!reportText) return;
+
+        const snippet = reportText.slice(0, 450); // Read first paragraph overview
+        const utterance = new SpeechSynthesisUtterance(snippet);
+        utterance.rate = 1.0;
+        utterance.pitch = 1.0;
+
+        utterance.onend = () => {
+            isSpeaking = false;
+            btnText.innerText = "Read Brief Aloud";
+            eq.classList.add('hidden');
+        };
+
+        speechSynth.speak(utterance);
+        isSpeaking = true;
+        btnText.innerText = "Pause Audio";
+        eq.classList.remove('hidden');
+    }
+}
+
+// Interactive Executive Boardroom Persona Switcher
+function switchBoardroomPersona(role) {
+    const roles = ['ceo', 'cto', 'cfo', 'legal'];
+    roles.forEach(r => {
+        const btn = document.getElementById(`personaBtn${r.charAt(0).toUpperCase() + r.slice(1)}`);
+        if (r === role) {
+            btn.className = "p-3 rounded-xl border-2 border-purple-500 bg-purple-50 text-purple-900 font-bold shadow-sm transition flex flex-col items-center gap-1";
+        } else {
+            btn.className = "p-3 rounded-xl border-2 border-slate-200 bg-white text-slate-700 font-bold hover:bg-slate-50 transition flex flex-col items-center gap-1";
+        }
+    });
+
+    const roleBadge = document.getElementById('personaRoleBadge');
+    const metricBadge = document.getElementById('personaMetricBadge');
+    const quoteText = document.getElementById('personaQuoteText');
+
+    if (role === 'ceo') {
+        roleBadge.innerText = "CEO Strategic Perspective";
+        metricBadge.innerText = "ROI Target: +185%";
+        quoteText.innerText = '"Multi-agent architecture unlocks massive productivity catalysts across enterprise teams. Implementation must mandate input guardrails to prevent data loss."';
+    } else if (role === 'cto') {
+        roleBadge.innerText = "CTO Technical Feasibility";
+        metricBadge.innerText = "Feasibility: 9.2/10";
+        quoteText.innerText = '"LangGraph state graph orchestrations provide modular scalability. Recommend deploying isolated microservices for FAISS vector indexing."';
+    } else if (role === 'cfo') {
+        roleBadge.innerText = "CFO Financial Assessment";
+        metricBadge.innerText = "Payback Horizon: 4.2 Months";
+        quoteText.innerText = '"Automating manual research synthesis lowers operational overhead by $240k annually while accelerating market entry speed."';
+    } else if (role === 'legal') {
+        roleBadge.innerText = "Legal & Compliance Verdict";
+        metricBadge.innerText = "Compliance Score: A+";
+        quoteText.innerText = '"Tavily web crawling queries maintain strict robots.txt compliance. Vector document embeddings enforce local data residency."';
+    }
+}
+
+// Agent Node Inspector Modal
+function inspectAgentNode(nodeKey) {
+    const modal = document.getElementById('agentNodeModal');
+    const title = document.getElementById('nodeModalTitle');
+    const desc = document.getElementById('nodeModalDesc');
+
+    if (nodeKey === 'planner') {
+        title.innerText = "🧠 Planner Agent Node";
+        desc.innerText = "Decomposes complex enterprise prompts into targeted sub-questions using LLM reasoning before passing parameters to search execution.";
+    } else if (nodeKey === 'hitl') {
+        title.innerText = "⏸️ Human-In-The-Loop Checkpoint";
+        desc.innerText = "Pauses execution graph to allow domain experts to review, edit, or inject custom questions into the research plan.";
+    } else if (nodeKey === 'crawler') {
+        title.innerText = "🌐 Tavily & Vector RAG Node";
+        desc.innerText = "Executes parallel web crawlers via Tavily API and queries local FAISS vector embeddings of uploaded PDF documents.";
+    } else if (nodeKey === 'auditor') {
+        title.innerText = "🛡️ Self-Reflective Auditor Node";
+        desc.innerText = "Evaluates report claim grounding against source findings using Reflexion loops to assign confidence scores and audit verdicts.";
+    }
+
+    modal.classList.remove('hidden');
+}
+
+function closeAgentNodeModal() {
+    document.getElementById('agentNodeModal').classList.add('hidden');
+}
+
 // Streaming SSE Chat Assistant
 async function sendChatMessage(event) {
     event.preventDefault();
@@ -652,18 +753,20 @@ async function handleFileUpload(files) {
 
 // Tab Switcher
 function switchTab(tabName) {
-    const tabs = ['Report', 'Sources', 'Analytics', 'Chat'];
+    const tabs = ['Report', 'Boardroom', 'Sources', 'Analytics', 'Chat'];
     tabs.forEach(t => {
         const nameLower = t.toLowerCase();
         const content = document.getElementById(`tabContent${t}`);
         const btn = document.getElementById(`tabBtn${t}`);
         
-        if (nameLower === tabName.replace('Tab', '').toLowerCase()) {
-            content.classList.remove('hidden');
-            btn.className = "px-4 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-sky-500 to-indigo-600 text-white shadow-md shadow-sky-500/20 transition flex items-center gap-1.5";
-        } else {
-            content.classList.add('hidden');
-            btn.className = "px-4 py-2 rounded-xl text-xs font-bold bg-white hover:bg-sky-50 text-slate-700 border border-sky-200 hover:border-sky-300 transition flex items-center gap-1.5 shadow-sm";
+        if (content && btn) {
+            if (nameLower === tabName.replace('Tab', '').toLowerCase()) {
+                content.classList.remove('hidden');
+                btn.className = "px-4 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-sky-500 to-indigo-600 text-white shadow-md shadow-sky-500/20 transition flex items-center gap-1.5";
+            } else {
+                content.classList.add('hidden');
+                btn.className = "px-4 py-2 rounded-xl text-xs font-bold bg-white hover:bg-sky-50 text-slate-700 border border-sky-200 hover:border-sky-300 transition flex items-center gap-1.5 shadow-sm";
+            }
         }
     });
 }
